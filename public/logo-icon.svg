@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F26B3A"/>
+      <stop offset="100%" stop-color="#FF6B35"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Dark navy background -->
+  <rect width="512" height="512" rx="64" fill="#0A0A14"/>
+
+  <!--
+    Geometric "H" that incorporates "IA":
+    - Left vertical bar of the H
+    - Crossbar connecting them
+    - Right side: an "I" pillar with a triangular "A" peak carved at the top
+      via negative space (angular cut creating a pointed apex)
+
+    The right vertical is split at the top into a pointed "A" shape,
+    with a triangular notch cut out to form the apex of the A.
+    The I is implied by the straight vertical, and the A by the pointed top.
+  -->
+
+  <!-- Left vertical bar of H -->
+  <rect x="96" y="96" width="80" height="320" fill="url(#orangeGrad)"/>
+
+  <!-- Right vertical bar of H — forms the "I" -->
+  <rect x="336" y="176" width="80" height="240" fill="url(#orangeGrad)"/>
+
+  <!-- Crossbar of H -->
+  <rect x="176" y="224" width="160" height="64" fill="url(#orangeGrad)"/>
+
+  <!-- Triangular "A" peak on the right side — sits above the I bar -->
+  <!-- This is a triangle pointing upward, forming the apex of the letter A -->
+  <polygon points="376,96 336,176 416,176" fill="url(#orangeGrad)"/>
+
+  <!-- Negative space notch inside the A peak (small inverted triangle) -->
+  <!-- Cut out from the A to create the classic A crossbar hole -->
+  <polygon points="376,136 362,168 390,168" fill="#0A0A14"/>
+</svg>
