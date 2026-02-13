@@ -914,21 +914,24 @@
       }
     }
 
-    /* ───── LANGUAGE TOGGLE ───── */
-    .nav-right-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+    /* ───── LANGUAGE TOGGLE (fixed below nav) ───── */
+    .lang-bar {
+      position: fixed;
+      top: 60px;
+      right: 24px;
+      z-index: 999;
     }
     .lang-toggle-btn {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(10, 10, 15, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.1);
       border-radius: 100px;
-      padding: 6px 14px;
-      font-size: 13px;
+      padding: 5px 12px;
+      font-size: 11px;
       font-family: var(--sans);
       font-weight: 600;
-      color: var(--text);
+      color: var(--text-muted);
       cursor: pointer;
       transition: all 0.2s;
       line-height: 1;
@@ -937,6 +940,7 @@
     .lang-toggle-btn:hover {
       background: rgba(255,255,255,0.1);
       border-color: var(--accent);
+      color: var(--text);
     }
   </style>
 </head>
@@ -956,14 +960,16 @@
         <li><a href="https://www.capital.fr/votre-carriere/lia-va-faire-gagner-du-temps-aux-salaries-et-ce-temps-peut-leur-etre-rendu-1523366" target="_blank" rel="noopener" data-i18n="nav.tribune">Notre tribune dans Capital</a></li>
         <li><a href="https://meetings-eu1.hubspot.com/pdu-payrat?uuid=5a24cb40-61aa-41f5-aee3-8cc6a8cae0bf" target="_blank" rel="noopener" class="nav-cta" data-i18n="nav.cta">Parlons-en</a></li>
       </ul>
-      <div class="nav-right-actions">
-        <button id="langToggle" class="lang-toggle-btn" onclick="toggleLang()" aria-label="Switch language"><strong>FR</strong> · <span style="opacity:0.4">EN</span> · <span style="opacity:0.4">ES</span></button>
-        <button class="menu-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
+      <button class="menu-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
+
+  <!-- Language toggle (fixed, below nav) -->
+  <div class="lang-bar">
+    <button id="langToggle" class="lang-toggle-btn" onclick="toggleLang()" aria-label="Switch language"><strong>FR</strong> · <span style="opacity:0.4">EN</span> · <span style="opacity:0.4">ES</span></button>
+  </div>
 
   <!-- ═══ HERO ═══ -->
   <section class="hero" id="hero">

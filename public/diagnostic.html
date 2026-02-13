@@ -1021,12 +1021,12 @@
   <nav>
     <div class="nav-inner">
       <a href="https://homosapia.com" class="logo">Homo Sap<span class="logo-ia">IA</span></a>
-      <div style="display:flex;align-items:center;gap:12px;">
-        <button id="langToggle" onclick="toggleLang()" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:100px;padding:6px 14px;font-size:13px;font-family:var(--sans);font-weight:600;color:var(--text);cursor:pointer;transition:all 0.2s;line-height:1;white-space:nowrap;" aria-label="Switch language"><strong>FR</strong> · <span style="opacity:0.4">EN</span> · <span style="opacity:0.4">ES</span></button>
-        <a href="https://homosapia.com" class="nav-back" data-i18n="nav.back">&larr; Retour au site</a>
-      </div>
+      <a href="https://homosapia.com" class="nav-back" data-i18n="nav.back">&larr; Retour au site</a>
     </div>
   </nav>
+  <div style="position:fixed;top:60px;right:24px;z-index:999;">
+    <button id="langToggle" onclick="toggleLang()" style="background:rgba(10,10,15,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.1);border-radius:100px;padding:5px 12px;font-size:11px;font-family:var(--sans);font-weight:600;color:var(--text-muted);cursor:pointer;transition:all 0.2s;line-height:1;white-space:nowrap;" aria-label="Switch language"><strong>FR</strong> · <span style="opacity:0.4">EN</span> · <span style="opacity:0.4">ES</span></button>
+  </div>
 
   <!-- I18N Engine -->
   <script>
