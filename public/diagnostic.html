@@ -1022,7 +1022,7 @@
     <div class="nav-inner">
       <a href="https://homosapia.com" class="logo">Homo Sap<span class="logo-ia">IA</span></a>
       <div style="display:flex;align-items:center;gap:12px;">
-        <button id="langToggle" onclick="toggleLang()" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:100px;padding:6px 12px;font-size:14px;cursor:pointer;transition:all 0.2s;line-height:1;" aria-label="Switch language">🇬🇧</button>
+        <button id="langToggle" onclick="toggleLang()" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:100px;padding:6px 14px;font-size:13px;font-family:var(--sans);font-weight:600;color:var(--text);cursor:pointer;transition:all 0.2s;line-height:1;white-space:nowrap;" aria-label="Switch language"><strong>FR</strong> · <span style="opacity:0.4">EN</span> · <span style="opacity:0.4">ES</span></button>
         <a href="https://homosapia.com" class="nav-back" data-i18n="nav.back">&larr; Retour au site</a>
       </div>
     </div>
@@ -1131,7 +1131,7 @@
     };
 
     var langCycle = ['fr', 'en', 'es'];
-    var langFlags = { fr: '\ud83c\uddec\ud83c\udde7', en: '\ud83c\uddea\ud83c\uddf8', es: '\ud83c\uddeb\ud83c\uddf7' };
+    var langLabels = { fr: 'FR', en: 'EN', es: 'ES' };
     var currentLang = localStorage.getItem('homosapia_lang') || 'fr';
 
     function applyLang(lang) {
@@ -1166,7 +1166,11 @@
       if (typeof currentDiagLang !== 'undefined') window.currentDiagLang = lang;
       document.documentElement.lang = lang;
       var toggleBtn = document.getElementById('langToggle');
-      if (toggleBtn) toggleBtn.textContent = langFlags[lang];
+      if (toggleBtn) {
+        toggleBtn.innerHTML = langCycle.map(function(l) {
+          return l === lang ? '<strong>' + langLabels[l] + '</strong>' : '<span style="opacity:0.4">' + langLabels[l] + '</span>';
+        }).join(' \u00b7 ');
+      }
       localStorage.setItem('homosapia_lang', lang);
 
       // Update dynamic sections if they are active

@@ -914,21 +914,29 @@
       }
     }
 
-    /* ───── LANGUAGE SWITCH ───── */
-    .lang-switch { list-style: none; }
-    .lang-switch button {
+    /* ───── LANGUAGE TOGGLE ───── */
+    .nav-right-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .lang-toggle-btn {
       background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
       border-radius: 100px;
-      padding: 6px 12px;
-      font-size: 14px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-family: var(--sans);
+      font-weight: 600;
+      color: var(--text);
       cursor: pointer;
       transition: all 0.2s;
       line-height: 1;
+      white-space: nowrap;
     }
-    .lang-switch button:hover {
+    .lang-toggle-btn:hover {
       background: rgba(255,255,255,0.1);
-      border-color: rgba(255,255,255,0.2);
+      border-color: var(--accent);
     }
   </style>
 </head>
@@ -947,11 +955,13 @@
         <li><a href="/diagnostic.html" style="color:var(--accent);" data-i18n="nav.diagnostic">Diagnostic IA gratuit</a></li>
         <li><a href="https://www.capital.fr/votre-carriere/lia-va-faire-gagner-du-temps-aux-salaries-et-ce-temps-peut-leur-etre-rendu-1523366" target="_blank" rel="noopener" data-i18n="nav.tribune">Notre tribune dans Capital</a></li>
         <li><a href="https://meetings-eu1.hubspot.com/pdu-payrat?uuid=5a24cb40-61aa-41f5-aee3-8cc6a8cae0bf" target="_blank" rel="noopener" class="nav-cta" data-i18n="nav.cta">Parlons-en</a></li>
-        <li class="lang-switch"><button id="langToggle" onclick="toggleLang()" aria-label="Switch language">🇬🇧</button></li>
       </ul>
-      <button class="menu-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
-        <span></span><span></span><span></span>
-      </button>
+      <div class="nav-right-actions">
+        <button id="langToggle" class="lang-toggle-btn" onclick="toggleLang()" aria-label="Switch language">FR · <span style="opacity:0.5">EN</span></button>
+        <button class="menu-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
     </div>
   </nav>
 
@@ -1662,7 +1672,7 @@
 
     // Language cycle: fr → en → es → fr
     var langCycle = ['fr', 'en', 'es'];
-    var langFlags = { fr: '🇬🇧', en: '🇪🇸', es: '🇫🇷' }; // flag shows NEXT language
+    var langLabels = { fr: 'FR', en: 'EN', es: 'ES' };
     var langCodes = { fr: 'fr', en: 'en', es: 'es' };
     var currentLang = 'fr';
 
@@ -1698,7 +1708,13 @@
       }
       currentLang = targetLang;
       document.documentElement.lang = langCodes[targetLang];
-      document.getElementById('langToggle').textContent = langFlags[targetLang];
+      // Update lang toggle button to show all languages with active highlighted
+      var btn = document.getElementById('langToggle');
+      if (btn) {
+        btn.innerHTML = langCycle.map(function(l) {
+          return l === targetLang ? '<strong>' + langLabels[l] + '</strong>' : '<span style="opacity:0.4">' + langLabels[l] + '</span>';
+        }).join(' · ');
+      }
       localStorage.setItem('homosapia_lang', targetLang);
     }
 
