@@ -1,28 +1,30 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
   <defs>
-    <linearGradient id="fg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#F26B3A"/>
+    <linearGradient id="fg" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#E84E1B"/>
       <stop offset="100%" stop-color="#FF6B35"/>
     </linearGradient>
   </defs>
 
-  <!-- Dark navy rounded background -->
-  <rect width="32" height="32" rx="4" fill="#0A0A14"/>
+  <!-- Dark navy background -->
+  <rect width="32" height="32" fill="#0A0A14"/>
 
-  <!-- Simplified geometric H+IA mark for 32x32 -->
+  <!-- H left bar -->
+  <rect x="4" y="5" width="5" height="22" fill="url(#fg)"/>
+  <!-- Angular cut on H top-left -->
+  <polygon points="4,5 9,5 9,10" fill="#0A0A14"/>
 
-  <!-- Left bar of H -->
-  <rect x="6" y="6" width="5" height="20" fill="url(#fg)"/>
+  <!-- H crossbar -->
+  <rect x="9" y="14" width="6" height="4.5" fill="url(#fg)"/>
 
-  <!-- Right bar (I of IA) -->
-  <rect x="21" y="11" width="5" height="15" fill="url(#fg)"/>
+  <!-- H right bar (short) -->
+  <rect x="15" y="14" width="5" height="13" fill="url(#fg)"/>
 
-  <!-- Crossbar of H -->
-  <rect x="11" y="14" width="10" height="4" fill="url(#fg)"/>
+  <!-- I bar -->
+  <rect x="22" y="10" width="5" height="17" fill="url(#fg)"/>
 
   <!-- A peak triangle -->
-  <polygon points="23.5,6 21,11 26,11" fill="url(#fg)"/>
-
-  <!-- Tiny A notch -->
-  <polygon points="23.5,8.5 22.5,10.5 24.5,10.5" fill="#0A0A14"/>
+  <polygon points="24.5,4 21.5,11 27.5,11" fill="url(#fg)"/>
+  <!-- A notch -->
+  <polygon points="24.5,7.5 23,10.2 26,10.2" fill="#0A0A14"/>
 </svg>
