@@ -627,25 +627,17 @@
     .about-photo {
       width: 100%;
       aspect-ratio: 4/5;
-      background: var(--bg-elevated);
       border-radius: var(--radius);
       border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--serif);
-      font-size: 4rem;
-      color: var(--accent);
       position: relative;
       overflow: hidden;
     }
-    .about-photo::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, var(--accent-glow), var(--sapiens-glow));
+    .about-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
     }
-    .about-photo span { position: relative; z-index: 1; }
     .about-content h3 {
       font-family: var(--serif);
       font-size: 1.8rem;
@@ -1266,7 +1258,7 @@
     <div class="container">
       <div class="about-grid">
         <div class="about-photo reveal">
-          <span>PdP</span>
+          <img src="/philippe-du-payrat.jpg" alt="Philippe du Payrat - Fondateur Homo SapIA" loading="lazy" width="600" height="750">
         </div>
         <div class="about-content reveal">
           <p class="section-label" data-i18n="about.label">Fondateur</p>
