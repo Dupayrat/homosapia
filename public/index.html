@@ -1299,81 +1299,257 @@
     </div>
   </footer>
 
-  <!-- ═══ RDV BOT POPUP (après 3 min) ═══ -->
-  <div id="rdvBot" style="
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    z-index: 9998;
-    display: none;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 12px;
-  ">
-    <!-- Bulle message -->
-    <div id="rdvBubble" style="
-      background: #16161F;
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 16px 16px 4px 16px;
-      padding: 20px 24px;
-      max-width: 320px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-      animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-      position: relative;
-    ">
-      <button onclick="document.getElementById('rdvBot').style.display='none'" style="
-        position: absolute;
-        top: 8px;
-        right: 12px;
-        background: none;
-        border: none;
-        color: #8A8A95;
-        font-size: 18px;
-        cursor: pointer;
-        line-height: 1;
-      ">&times;</button>
-      <p style="
-        font-family: 'Instrument Serif', Georgia, serif;
-        font-size: 1.1rem;
-        color: #E8E6E1;
-        margin-bottom: 8px;
-        padding-right: 16px;
-      ">Un projet IA en tête ?</p>
-      <p style="
-        font-family: 'DM Sans', system-ui, sans-serif;
-        font-size: 0.88rem;
-        color: #8A8A95;
-        line-height: 1.6;
-        margin-bottom: 16px;
-      ">30 min pour comprendre vos enjeux et identifier les premières pistes d'action. Sans engagement.</p>
-      <a href="https://meetings-eu1.hubspot.com/pdu-payrat?uuid=5a24cb40-61aa-41f5-aee3-8cc6a8cae0bf" target="_blank" rel="noopener" style="
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        background: #F26B3A;
-        color: #fff;
-        padding: 12px 24px;
-        border-radius: 100px;
-        text-decoration: none;
-        font-family: 'DM Sans', system-ui, sans-serif;
-        font-weight: 600;
-        font-size: 0.88rem;
-        transition: background 0.2s, transform 0.2s;
-      " onmouseover="this.style.background='#FF8855';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#F26B3A';this.style.transform='none'">
-        Prendre rendez-vous &rarr;
-      </a>
-    </div>
-  </div>
-
+  <!-- ═══ CHATBOT RDV ═══ -->
   <style>
     @keyframes slideUp {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    @keyframes botPulse {
+      0%, 100% { box-shadow: 0 4px 24px rgba(242,107,58,0.3); }
+      50% { box-shadow: 0 4px 32px rgba(242,107,58,0.5); }
+    }
+    @keyframes typing {
+      0%, 60%, 100% { opacity: 0.3; }
+      30% { opacity: 1; }
+    }
+    #chatbot-launcher {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9998;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #F26B3A, #e05525);
+      border: none;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      animation: botPulse 2.5s infinite;
+      transition: transform 0.2s;
+    }
+    #chatbot-launcher:hover { transform: scale(1.08); }
+    #chatbot-launcher svg { width: 28px; height: 28px; }
+
+    #chatbot-window {
+      position: fixed;
+      bottom: 96px;
+      right: 24px;
+      z-index: 9999;
+      width: 370px;
+      max-height: 520px;
+      background: #12121A;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #chatbot-window.open { display: flex; }
+
+    .cb-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .cb-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .cb-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #3A8FF2, #F26B3A);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Instrument Serif', serif;
+      font-size: 0.9rem;
+      color: #fff;
+      font-weight: 700;
+    }
+    .cb-header-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .cb-header-name {
+      font-family: var(--serif);
+      font-size: 0.95rem;
+      color: #E8E6E1;
+    }
+    .cb-header-status {
+      font-size: 0.72rem;
+      color: #5CB85C;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .cb-header-status::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #5CB85C;
+    }
+    .cb-close {
+      background: none;
+      border: none;
+      color: #8A8A95;
+      font-size: 20px;
+      cursor: pointer;
+      padding: 4px;
+      line-height: 1;
+    }
+    .cb-close:hover { color: #E8E6E1; }
+
+    .cb-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 340px;
+      scroll-behavior: smooth;
+    }
+    .cb-msg {
+      max-width: 85%;
+      padding: 12px 16px;
+      border-radius: 16px;
+      font-family: var(--sans);
+      font-size: 0.88rem;
+      line-height: 1.55;
+      animation: slideUp 0.3s ease-out;
+    }
+    .cb-msg.bot {
+      background: rgba(255,255,255,0.06);
+      color: #E8E6E1;
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+    .cb-msg.user {
+      background: linear-gradient(135deg, #F26B3A, #e05525);
+      color: #fff;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+    .cb-typing {
+      display: flex;
+      gap: 4px;
+      padding: 12px 16px;
+      align-self: flex-start;
+    }
+    .cb-typing span {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #8A8A95;
+    }
+    .cb-typing span:nth-child(1) { animation: typing 1.2s infinite 0s; }
+    .cb-typing span:nth-child(2) { animation: typing 1.2s infinite 0.2s; }
+    .cb-typing span:nth-child(3) { animation: typing 1.2s infinite 0.4s; }
+
+    .cb-choices {
+      padding: 12px 20px 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .cb-choice {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #E8E6E1;
+      padding: 9px 16px;
+      border-radius: 100px;
+      font-family: var(--sans);
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .cb-choice:hover {
+      background: rgba(242,107,58,0.15);
+      border-color: rgba(242,107,58,0.4);
+      color: #F26B3A;
+    }
+    .cb-cta-wrap {
+      padding: 12px 20px 16px;
+      text-align: center;
+    }
+    .cb-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #F26B3A;
+      color: #fff;
+      padding: 13px 28px;
+      border-radius: 100px;
+      text-decoration: none;
+      font-family: var(--sans);
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      width: 100%;
+      justify-content: center;
+    }
+    .cb-cta:hover {
+      background: #FF8855;
+      transform: translateY(-1px);
+    }
+    .cb-diag-link {
+      display: block;
+      margin-top: 8px;
+      color: #8A8A95;
+      font-size: 0.78rem;
+      text-decoration: underline;
+      text-align: center;
+    }
+    .cb-diag-link:hover { color: #E8E6E1; }
+
+    @media (max-width: 480px) {
+      #chatbot-window {
+        width: calc(100vw - 32px);
+        right: 16px;
+        bottom: 88px;
+        max-height: 70vh;
+      }
+    }
   </style>
 
-  <!-- ═══ REVEAL SCRIPT ═══ -->
+  <!-- Bouton launcher -->
+  <button id="chatbot-launcher" onclick="toggleChatbot()" aria-label="Discuter avec nous">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </svg>
+  </button>
+
+  <!-- Fenêtre chatbot -->
+  <div id="chatbot-window">
+    <div class="cb-header">
+      <div class="cb-header-left">
+        <div class="cb-avatar">IA</div>
+        <div class="cb-header-info">
+          <span class="cb-header-name">HomoSapIA</span>
+          <span class="cb-header-status">En ligne</span>
+        </div>
+      </div>
+      <button class="cb-close" onclick="toggleChatbot()">&times;</button>
+    </div>
+    <div class="cb-messages" id="cbMessages"></div>
+    <div id="cbActions"></div>
+  </div>
+
+  <!-- ═══ SCRIPTS ═══ -->
   <script>
+    // Reveal observer
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -1381,13 +1557,188 @@
         }
       });
     }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-    // RDV Bot - apparaît après 3 minutes (180000ms)
+    // ────── CHATBOT ──────
+    const HUBSPOT = 'https://meetings-eu1.hubspot.com/pdu-payrat?uuid=5a24cb40-61aa-41f5-aee3-8cc6a8cae0bf';
+    let cbOpen = false;
+    let cbStep = 0;
+    let cbData = {};
+
+    const FLOW = [
+      {
+        bot: "Bonjour ! Je suis l'assistant HomoSapIA. Vous explorez le sujet de l'IA pour votre entreprise ?",
+        choices: ["Oui, on y réfléchit", "On utilise déjà l'IA", "Je suis juste curieux"]
+      },
+      {
+        responses: {
+          "Oui, on y réfléchit": "C'est le bon moment pour structurer votre démarche. Quel est votre principal enjeu ?",
+          "On utilise déjà l'IA": "Super ! Vous cherchez à aller plus loin. Quel est votre principal enjeu ?",
+          "Je suis juste curieux": "Bonne démarche ! Quel sujet vous intéresse le plus ?"
+        },
+        choices: ["Gagner en productivité", "Former mes équipes", "Cadrer les usages (Shadow IA)", "Définir une stratégie IA"]
+      },
+      {
+        responses: {
+          "Gagner en productivité": "L'automatisation des tâches chronophages est souvent le premier quick win. Quelle est la taille de votre entreprise ?",
+          "Former mes équipes": "L'acculturation est la clé d'une adoption réussie. Quelle est la taille de votre entreprise ?",
+          "Cadrer les usages (Shadow IA)": "Sujet critique ! 70% des entreprises ont des usages IA non encadrés. Quelle est la taille de votre entreprise ?",
+          "Définir une stratégie IA": "Une vision claire fait toute la différence. Quelle est la taille de votre entreprise ?"
+        },
+        choices: ["< 50 salariés", "50 - 250", "250 - 1000", "> 1000"]
+      },
+      {
+        responses: {
+          "default": null
+        },
+        final: true
+      }
+    ];
+
+    const FINAL_MESSAGES = {
+      "Gagner en productivité": "Parfait ! Philippe peut vous aider à identifier vos cas d'usage à fort impact et mettre en place des automatisations concrètes.",
+      "Former mes équipes": "Philippe propose des formations sur-mesure : prompting, outils métiers, vibe-coding. Adaptées à chaque niveau.",
+      "Cadrer les usages (Shadow IA)": "Philippe peut auditer vos usages IA actuels, cartographier les risques et mettre en place une charte et des outils officiels.",
+      "Définir une stratégie IA": "Philippe accompagne les CODIR dans la définition d'une feuille de route IA réaliste et alignée sur vos objectifs."
+    };
+
+    function toggleChatbot() {
+      cbOpen = !cbOpen;
+      const win = document.getElementById('chatbot-window');
+      if (cbOpen) {
+        win.classList.add('open');
+        if (cbStep === 0) startConversation();
+      } else {
+        win.classList.remove('open');
+      }
+    }
+
+    function addMessage(text, type) {
+      const messages = document.getElementById('cbMessages');
+      const msg = document.createElement('div');
+      msg.className = 'cb-msg ' + type;
+      msg.textContent = text;
+      messages.appendChild(msg);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function showTyping() {
+      const messages = document.getElementById('cbMessages');
+      const t = document.createElement('div');
+      t.className = 'cb-typing';
+      t.id = 'cbTyping';
+      t.innerHTML = '<span></span><span></span><span></span>';
+      messages.appendChild(t);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function removeTyping() {
+      const t = document.getElementById('cbTyping');
+      if (t) t.remove();
+    }
+
+    function showChoices(choices) {
+      const actions = document.getElementById('cbActions');
+      actions.innerHTML = '';
+      const wrap = document.createElement('div');
+      wrap.className = 'cb-choices';
+      choices.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'cb-choice';
+        btn.textContent = c;
+        btn.addEventListener('click', () => handleChoice(c));
+        wrap.appendChild(btn);
+      });
+      actions.appendChild(wrap);
+    }
+
+    function showFinalCTA() {
+      const actions = document.getElementById('cbActions');
+      actions.innerHTML = '';
+      const wrap = document.createElement('div');
+      wrap.className = 'cb-cta-wrap';
+      wrap.innerHTML = `
+        <a href="${HUBSPOT}" target="_blank" rel="noopener" class="cb-cta">Prendre RDV avec Philippe &rarr;</a>
+        <a href="/diagnostic.html" class="cb-diag-link">Ou faites d'abord votre diagnostic IA gratuit</a>
+      `;
+      actions.appendChild(wrap);
+    }
+
+    function startConversation() {
+      cbStep = 0;
+      const step = FLOW[0];
+      showTyping();
+      setTimeout(() => {
+        removeTyping();
+        addMessage(step.bot, 'bot');
+        showChoices(step.choices);
+        cbStep = 1;
+      }, 800);
+    }
+
+    function handleChoice(choice) {
+      addMessage(choice, 'user');
+      document.getElementById('cbActions').innerHTML = '';
+
+      const step = FLOW[cbStep];
+      if (!step) return;
+
+      cbData['step' + cbStep] = choice;
+
+      if (step.final) {
+        // Show final message based on enjeu
+        const enjeu = cbData.step2 || Object.keys(FINAL_MESSAGES)[0];
+        const finalMsg = FINAL_MESSAGES[enjeu] || FINAL_MESSAGES[Object.keys(FINAL_MESSAGES)[0]];
+        showTyping();
+        setTimeout(() => {
+          removeTyping();
+          addMessage(finalMsg, 'bot');
+          setTimeout(() => {
+            addMessage("Un appel de 30 min, sans engagement, pour en discuter ?", 'bot');
+            showFinalCTA();
+          }, 600);
+        }, 900);
+        return;
+      }
+
+      const response = step.responses[choice] || step.responses['default'] || step.responses[Object.keys(step.responses)[0]];
+
+      showTyping();
+      setTimeout(() => {
+        removeTyping();
+        if (response) addMessage(response, 'bot');
+
+        cbStep++;
+
+        if (FLOW[cbStep] && FLOW[cbStep].final) {
+          // Dernière étape : afficher le message final
+          const enjeu = cbData.step2 || Object.keys(FINAL_MESSAGES)[0];
+          const finalMsg = FINAL_MESSAGES[enjeu] || FINAL_MESSAGES[Object.keys(FINAL_MESSAGES)[0]];
+          showTyping();
+          setTimeout(() => {
+            removeTyping();
+            addMessage(finalMsg, 'bot');
+            setTimeout(() => {
+              addMessage("Un appel de 30 min, sans engagement, pour en discuter ?", 'bot');
+              showFinalCTA();
+            }, 600);
+          }, 900);
+        } else if (FLOW[cbStep] && FLOW[cbStep].choices) {
+          showChoices(FLOW[cbStep].choices);
+        }
+      }, 800);
+    }
+
+    // Launcher apparaît après 3 minutes
     setTimeout(() => {
-      const bot = document.getElementById('rdvBot');
-      if (bot) bot.style.display = 'flex';
+      const launcher = document.getElementById('chatbot-launcher');
+      if (launcher) {
+        launcher.style.display = 'flex';
+        // Auto-ouvrir après 5s de visibilité du bouton
+        setTimeout(() => {
+          if (!cbOpen) toggleChatbot();
+        }, 5000);
+      }
     }, 180000);
   </script>
 
