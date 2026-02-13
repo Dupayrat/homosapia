@@ -685,8 +685,63 @@
       letter-spacing: 2px;
       text-transform: uppercase;
       color: var(--text-muted);
-      margin-bottom: 16px;
+      margin-bottom: 20px;
       font-weight: 500;
+    }
+    .community-featured {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 16px;
+      transition: border-color 0.3s;
+      text-decoration: none;
+    }
+    .community-featured:hover {
+      border-color: rgba(255,255,255,0.2);
+    }
+    .community-featured-logo {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .community-featured-logo img {
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+    }
+    .community-featured-info {
+      flex: 1;
+    }
+    .community-featured-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .community-featured-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .community-featured-stats {
+      display: flex;
+      gap: 16px;
+      margin-top: 8px;
+    }
+    .community-featured-stat {
+      font-size: 0.78rem;
+      color: var(--accent);
+      font-weight: 600;
     }
     .community-badges {
       display: flex;
@@ -1273,8 +1328,21 @@
           </div>
           <div class="communities">
             <h4 data-i18n="about.communities">Communautés</h4>
+            <a href="https://www.theaifellowship.com" target="_blank" rel="noopener" class="community-featured">
+              <div class="community-featured-logo">
+                <img src="/ai-fellowship-logo.png" alt="The AI Fellowship" loading="lazy">
+              </div>
+              <div class="community-featured-info">
+                <div class="community-featured-name">The AI Fellowship</div>
+                <div class="community-featured-desc" data-i18n="about.taif_desc">Communauté internationale de praticiens IA. Agir localement, penser globalement.</div>
+                <div class="community-featured-stats">
+                  <span class="community-featured-stat" data-i18n="about.taif_members">1 300+ membres</span>
+                  <span class="community-featured-stat" data-i18n="about.taif_countries">80+ pays</span>
+                  <span class="community-featured-stat" data-i18n="about.taif_cities">40+ villes</span>
+                </div>
+              </div>
+            </a>
             <div class="community-badges">
-              <span class="community-badge">The AI Fellowship</span>
               <span class="community-badge">Savoy IA</span>
             </div>
           </div>
@@ -1503,6 +1571,10 @@
         'about.p2': '30+ SME and mid-cap clients supported on organizational transformation: people, process, performance and impact. Career at Google (Industry Analyst), Simon-Kucher (Consultant), AramisAuto (BU Manager).',
         'about.p3': "Led France's first national 4-day work week pilot, in partnership with EM Lyon and 4 Day Week Global.",
         'about.communities': 'Communities',
+        'about.taif_desc': 'International community of AI practitioners. Acting locally, thinking globally.',
+        'about.taif_members': '1,300+ members',
+        'about.taif_countries': '80+ countries',
+        'about.taif_cities': '40+ cities',
         'cta.label': 'Ready to move forward?', 'cta.title': "Let's discuss your AI project",
         'cta.subtitle': 'A 30-minute introductory call to understand your challenges and identify first action steps.',
         'cta.btn': 'Book a meeting →',
@@ -1577,6 +1649,10 @@
         'about.p2': 'Más de 30 clientes PYME y ETI acompañados en transformación organizacional: personas, procesos, rendimiento e impacto. Trayectoria en Google (Industry Analyst), Simon-Kucher (Consultor), AramisAuto (BU Manager).',
         'about.p3': 'Líder del primer piloto nacional de semana de 4 días en Francia, en colaboración con EM Lyon y 4 Day Week Global.',
         'about.communities': 'Comunidades',
+        'about.taif_desc': 'Comunidad internacional de profesionales de IA. Actuar localmente, pensar globalmente.',
+        'about.taif_members': '1 300+ miembros',
+        'about.taif_countries': '80+ países',
+        'about.taif_cities': '40+ ciudades',
         'cta.label': '¿Listo para avanzar?', 'cta.title': 'Hablemos de su proyecto IA',
         'cta.subtitle': 'Una llamada introductoria de 30 minutos para entender sus retos e identificar las primeras acciones.',
         'cta.btn': 'Reservar una cita →',
