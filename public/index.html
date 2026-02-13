@@ -1299,447 +1299,361 @@
     </div>
   </footer>
 
-  <!-- ═══ CHATBOT RDV ═══ -->
+  <!-- ═══ CHATBOT PHILIPPE ═══ -->
   <style>
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes botPulse {
-      0%, 100% { box-shadow: 0 4px 24px rgba(242,107,58,0.3); }
-      50% { box-shadow: 0 4px 32px rgba(242,107,58,0.5); }
-    }
-    @keyframes typing {
-      0%, 60%, 100% { opacity: 0.3; }
-      30% { opacity: 1; }
-    }
-    #chatbot-launcher {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      z-index: 9998;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #F26B3A, #e05525);
-      border: none;
-      cursor: pointer;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      animation: botPulse 2.5s infinite;
-      transition: transform 0.2s;
-    }
-    #chatbot-launcher:hover { transform: scale(1.08); }
-    #chatbot-launcher svg { width: 28px; height: 28px; }
+    @keyframes cb-slideUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes cb-pulse { 0%,100%{ box-shadow:0 4px 20px rgba(242,107,58,0.25); } 50%{ box-shadow:0 4px 28px rgba(242,107,58,0.5); } }
+    @keyframes cb-dot { 0%,60%,100%{ opacity:.25; } 30%{ opacity:1; } }
+    @keyframes cb-nudge { 0%{ transform:scale(1) rotate(0); } 15%{ transform:scale(1.15) rotate(-8deg); } 30%{ transform:scale(1.15) rotate(8deg); } 45%{ transform:scale(1) rotate(0); } 100%{ transform:scale(1); } }
 
-    #chatbot-window {
-      position: fixed;
-      bottom: 96px;
-      right: 24px;
-      z-index: 9999;
-      width: 370px;
-      max-height: 520px;
-      background: #12121A;
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 20px;
-      box-shadow: 0 24px 80px rgba(0,0,0,0.6);
-      display: none;
-      flex-direction: column;
-      overflow: hidden;
-      animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    #cb-fab {
+      position:fixed; bottom:24px; right:24px; z-index:9998;
+      width:62px; height:62px; border-radius:50%;
+      background:linear-gradient(135deg,#F26B3A,#d94e1f); border:none; cursor:pointer;
+      display:none; align-items:center; justify-content:center;
+      animation: cb-pulse 3s infinite;
+      transition: transform .2s;
     }
-    #chatbot-window.open { display: flex; }
+    #cb-fab:hover { transform:scale(1.08); }
+    #cb-fab.nudge { animation: cb-nudge .6s ease; }
+    #cb-fab svg { width:26px; height:26px; }
+    #cb-fab .cb-notif {
+      position:absolute; top:-2px; right:-2px;
+      width:18px; height:18px; border-radius:50%;
+      background:#fff; color:#F26B3A;
+      font-size:11px; font-weight:800;
+      display:flex; align-items:center; justify-content:center;
+      font-family:var(--sans);
+    }
 
-    .cb-header {
-      padding: 16px 20px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    #cb-win {
+      position:fixed; bottom:96px; right:24px; z-index:9999;
+      width:380px; max-height:540px;
+      background:#111118; border:1px solid rgba(255,255,255,.08);
+      border-radius:20px; box-shadow:0 24px 80px rgba(0,0,0,.6);
+      display:none; flex-direction:column; overflow:hidden;
+      animation: cb-slideUp .35s cubic-bezier(.16,1,.3,1);
     }
-    .cb-header-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .cb-avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #3A8FF2, #F26B3A);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Instrument Serif', serif;
-      font-size: 0.9rem;
-      color: #fff;
-      font-weight: 700;
-    }
-    .cb-header-info {
-      display: flex;
-      flex-direction: column;
-    }
-    .cb-header-name {
-      font-family: var(--serif);
-      font-size: 0.95rem;
-      color: #E8E6E1;
-    }
-    .cb-header-status {
-      font-size: 0.72rem;
-      color: #5CB85C;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .cb-header-status::before {
-      content: '';
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #5CB85C;
-    }
-    .cb-close {
-      background: none;
-      border: none;
-      color: #8A8A95;
-      font-size: 20px;
-      cursor: pointer;
-      padding: 4px;
-      line-height: 1;
-    }
-    .cb-close:hover { color: #E8E6E1; }
+    #cb-win.open { display:flex; }
 
-    .cb-messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: 16px 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      max-height: 340px;
-      scroll-behavior: smooth;
+    .cb-head {
+      padding:14px 18px; border-bottom:1px solid rgba(255,255,255,.05);
+      display:flex; align-items:center; justify-content:space-between;
     }
-    .cb-msg {
-      max-width: 85%;
-      padding: 12px 16px;
-      border-radius: 16px;
-      font-family: var(--sans);
-      font-size: 0.88rem;
-      line-height: 1.55;
-      animation: slideUp 0.3s ease-out;
+    .cb-head-l { display:flex; align-items:center; gap:10px; }
+    .cb-pic {
+      width:38px; height:38px; border-radius:50%;
+      background:linear-gradient(135deg,#2a2a3a,#1a1a28);
+      display:flex; align-items:center; justify-content:center;
+      font-family:var(--serif); font-size:.85rem; color:#F26B3A; font-weight:700;
+      border:2px solid rgba(242,107,58,.3);
     }
-    .cb-msg.bot {
-      background: rgba(255,255,255,0.06);
-      color: #E8E6E1;
-      align-self: flex-start;
-      border-bottom-left-radius: 4px;
-    }
-    .cb-msg.user {
-      background: linear-gradient(135deg, #F26B3A, #e05525);
-      color: #fff;
-      align-self: flex-end;
-      border-bottom-right-radius: 4px;
-    }
-    .cb-typing {
-      display: flex;
-      gap: 4px;
-      padding: 12px 16px;
-      align-self: flex-start;
-    }
-    .cb-typing span {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #8A8A95;
-    }
-    .cb-typing span:nth-child(1) { animation: typing 1.2s infinite 0s; }
-    .cb-typing span:nth-child(2) { animation: typing 1.2s infinite 0.2s; }
-    .cb-typing span:nth-child(3) { animation: typing 1.2s infinite 0.4s; }
+    .cb-head-info { display:flex; flex-direction:column; }
+    .cb-head-name { font-family:var(--serif); font-size:.92rem; color:#E8E6E1; }
+    .cb-head-sub { font-size:.7rem; color:#5CB85C; display:flex; align-items:center; gap:4px; }
+    .cb-head-sub::before { content:''; width:6px; height:6px; border-radius:50%; background:#5CB85C; flex-shrink:0; }
+    .cb-x { background:none; border:none; color:#666; font-size:22px; cursor:pointer; padding:4px; line-height:1; }
+    .cb-x:hover { color:#E8E6E1; }
 
-    .cb-choices {
-      padding: 12px 20px 16px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+    .cb-body {
+      flex:1; overflow-y:auto; padding:14px 16px;
+      display:flex; flex-direction:column; gap:6px;
+      max-height:350px; scroll-behavior:smooth;
     }
-    .cb-choice {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
-      color: #E8E6E1;
-      padding: 9px 16px;
-      border-radius: 100px;
-      font-family: var(--sans);
-      font-size: 0.82rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .cb-choice:hover {
-      background: rgba(242,107,58,0.15);
-      border-color: rgba(242,107,58,0.4);
-      color: #F26B3A;
-    }
-    .cb-cta-wrap {
-      padding: 12px 20px 16px;
-      text-align: center;
-    }
-    .cb-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: #F26B3A;
-      color: #fff;
-      padding: 13px 28px;
-      border-radius: 100px;
-      text-decoration: none;
-      font-family: var(--sans);
-      font-weight: 600;
-      font-size: 0.9rem;
-      transition: all 0.2s;
-      width: 100%;
-      justify-content: center;
-    }
-    .cb-cta:hover {
-      background: #FF8855;
-      transform: translateY(-1px);
-    }
-    .cb-diag-link {
-      display: block;
-      margin-top: 8px;
-      color: #8A8A95;
-      font-size: 0.78rem;
-      text-decoration: underline;
-      text-align: center;
-    }
-    .cb-diag-link:hover { color: #E8E6E1; }
+    .cb-m { max-width:82%; padding:10px 14px; border-radius:16px; font-family:var(--sans); font-size:.86rem; line-height:1.55; animation:cb-slideUp .25s ease-out; }
+    .cb-m.b { background:rgba(255,255,255,.05); color:#ddd; align-self:flex-start; border-bottom-left-radius:4px; }
+    .cb-m.u { background:linear-gradient(135deg,#F26B3A,#d94e1f); color:#fff; align-self:flex-end; border-bottom-right-radius:4px; }
+    .cb-m.b + .cb-m.b { margin-top:-2px; }
 
-    @media (max-width: 480px) {
-      #chatbot-window {
-        width: calc(100vw - 32px);
-        right: 16px;
-        bottom: 88px;
-        max-height: 70vh;
-      }
+    .cb-dots { display:flex; gap:4px; padding:10px 14px; align-self:flex-start; }
+    .cb-dots span { width:7px; height:7px; border-radius:50%; background:#555; }
+    .cb-dots span:nth-child(1){animation:cb-dot 1.1s infinite 0s;}
+    .cb-dots span:nth-child(2){animation:cb-dot 1.1s infinite .18s;}
+    .cb-dots span:nth-child(3){animation:cb-dot 1.1s infinite .36s;}
+
+    .cb-foot {
+      border-top:1px solid rgba(255,255,255,.05);
+      padding:10px 14px; display:flex; gap:8px;
+    }
+    .cb-foot input {
+      flex:1; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08);
+      border-radius:100px; padding:10px 16px; color:#E8E6E1;
+      font-family:var(--sans); font-size:.86rem; outline:none;
+      transition: border-color .2s;
+    }
+    .cb-foot input::placeholder { color:#555; }
+    .cb-foot input:focus { border-color:rgba(242,107,58,.4); }
+    .cb-foot button {
+      width:40px; height:40px; border-radius:50%;
+      background:#F26B3A; border:none; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      transition: background .2s, transform .2s; flex-shrink:0;
+    }
+    .cb-foot button:hover { background:#FF8855; transform:scale(1.05); }
+    .cb-foot button svg { width:18px; height:18px; }
+
+    .cb-pills { padding:6px 16px 10px; display:flex; flex-wrap:wrap; gap:6px; }
+    .cb-pill {
+      background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1);
+      color:#ccc; padding:7px 14px; border-radius:100px;
+      font-family:var(--sans); font-size:.78rem; font-weight:500;
+      cursor:pointer; transition:all .2s;
+    }
+    .cb-pill:hover { background:rgba(242,107,58,.12); border-color:rgba(242,107,58,.35); color:#F26B3A; }
+
+    .cb-cta-box { padding:10px 16px 14px; }
+    .cb-cta-btn {
+      display:flex; align-items:center; justify-content:center; gap:8px;
+      background:#F26B3A; color:#fff; padding:13px 24px; border-radius:100px;
+      text-decoration:none; font-family:var(--sans); font-weight:600; font-size:.88rem;
+      transition:all .2s; width:100%;
+    }
+    .cb-cta-btn:hover { background:#FF8855; transform:translateY(-1px); }
+    .cb-alt { display:block; text-align:center; margin-top:6px; color:#666; font-size:.74rem; text-decoration:underline; font-family:var(--sans); }
+    .cb-alt:hover { color:#aaa; }
+
+    @media(max-width:480px){
+      #cb-win { width:calc(100vw - 24px); right:12px; bottom:90px; max-height:72vh; }
     }
   </style>
 
-  <!-- Bouton launcher -->
-  <button id="chatbot-launcher" onclick="toggleChatbot()" aria-label="Discuter avec nous">
-    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-    </svg>
+  <button id="cb-fab" aria-label="Discuter">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    <span class="cb-notif">1</span>
   </button>
 
-  <!-- Fenêtre chatbot -->
-  <div id="chatbot-window">
-    <div class="cb-header">
-      <div class="cb-header-left">
-        <div class="cb-avatar">IA</div>
-        <div class="cb-header-info">
-          <span class="cb-header-name">HomoSapIA</span>
-          <span class="cb-header-status">En ligne</span>
+  <div id="cb-win">
+    <div class="cb-head">
+      <div class="cb-head-l">
+        <div class="cb-pic">Ph</div>
+        <div class="cb-head-info">
+          <span class="cb-head-name">Philippe</span>
+          <span class="cb-head-sub">en ligne</span>
         </div>
       </div>
-      <button class="cb-close" onclick="toggleChatbot()">&times;</button>
+      <button class="cb-x" onclick="cbToggle()">&times;</button>
     </div>
-    <div class="cb-messages" id="cbMessages"></div>
-    <div id="cbActions"></div>
+    <div class="cb-body" id="cbBody"></div>
+    <div id="cbAct"></div>
+    <div class="cb-foot" id="cbFoot" style="display:none;">
+      <input type="text" id="cbIn" placeholder="Votre message..." autocomplete="off">
+      <button onclick="cbSendInput()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
   </div>
 
   <!-- ═══ SCRIPTS ═══ -->
   <script>
-    // Reveal observer
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold:.1, rootMargin:'0px 0px -50px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-    // ────── CHATBOT ──────
-    const HUBSPOT = 'https://meetings-eu1.hubspot.com/pdu-payrat?uuid=5a24cb40-61aa-41f5-aee3-8cc6a8cae0bf';
-    let cbOpen = false;
-    let cbStep = 0;
-    let cbData = {};
+  // ── CHATBOT ENGINE ──
+  const HS='https://meetings-eu1.hubspot.com/pdu-payrat?uuid=5a24cb40-61aa-41f5-aee3-8cc6a8cae0bf';
+  let cbIsOpen=false, cbPhase=0, cbCtx={};
 
-    const FLOW = [
-      {
-        bot: "Bonjour ! Je suis l'assistant HomoSapIA. Vous explorez le sujet de l'IA pour votre entreprise ?",
-        choices: ["Oui, on y réfléchit", "On utilise déjà l'IA", "Je suis juste curieux"]
-      },
-      {
-        responses: {
-          "Oui, on y réfléchit": "C'est le bon moment pour structurer votre démarche. Quel est votre principal enjeu ?",
-          "On utilise déjà l'IA": "Super ! Vous cherchez à aller plus loin. Quel est votre principal enjeu ?",
-          "Je suis juste curieux": "Bonne démarche ! Quel sujet vous intéresse le plus ?"
-        },
-        choices: ["Gagner en productivité", "Former mes équipes", "Cadrer les usages (Shadow IA)", "Définir une stratégie IA"]
-      },
-      {
-        responses: {
-          "Gagner en productivité": "L'automatisation des tâches chronophages est souvent le premier quick win. Quelle est la taille de votre entreprise ?",
-          "Former mes équipes": "L'acculturation est la clé d'une adoption réussie. Quelle est la taille de votre entreprise ?",
-          "Cadrer les usages (Shadow IA)": "Sujet critique ! 70% des entreprises ont des usages IA non encadrés. Quelle est la taille de votre entreprise ?",
-          "Définir une stratégie IA": "Une vision claire fait toute la différence. Quelle est la taille de votre entreprise ?"
-        },
-        choices: ["< 50 salariés", "50 - 250", "250 - 1000", "> 1000"]
-      },
-      {
-        responses: {
-          "default": null
-        },
-        final: true
+  function cbToggle(){
+    cbIsOpen=!cbIsOpen;
+    const w=document.getElementById('cb-win');
+    if(cbIsOpen){ w.classList.add('open'); document.querySelector('.cb-notif').style.display='none'; if(!cbPhase) cbStart(); }
+    else w.classList.remove('open');
+  }
+  document.getElementById('cb-fab').addEventListener('click', cbToggle);
+
+  function msg(t,cls){
+    const d=document.createElement('div');
+    d.className='cb-m '+cls;
+    d.innerHTML=t;
+    document.getElementById('cbBody').appendChild(d);
+    document.getElementById('cbBody').scrollTop=9999;
+  }
+  function dots(){
+    const d=document.createElement('div');
+    d.className='cb-dots'; d.id='cbDots';
+    d.innerHTML='<span></span><span></span><span></span>';
+    document.getElementById('cbBody').appendChild(d);
+    document.getElementById('cbBody').scrollTop=9999;
+  }
+  function noDots(){ const d=document.getElementById('cbDots'); if(d) d.remove(); }
+
+  function pills(arr){
+    const box=document.getElementById('cbAct'); box.innerHTML='';
+    const w=document.createElement('div'); w.className='cb-pills';
+    arr.forEach(t=>{
+      const b=document.createElement('button'); b.className='cb-pill'; b.textContent=t;
+      b.addEventListener('click',()=>cbPick(t));
+      w.appendChild(b);
+    });
+    box.appendChild(w);
+  }
+  function clearAct(){ document.getElementById('cbAct').innerHTML=''; }
+  function showInput(){
+    document.getElementById('cbFoot').style.display='flex';
+    setTimeout(()=>document.getElementById('cbIn').focus(),100);
+  }
+  function hideInput(){ document.getElementById('cbFoot').style.display='none'; }
+
+  function botSay(texts, delay, cb){
+    let i=0;
+    function next(){
+      if(i>=texts.length){ if(cb) cb(); return; }
+      dots();
+      const wait = 600 + texts[i].length * 18 + Math.random()*400;
+      setTimeout(()=>{ noDots(); msg(texts[i],'b'); i++; setTimeout(next, 250); }, wait);
+    }
+    next();
+  }
+
+  function cta(){
+    const box=document.getElementById('cbAct'); box.innerHTML='';
+    const w=document.createElement('div'); w.className='cb-cta-box';
+    w.innerHTML=`<a href="${HS}" target="_blank" rel="noopener" class="cb-cta-btn">Choisir un créneau avec Philippe &rarr;</a><a href="/diagnostic.html" class="cb-alt">Ou tester d'abord le diagnostic IA gratuit</a>`;
+    box.appendChild(w);
+  }
+
+  // ── CONVERSATION FLOW ──
+
+  function cbStart(){
+    cbPhase=1;
+    const h = new Date().getHours();
+    const greet = h<12 ? 'Bonjour' : h<18 ? 'Bonjour' : 'Bonsoir';
+    botSay([
+      greet+' ! Philippe ici.',
+      "Je vois que vous vous intéressez à l'IA pour votre boîte, c'est un sujet passionnant en ce moment."
+    ], 0, ()=>{
+      setTimeout(()=>{
+        botSay(["Vous en êtes où côté IA, si c'est pas indiscret ?"], 0, ()=>{
+          pills(["On commence à y réfléchir","On a des usages mais c'est le bazar","On veut structurer tout ça","Juste en veille pour l'instant"]);
+        });
+      },400);
+    });
+  }
+
+  function cbPick(t){
+    msg(t,'u'); clearAct();
+    if(cbPhase===1) phase2(t);
+    else if(cbPhase===2) phase3(t);
+    else if(cbPhase===3) phase4(t);
+  }
+
+  function phase2(t){
+    cbPhase=2; cbCtx.stade=t;
+    let r;
+    if(t.includes('commence')||t.includes('réfléchir')){
+      r=["Ah ok, c'est souvent le meilleur moment pour bien faire les choses, avant que la Shadow IA s'installe partout.","Du coup... c'est quoi le truc qui vous motive le plus ?"];
+    } else if(t.includes('bazar')){
+      r=["Ha, le fameux \"tout le monde utilise ChatGPT dans son coin\" ? On voit ça dans 7 entreprises sur 10, vous êtes pas seuls.","Qu'est-ce qui vous préoccupe le plus ?"];
+    } else if(t.includes('structurer')){
+      r=["Top, c'est la bonne démarche. Passer de l'expérimentation à quelque chose de solide, c'est là que ça devient intéressant.","C'est quoi votre priorité ?"];
+    } else {
+      r=["Bien joué, la veille c'est déjà un premier pas ! Le truc c'est que ça bouge tellement vite en ce moment...","Si vous deviez avancer sur un sujet, ce serait lequel ?"];
+    }
+    botSay(r, 0, ()=>{
+      pills(["Productivité & automatisation","Former les équipes","Cadrer la Shadow IA","Stratégie et roadmap IA"]);
+    });
+  }
+
+  function phase3(t){
+    cbPhase=3; cbCtx.enjeu=t;
+    let r;
+    if(t.includes('roductivité')||t.includes('automatisation')){
+      r=["L'automatisation, c'est souvent le quick win le plus visible. On a des clients qui récupèrent 3 à 5h par semaine par personne, sans exagérer.","Et vous, c'est pour combien de personnes à peu près ?"];
+    } else if(t.includes('ormer')){
+      r=["La formation, c'est la clé. Parce que l'outil sans la compétence, ça donne... pas grand chose. On fait du sur-mesure, du prompting au vibe-coding.","C'est pour quelle taille d'équipe ?"];
+    } else if(t.includes('hadow')){
+      r=["Ah là c'est un vrai sujet de fond. Des données confidentielles dans ChatGPT, pas de charte, pas de visibilité... On voit ça partout.","C'est dans quel type de structure ?"];
+    } else {
+      r=["Construire une vraie roadmap IA, c'est ce qui fait la différence entre les boîtes qui avancent et celles qui restent au stade PowerPoint.","Vous êtes dans quelle taille d'entreprise ?"];
+    }
+    botSay(r, 0, ()=>{
+      pills(["PME (< 50)","ETI (50-500)","Grande entreprise (+500)"]);
+    });
+  }
+
+  function phase4(t){
+    cbPhase=4; cbCtx.taille=t;
+    hideInput();
+    let personal;
+    const e=cbCtx.enjeu||'';
+    if(e.includes('roductivité')){
+      personal="Typiquement, sur une "+t.toLowerCase()+" comme la vôtre, on commence par cartographier les tâches chronophages, et en 2-3 semaines on a des premiers résultats concrets.";
+    } else if(e.includes('ormer')){
+      personal="Pour une "+t.toLowerCase()+", on adapte le format : du CODIR qui a besoin de vision aux opérationnels qui veulent du concret avec les outils.";
+    } else if(e.includes('hadow')){
+      personal="En "+t.toLowerCase()+" la Shadow IA c'est un vrai risque. On fait un audit rapide, on cartographie, et on met en place une charte + les bons outils.";
+    } else {
+      personal="Pour une "+t.toLowerCase()+", l'enjeu c'est d'avoir une roadmap réaliste, pas un truc théorique. On part du terrain.";
+    }
+    botSay([
+      personal,
+      "Honnêtement, le mieux c'est qu'on en parle 30 min. Sans engagement, c'est vraiment pour comprendre votre contexte et voir si on peut vous aider.",
+      "Ça vous dit ?"
+    ], 0, ()=>{ cta(); });
+  }
+
+  // Handle free text input
+  document.getElementById('cbIn').addEventListener('keydown',e=>{
+    if(e.key==='Enter') cbSendInput();
+  });
+  function cbSendInput(){
+    const inp=document.getElementById('cbIn');
+    const v=inp.value.trim();
+    if(!v) return;
+    inp.value='';
+    msg(v,'u');
+    clearAct();
+    // Route based on phase
+    if(cbPhase===1){
+      // Try to match intent
+      const low=v.toLowerCase();
+      if(low.includes('oui')||low.includes('réfléch')||low.includes('commence')||low.includes('début')) cbPick("On commence à y réfléchir");
+      else if(low.includes('bazar')||low.includes('bordel')||low.includes('partout')||low.includes('chatgpt')) cbPick("On a des usages mais c'est le bazar");
+      else if(low.includes('structur')||low.includes('organis')||low.includes('cadrer')) cbPick("On veut structurer tout ça");
+      else {
+        botSay(["Ok, je comprends ! Et du coup, si vous deviez avancer sur un aspect de l'IA, ce serait quoi ?"], 0, ()=>{
+          cbPhase=2;
+          pills(["Productivité & automatisation","Former les équipes","Cadrer la Shadow IA","Stratégie et roadmap IA"]);
+        });
       }
-    ];
-
-    const FINAL_MESSAGES = {
-      "Gagner en productivité": "Parfait ! Philippe peut vous aider à identifier vos cas d'usage à fort impact et mettre en place des automatisations concrètes.",
-      "Former mes équipes": "Philippe propose des formations sur-mesure : prompting, outils métiers, vibe-coding. Adaptées à chaque niveau.",
-      "Cadrer les usages (Shadow IA)": "Philippe peut auditer vos usages IA actuels, cartographier les risques et mettre en place une charte et des outils officiels.",
-      "Définir une stratégie IA": "Philippe accompagne les CODIR dans la définition d'une feuille de route IA réaliste et alignée sur vos objectifs."
-    };
-
-    function toggleChatbot() {
-      cbOpen = !cbOpen;
-      const win = document.getElementById('chatbot-window');
-      if (cbOpen) {
-        win.classList.add('open');
-        if (cbStep === 0) startConversation();
-      } else {
-        win.classList.remove('open');
+    } else if(cbPhase===2){
+      const low=v.toLowerCase();
+      if(low.includes('product')||low.includes('autom')||low.includes('temps')||low.includes('efficac')) cbPick("Productivité & automatisation");
+      else if(low.includes('form')||low.includes('compét')||low.includes('apprend')) cbPick("Former les équipes");
+      else if(low.includes('shadow')||low.includes('cadr')||low.includes('risque')||low.includes('sécur')) cbPick("Cadrer la Shadow IA");
+      else if(low.includes('strat')||low.includes('road')||low.includes('vision')) cbPick("Stratégie et roadmap IA");
+      else {
+        botSay(["C'est intéressant ce que vous décrivez ! Pour mieux vous orienter..."], 0, ()=>{
+          pills(["Productivité & automatisation","Former les équipes","Cadrer la Shadow IA","Stratégie et roadmap IA"]);
+        });
       }
-    }
-
-    function addMessage(text, type) {
-      const messages = document.getElementById('cbMessages');
-      const msg = document.createElement('div');
-      msg.className = 'cb-msg ' + type;
-      msg.textContent = text;
-      messages.appendChild(msg);
-      messages.scrollTop = messages.scrollHeight;
-    }
-
-    function showTyping() {
-      const messages = document.getElementById('cbMessages');
-      const t = document.createElement('div');
-      t.className = 'cb-typing';
-      t.id = 'cbTyping';
-      t.innerHTML = '<span></span><span></span><span></span>';
-      messages.appendChild(t);
-      messages.scrollTop = messages.scrollHeight;
-    }
-
-    function removeTyping() {
-      const t = document.getElementById('cbTyping');
-      if (t) t.remove();
-    }
-
-    function showChoices(choices) {
-      const actions = document.getElementById('cbActions');
-      actions.innerHTML = '';
-      const wrap = document.createElement('div');
-      wrap.className = 'cb-choices';
-      choices.forEach(c => {
-        const btn = document.createElement('button');
-        btn.className = 'cb-choice';
-        btn.textContent = c;
-        btn.addEventListener('click', () => handleChoice(c));
-        wrap.appendChild(btn);
-      });
-      actions.appendChild(wrap);
-    }
-
-    function showFinalCTA() {
-      const actions = document.getElementById('cbActions');
-      actions.innerHTML = '';
-      const wrap = document.createElement('div');
-      wrap.className = 'cb-cta-wrap';
-      wrap.innerHTML = `
-        <a href="${HUBSPOT}" target="_blank" rel="noopener" class="cb-cta">Prendre RDV avec Philippe &rarr;</a>
-        <a href="/diagnostic.html" class="cb-diag-link">Ou faites d'abord votre diagnostic IA gratuit</a>
-      `;
-      actions.appendChild(wrap);
-    }
-
-    function startConversation() {
-      cbStep = 0;
-      const step = FLOW[0];
-      showTyping();
-      setTimeout(() => {
-        removeTyping();
-        addMessage(step.bot, 'bot');
-        showChoices(step.choices);
-        cbStep = 1;
-      }, 800);
-    }
-
-    function handleChoice(choice) {
-      addMessage(choice, 'user');
-      document.getElementById('cbActions').innerHTML = '';
-
-      const step = FLOW[cbStep];
-      if (!step) return;
-
-      cbData['step' + cbStep] = choice;
-
-      if (step.final) {
-        // Show final message based on enjeu
-        const enjeu = cbData.step2 || Object.keys(FINAL_MESSAGES)[0];
-        const finalMsg = FINAL_MESSAGES[enjeu] || FINAL_MESSAGES[Object.keys(FINAL_MESSAGES)[0]];
-        showTyping();
-        setTimeout(() => {
-          removeTyping();
-          addMessage(finalMsg, 'bot');
-          setTimeout(() => {
-            addMessage("Un appel de 30 min, sans engagement, pour en discuter ?", 'bot');
-            showFinalCTA();
-          }, 600);
-        }, 900);
-        return;
+    } else if(cbPhase===3){
+      const low=v.toLowerCase();
+      if(low.match(/\d/) && parseInt(low.match(/\d+/)[0])<50) cbPick("PME (< 50)");
+      else if(low.includes('pme')||low.includes('petit')) cbPick("PME (< 50)");
+      else if(low.includes('eti')||low.match(/\b(50|100|200|300|400|500)\b/)) cbPick("ETI (50-500)");
+      else if(low.includes('grand')||low.match(/\b(\d{4,})\b/)) cbPick("Grande entreprise (+500)");
+      else {
+        botSay(["Pas de souci ! C'est grosso modo quelle taille ?"], 0, ()=>{
+          pills(["PME (< 50)","ETI (50-500)","Grande entreprise (+500)"]);
+        });
       }
-
-      const response = step.responses[choice] || step.responses['default'] || step.responses[Object.keys(step.responses)[0]];
-
-      showTyping();
-      setTimeout(() => {
-        removeTyping();
-        if (response) addMessage(response, 'bot');
-
-        cbStep++;
-
-        if (FLOW[cbStep] && FLOW[cbStep].final) {
-          // Dernière étape : afficher le message final
-          const enjeu = cbData.step2 || Object.keys(FINAL_MESSAGES)[0];
-          const finalMsg = FINAL_MESSAGES[enjeu] || FINAL_MESSAGES[Object.keys(FINAL_MESSAGES)[0]];
-          showTyping();
-          setTimeout(() => {
-            removeTyping();
-            addMessage(finalMsg, 'bot');
-            setTimeout(() => {
-              addMessage("Un appel de 30 min, sans engagement, pour en discuter ?", 'bot');
-              showFinalCTA();
-            }, 600);
-          }, 900);
-        } else if (FLOW[cbStep] && FLOW[cbStep].choices) {
-          showChoices(FLOW[cbStep].choices);
-        }
-      }, 800);
+    } else {
+      // Already at CTA phase, just re-show CTA
+      botSay(["Si vous voulez, on bloque 30 min et on voit tout ça ensemble ?"], 0, ()=>{ cta(); });
     }
+  }
 
-    // Launcher apparaît après 3 minutes
-    setTimeout(() => {
-      const launcher = document.getElementById('chatbot-launcher');
-      if (launcher) {
-        launcher.style.display = 'flex';
-        // Auto-ouvrir après 5s de visibilité du bouton
-        setTimeout(() => {
-          if (!cbOpen) toggleChatbot();
-        }, 5000);
-      }
-    }, 180000);
+  // ── TIMING & LAUNCH ──
+  setTimeout(()=>{
+    const fab=document.getElementById('cb-fab');
+    fab.style.display='flex';
+    // Nudge after 4s
+    setTimeout(()=>{ fab.classList.add('nudge'); setTimeout(()=>fab.classList.remove('nudge'),700); },4000);
+    // Auto-open after 8s
+    setTimeout(()=>{ if(!cbIsOpen) cbToggle(); },8000);
+  }, 180000);
   </script>
 
 </body>
