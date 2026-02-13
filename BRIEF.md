@@ -1,8 +1,8 @@
-# HomoSapIA - Brief Projet pour Claude Code
+# Homo SapIA - Brief Projet pour Claude Code
 
 ## Objectif
 
-Créer et déployer le site web de HomoSapIA sur Vercel, avec Supabase pour le backend (formulaires, analytics, blog futur).
+Créer et déployer le site web de Homo SapIA sur Vercel, avec Supabase pour le backend (formulaires, analytics, blog futur).
 
 ## Stack technique cible
 
@@ -90,7 +90,7 @@ Images dans `assets/images-inspiration/`
 
 ## Bio Philippe du Payrat
 
-Expert français des futurs du travail. Fondateur HomoSapIA + 4jours.work.
+Expert français des futurs du travail. Fondateur Homo SapIA + 4jours.work.
 Professeur vacataire emlyon (Cap 2035 : Futurs du Travail Ne(x)twork).
 
 Parcours : COO La Ruche Qui Dit Oui, DG MaVoie.org (4x Google.org), Google, Simon-Kucher, AramisAuto.
@@ -101,8 +101,8 @@ Communautés : The AI Fellowship, Savoy IA.
 
 ## SEO
 
-- Title : "HomoSapIA | L'IA au service de l'humain"
-- Meta : "HomoSapIA accompagne les entreprises dans leur transformation par l'IA et l'organisation du travail."
+- Title : "Homo SapIA | L'IA au service de l'humain"
+- Meta : "Homo SapIA accompagne les entreprises dans leur transformation par l'IA et l'organisation du travail."
 - OG image : à créer
 - Mots clés : IA entreprise, transformation organisationnelle, human in the loop, temps libéré, conférence IA, futurs du travail
 

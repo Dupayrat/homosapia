@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HomoSapIA - L'IA au service de l'humain</title>
-  <meta name="description" content="HomoSapIA accompagne les entreprises dans leur transformation IA, de la sensibilisation au déploiement. Une approche centrée sur l'humain, responsable et frugale.">
-  <meta property="og:title" content="HomoSapIA - L'IA au service de l'humain">
+  <title>Homo SapIA - L'IA au service de l'humain</title>
+  <meta name="description" content="Homo SapIA accompagne les entreprises dans leur transformation IA, de la sensibilisation au déploiement. Une approche centrée sur l'humain, responsable et frugale.">
+  <meta property="og:title" content="Homo SapIA - L'IA au service de l'humain">
   <meta property="og:description" content="Accompagnement IA pour entreprises : conférences, ateliers, audits, formations, projets pilotes et déploiement.">
   <meta property="og:type" content="website">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -866,6 +866,23 @@
         grid-template-columns: 1fr;
       }
     }
+
+    /* ───── LANGUAGE SWITCH ───── */
+    .lang-switch { list-style: none; }
+    .lang-switch button {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 100px;
+      padding: 6px 12px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      line-height: 1;
+    }
+    .lang-switch button:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.2);
+    }
   </style>
 </head>
 <body>
@@ -873,16 +890,17 @@
   <!-- ═══ NAV ═══ -->
   <nav>
     <div class="container">
-      <a href="#" class="logo">HomoSap<span class="logo-ia">IA</span></a>
+      <a href="#" class="logo">Homo Sap<span class="logo-ia">IA</span></a>
       <ul class="nav-links" id="navLinks">
-        <li><a href="#approche">Approche</a></li>
-        <li><a href="#maturite">Maturité</a></li>
-        <li><a href="#offres">Offres</a></li>
-        <li><a href="#realisations">Réalisations</a></li>
-        <li><a href="#apropos">À propos</a></li>
-        <li><a href="/diagnostic.html" style="color:var(--accent);">Diagnostic IA gratuit</a></li>
-        <li><a href="https://www.capital.fr/votre-carriere/lia-va-faire-gagner-du-temps-aux-salaries-et-ce-temps-peut-leur-etre-rendu-1523366" target="_blank" rel="noopener">Notre tribune dans Capital</a></li>
-        <li><a href="https://meetings-eu1.hubspot.com/pdu-payrat?uuid=5a24cb40-61aa-41f5-aee3-8cc6a8cae0bf" target="_blank" rel="noopener" class="nav-cta">Parlons-en</a></li>
+        <li><a href="#approche" data-i18n="nav.approach">Approche</a></li>
+        <li><a href="#maturite" data-i18n="nav.maturity">Maturité</a></li>
+        <li><a href="#offres" data-i18n="nav.offers">Offres</a></li>
+        <li><a href="#realisations" data-i18n="nav.cases">Réalisations</a></li>
+        <li><a href="#apropos" data-i18n="nav.about">À propos</a></li>
+        <li><a href="/diagnostic.html" style="color:var(--accent);" data-i18n="nav.diagnostic">Diagnostic IA gratuit</a></li>
+        <li><a href="https://www.capital.fr/votre-carriere/lia-va-faire-gagner-du-temps-aux-salaries-et-ce-temps-peut-leur-etre-rendu-1523366" target="_blank" rel="noopener" data-i18n="nav.tribune">Notre tribune dans Capital</a></li>
+        <li><a href="https://meetings-eu1.hubspot.com/pdu-payrat?uuid=5a24cb40-61aa-41f5-aee3-8cc6a8cae0bf" target="_blank" rel="noopener" class="nav-cta" data-i18n="nav.cta">Parlons-en</a></li>
+        <li class="lang-switch"><button id="langToggle" onclick="toggleLang()" aria-label="Switch language">🇬🇧</button></li>
       </ul>
       <button class="menu-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
         <span></span><span></span><span></span>
@@ -895,15 +913,15 @@
     <div class="container hero-content">
       <div class="hero-badge">
         <span class="dot"></span>
-        Accompagnement IA pour entreprises
+        <span data-i18n="hero.badge">Accompagnement IA pour entreprises</span>
       </div>
-      <h1>L'<em>intelligence artificielle</em> au service de l'humain</h1>
-      <p class="hero-desc">
-        HomoSapIA accompagne les entreprises à chaque étape de leur transformation IA, de la sensibilisation au déploiement, avec une approche responsable, frugale et centrée sur l'humain.
+      <h1 data-i18n="hero.title" data-i18n-html="1">L'<em>intelligence artificielle</em> au service de l'humain</h1>
+      <p class="hero-desc" data-i18n="hero.desc">
+        Homo SapIA accompagne les entreprises à chaque étape de leur transformation IA, de la sensibilisation au déploiement, avec une approche responsable, frugale et centrée sur l'humain.
       </p>
       <div class="hero-actions">
-        <a href="https://meetings-eu1.hubspot.com/pdu-payrat?uuid=5a24cb40-61aa-41f5-aee3-8cc6a8cae0bf" target="_blank" rel="noopener" class="btn-primary">Discutons de votre projet →</a>
-        <a href="#offres" class="btn-secondary">Découvrir nos offres</a>
+        <a href="https://meetings-eu1.hubspot.com/pdu-payrat?uuid=5a24cb40-61aa-41f5-aee3-8cc6a8cae0bf" target="_blank" rel="noopener" class="btn-primary" data-i18n="hero.cta1">Discutons de votre projet →</a>
+        <a href="#offres" class="btn-secondary" data-i18n="hero.cta2">Découvrir nos offres</a>
       </div>
     </div>
   </section>
@@ -911,7 +929,7 @@
   <!-- ═══ TRUST BAR ═══ -->
   <section class="trust-bar">
     <div class="container">
-      <p class="trust-label">Ils nous font confiance</p>
+      <p class="trust-label" data-i18n="trust.label">Ils nous font confiance</p>
       <div class="trust-logos">
         <!-- COVEA -->
         <div class="trust-logo-item">
@@ -965,31 +983,31 @@
     <div class="container">
       <div class="manifesto-grid">
         <div class="manifesto-text reveal">
-          <p class="section-label">Notre ADN</p>
-          <h2 class="section-title">L'IA ne remplace pas l'humain.<br><span>Elle l'augmente.</span></h2>
-          <p>Nous croyons qu'une adoption réussie de l'IA passe par la confiance des équipes, la co-construction sur le terrain, et une démarche progressive où chaque étape crée de la valeur mesurable.</p>
-          <p>Notre mission : vous aider à travailler mieux - pas juste plus vite - en intégrant l'IA de manière éthique, souveraine et frugale.</p>
+          <p class="section-label" data-i18n="manifesto.label">Notre ADN</p>
+          <h2 class="section-title" data-i18n="manifesto.title" data-i18n-html="1">L'IA ne remplace pas l'humain.<br><span>Elle l'augmente.</span></h2>
+          <p data-i18n="manifesto.p1">Nous croyons qu'une adoption réussie de l'IA passe par la confiance des équipes, la co-construction sur le terrain, et une démarche progressive où chaque étape crée de la valeur mesurable.</p>
+          <p data-i18n="manifesto.p2">Notre mission : vous aider à travailler mieux - pas juste plus vite - en intégrant l'IA de manière éthique, souveraine et frugale.</p>
         </div>
         <div class="manifesto-values reveal">
           <div class="value-card">
             <div class="value-icon">🎯</div>
-            <h4>L'humain au centre</h4>
-            <p>L'humain reste au centre des décisions. Toute automatisation critique passe par une validation humaine.</p>
+            <h4 data-i18n="values.human.title">L'humain au centre</h4>
+            <p data-i18n="values.human.desc">L'humain reste au centre des décisions. Toute automatisation critique passe par une validation humaine.</p>
           </div>
           <div class="value-card">
             <div class="value-icon">🌱</div>
-            <h4>Frugalité</h4>
-            <p>Modèles légers, consommation énergétique minimale, coûts optimisés. Le moins pour le mieux.</p>
+            <h4 data-i18n="values.frugal.title">Frugalité</h4>
+            <p data-i18n="values.frugal.desc">Modèles légers, consommation énergétique minimale, coûts optimisés. Le moins pour le mieux.</p>
           </div>
           <div class="value-card">
             <div class="value-icon">🔒</div>
-            <h4>Souveraineté européenne</h4>
-            <p>Hébergement européen, outils européens prioritaires, respect RGPD natif.</p>
+            <h4 data-i18n="values.sovereign.title">Souveraineté européenne</h4>
+            <p data-i18n="values.sovereign.desc">Hébergement européen, outils européens prioritaires, respect RGPD natif.</p>
           </div>
           <div class="value-card">
             <div class="value-icon">⚖️</div>
-            <h4>Éthique & transparence</h4>
-            <p>Prévention des biais, open-source prioritaire, processus visibles et auditables.</p>
+            <h4 data-i18n="values.ethics.title">Éthique & transparence</h4>
+            <p data-i18n="values.ethics.desc">Prévention des biais, open-source prioritaire, processus visibles et auditables.</p>
           </div>
         </div>
       </div>
@@ -1000,52 +1018,52 @@
   <section class="maturite" id="maturite">
     <div class="container">
       <div class="maturite-header reveal">
-        <p class="section-label">Parcours de maturité</p>
-        <h2 class="section-title">7 niveaux d'intervention selon votre maturité</h2>
-        <p class="section-subtitle">De la première prise de conscience au déploiement à l'échelle, nous intervenons là où vous en êtes.</p>
+        <p class="section-label" data-i18n="maturity.label">Parcours de maturité</p>
+        <h2 class="section-title" data-i18n="maturity.title">7 niveaux d'intervention selon votre maturité</h2>
+        <p class="section-subtitle" data-i18n="maturity.subtitle">De la première prise de conscience au déploiement à l'échelle, nous intervenons là où vous en êtes.</p>
       </div>
       <div class="maturite-track reveal">
         <div class="step-card">
           <div class="step-num">1</div>
-          <h4>Conférence</h4>
-          <p>Sensibiliser et faire réfléchir vos équipes</p>
-          <div class="step-price">À partir de 1 800 €</div>
+          <h4 data-i18n="steps.1.title">Conférence</h4>
+          <p data-i18n="steps.1.desc">Sensibiliser et faire réfléchir vos équipes</p>
+          <div class="step-price" data-i18n="steps.1.price">À partir de 1 800 €</div>
         </div>
         <div class="step-card">
           <div class="step-num">2</div>
-          <h4>Atelier</h4>
-          <p>Acculturer et mettre en pratique (1-2 jours)</p>
-          <div class="step-price">À partir de 2 500 €</div>
+          <h4 data-i18n="steps.2.title">Atelier</h4>
+          <p data-i18n="steps.2.desc">Acculturer et mettre en pratique (1-2 jours)</p>
+          <div class="step-price" data-i18n="steps.2.price">À partir de 2 500 €</div>
         </div>
         <div class="step-card">
           <div class="step-num">3</div>
-          <h4>Audit</h4>
-          <p>Diagnostiquer freins et potentiels IA</p>
-          <div class="step-price">À partir de 8 000 €</div>
+          <h4 data-i18n="steps.3.title">Audit</h4>
+          <p data-i18n="steps.3.desc">Diagnostiquer freins et potentiels IA</p>
+          <div class="step-price" data-i18n="steps.3.price">À partir de 8 000 €</div>
         </div>
         <div class="step-card">
           <div class="step-num">4</div>
-          <h4>Formation</h4>
-          <p>Faire monter vos équipes en compétence</p>
-          <div class="step-price">800-1 000 €/pers/jour</div>
+          <h4 data-i18n="steps.4.title">Formation</h4>
+          <p data-i18n="steps.4.desc">Faire monter vos équipes en compétence</p>
+          <div class="step-price" data-i18n="steps.4.price">800-1 000 €/pers/jour</div>
         </div>
         <div class="step-card">
           <div class="step-num">5</div>
-          <h4>Projet pilote</h4>
-          <p>Tester et apprendre sur un périmètre maîtrisé</p>
-          <div class="step-price">À partir de 10 000 €</div>
+          <h4 data-i18n="steps.5.title">Projet pilote</h4>
+          <p data-i18n="steps.5.desc">Tester et apprendre sur un périmètre maîtrisé</p>
+          <div class="step-price" data-i18n="steps.5.price">À partir de 10 000 €</div>
         </div>
         <div class="step-card">
           <div class="step-num">6</div>
-          <h4>Déploiement</h4>
-          <p>Industrialiser en maîtrisant les risques</p>
-          <div class="step-price">Sur étude</div>
+          <h4 data-i18n="steps.6.title">Déploiement</h4>
+          <p data-i18n="steps.6.desc">Industrialiser en maîtrisant les risques</p>
+          <div class="step-price" data-i18n="steps.6.price">Sur étude</div>
         </div>
         <div class="step-card">
           <div class="step-num">7</div>
-          <h4>Suivi</h4>
-          <p>Maintenir, améliorer, pérenniser</p>
-          <div class="step-price">Sur étude</div>
+          <h4 data-i18n="steps.7.title">Suivi</h4>
+          <p data-i18n="steps.7.desc">Maintenir, améliorer, pérenniser</p>
+          <div class="step-price" data-i18n="steps.7.price">Sur étude</div>
         </div>
       </div>
     </div>
@@ -1055,9 +1073,9 @@
   <section class="offres" id="offres">
     <div class="container">
       <div class="offres-header reveal">
-        <p class="section-label">Nos offres</p>
-        <h2 class="section-title">Des interventions adaptées à chaque besoin</h2>
-        <p class="section-subtitle">Pour CODIR, managers et salariés - sur un département ou toute l'entreprise.</p>
+        <p class="section-label" data-i18n="offers.label">Nos offres</p>
+        <h2 class="section-title" data-i18n="offers.title">Des interventions adaptées à chaque besoin</h2>
+        <p class="section-subtitle" data-i18n="offers.subtitle">Pour CODIR, managers et salariés - sur un département ou toute l'entreprise.</p>
       </div>
       <div class="offres-grid">
 
@@ -1065,21 +1083,21 @@
           <div class="offre-card-header">
             <div class="offre-icon-wrap">🎤</div>
             <div class="offre-card-header-text">
-              <span class="offre-tag">Sensibilisation</span>
-              <h3>Conférence & débat</h3>
+              <span class="offre-tag" data-i18n="offer1.tag">Sensibilisation</span>
+              <h3 data-i18n="offer1.title">Conférence & débat</h3>
             </div>
           </div>
           <div class="offre-card-body">
-            <p>Projetez vos équipes dans les futurs du travail et de l'IA avec une conférence sur-mesure.</p>
+            <p data-i18n="offer1.desc">Projetez vos équipes dans les futurs du travail et de l'IA avec une conférence sur-mesure.</p>
             <ul class="offre-list">
-              <li>Potentiels et optimisation des usages IA</li>
-              <li>Vers une IA souveraine, éthique et frugale</li>
-              <li>Les Futures of Work et comment s'y préparer</li>
+              <li data-i18n="offer1.li1">Potentiels et optimisation des usages IA</li>
+              <li data-i18n="offer1.li2">Vers une IA souveraine, éthique et frugale</li>
+              <li data-i18n="offer1.li3">Les Futures of Work et comment s'y préparer</li>
             </ul>
           </div>
           <div class="offre-card-footer">
             <span class="offre-price">1 800 - 4 500 €</span>
-            <span class="offre-detail">Conférence + support</span>
+            <span class="offre-detail" data-i18n="offer1.detail">Conférence + support</span>
           </div>
         </div>
 
@@ -1087,21 +1105,21 @@
           <div class="offre-card-header">
             <div class="offre-icon-wrap">🧪</div>
             <div class="offre-card-header-text">
-              <span class="offre-tag">Acculturation</span>
-              <h3>Ateliers pratiques</h3>
+              <span class="offre-tag" data-i18n="offer2.tag">Acculturation</span>
+              <h3 data-i18n="offer2.title">Ateliers pratiques</h3>
             </div>
           </div>
           <div class="offre-card-body">
-            <p>1 à 2 jours de montée en compétence en manipulant des outils et concepts concrets.</p>
+            <p data-i18n="offer2.desc">1 à 2 jours de montée en compétence en manipulant des outils et concepts concrets.</p>
             <ul class="offre-list">
-              <li>IA : démystifier et identifier les potentiels</li>
-              <li>Roadmap "Adoption IA" pour CODIR</li>
-              <li>Libérer le temps : dysfonctionnements et potentiels</li>
+              <li data-i18n="offer2.li1">IA : démystifier et identifier les potentiels</li>
+              <li data-i18n="offer2.li2">Roadmap "Adoption IA" pour CODIR</li>
+              <li data-i18n="offer2.li3">Libérer le temps : dysfonctionnements et potentiels</li>
             </ul>
           </div>
           <div class="offre-card-footer">
             <span class="offre-price">2 500 - 6 000 €</span>
-            <span class="offre-detail">Max 8 personnes</span>
+            <span class="offre-detail" data-i18n="offer2.detail">Max 8 people</span>
           </div>
         </div>
 
@@ -1109,21 +1127,21 @@
           <div class="offre-card-header">
             <div class="offre-icon-wrap">🔍</div>
             <div class="offre-card-header-text">
-              <span class="offre-tag">Diagnostic</span>
-              <h3>Audit IA & opérationnel</h3>
+              <span class="offre-tag" data-i18n="offer3.tag">Diagnostic</span>
+              <h3 data-i18n="offer3.title">Audit IA & opérationnel</h3>
             </div>
           </div>
           <div class="offre-card-body">
-            <p>Diagnostiquer les freins et les potentiels sur un ou plusieurs services : RH, processus, outils, data.</p>
+            <p data-i18n="offer3.desc">Diagnostiquer les freins et les potentiels sur un ou plusieurs services : RH, processus, outils, data.</p>
             <ul class="offre-list">
-              <li>Audit adoption IA et maturité data</li>
-              <li>Efficacité opérationnelle et points de friction</li>
-              <li>Plan d'action priorisé et chiffré</li>
+              <li data-i18n="offer3.li1">Audit adoption IA et maturité data</li>
+              <li data-i18n="offer3.li2">Efficacité opérationnelle et points de friction</li>
+              <li data-i18n="offer3.li3">Plan d'action priorisé et chiffré</li>
             </ul>
           </div>
           <div class="offre-card-footer">
             <span class="offre-price">Dès 8 000 €</span>
-            <span class="offre-detail">TJM 1 500 € ou forfait</span>
+            <span class="offre-detail" data-i18n="offer3.detail">TJM 1 500 € ou forfait</span>
           </div>
         </div>
 
@@ -1131,22 +1149,22 @@
           <div class="offre-card-header">
             <div class="offre-icon-wrap">📚</div>
             <div class="offre-card-header-text">
-              <span class="offre-tag">Montée en compétence</span>
-              <h3>Formations IA</h3>
+              <span class="offre-tag" data-i18n="offer4.tag">Montée en compétence</span>
+              <h3 data-i18n="offer4.title">Formations IA</h3>
             </div>
           </div>
           <div class="offre-card-body">
-            <p>Formations adaptées à votre contexte : IA générative, outils métiers, prompting, vibe-coding.</p>
+            <p data-i18n="offer4.desc">Formations adaptées à votre contexte : IA générative, outils métiers, prompting, vibe-coding.</p>
             <ul class="offre-list">
-              <li>IA et ses outils pour la productivité</li>
-              <li>Du prompting au context engineering</li>
-              <li>Outils : Copilot 365, n8n, Perplexity, Gamma...</li>
-              <li>Les bases du vibe-coding (PoC fonctionnel)</li>
+              <li data-i18n="offer4.li1">IA et ses outils pour la productivité</li>
+              <li data-i18n="offer4.li2">Du prompting au context engineering</li>
+              <li data-i18n="offer4.li3">Outils : Copilot 365, n8n, Perplexity, Gamma...</li>
+              <li data-i18n="offer4.li4">Les bases du vibe-coding (PoC fonctionnel)</li>
             </ul>
           </div>
           <div class="offre-card-footer">
             <span class="offre-price">800 - 1 000 €/pers/jour</span>
-            <span class="offre-detail">5 à 10 participants</span>
+            <span class="offre-detail" data-i18n="offer4.detail">5 à 10 participants</span>
           </div>
         </div>
 
@@ -1154,22 +1172,22 @@
           <div class="offre-card-header">
             <div class="offre-icon-wrap">🚀</div>
             <div class="offre-card-header-text">
-              <span class="offre-tag">Expérimentation</span>
-              <h3>Projet pilote & déploiement</h3>
+              <span class="offre-tag" data-i18n="offer5.tag">Expérimentation</span>
+              <h3 data-i18n="offer5.title">Projet pilote & déploiement</h3>
             </div>
           </div>
           <div class="offre-card-body">
-            <p>De l'automatisation de tâches à la création d'agents IA, en passant par la mise en production.</p>
+            <p data-i18n="offer5.desc">De l'automatisation de tâches à la création d'agents IA, en passant par la mise en production.</p>
             <ul class="offre-list">
-              <li>Automatiser les tâches chronophages</li>
-              <li>Entraîner l'IA sur vos spécificités métier</li>
-              <li>Développer des agents IA disruptifs</li>
-              <li>Infrastructure AI-ready et charte IA</li>
+              <li data-i18n="offer5.li1">Automatiser les tâches chronophages</li>
+              <li data-i18n="offer5.li2">Entraîner l'IA sur vos spécificités métier</li>
+              <li data-i18n="offer5.li3">Développer des agents IA disruptifs</li>
+              <li data-i18n="offer5.li4">Infrastructure AI-ready et charte IA</li>
             </ul>
           </div>
           <div class="offre-card-footer">
             <span class="offre-price">Dès 10 000 €</span>
-            <span class="offre-detail">Durée : 2+ mois</span>
+            <span class="offre-detail" data-i18n="offer5.detail">Durée : 2+ mois</span>
           </div>
         </div>
 
@@ -1177,22 +1195,22 @@
           <div class="offre-card-header">
             <div class="offre-icon-wrap">🏗️</div>
             <div class="offre-card-header-text">
-              <span class="offre-tag">Transformation</span>
-              <h3>Accompagnement global</h3>
+              <span class="offre-tag" data-i18n="offer6.tag">Transformation</span>
+              <h3 data-i18n="offer6.title">Accompagnement global</h3>
             </div>
           </div>
           <div class="offre-card-body">
-            <p>Transformation complète : diagnostic, conception, pilote, déploiement et ancrage sur 6 mois.</p>
+            <p data-i18n="offer6.desc">Transformation complète : diagnostic, conception, pilote, déploiement et ancrage sur 6 mois.</p>
             <ul class="offre-list">
-              <li>Cartographie & diagnostic complet</li>
-              <li>Évaluation & conception de l'organisation cible</li>
-              <li>Validation terrain sur équipe pilote</li>
-              <li>Déploiement à l'échelle avec conduite du changement</li>
+              <li data-i18n="offer6.li1">Cartographie & diagnostic complet</li>
+              <li data-i18n="offer6.li2">Évaluation & conception de l'organisation cible</li>
+              <li data-i18n="offer6.li3">Validation terrain sur équipe pilote</li>
+              <li data-i18n="offer6.li4">Déploiement à l'échelle avec conduite du changement</li>
             </ul>
           </div>
           <div class="offre-card-footer">
             <span class="offre-price">Sur étude</span>
-            <span class="offre-detail">Engagement progressif possible</span>
+            <span class="offre-detail" data-i18n="offer6.detail">Engagement progressif possible</span>
           </div>
         </div>
 
@@ -1204,9 +1222,9 @@
   <section class="clients" id="realisations">
     <div class="container">
       <div class="clients-header reveal">
-        <p class="section-label">Réalisations</p>
-        <h2 class="section-title">Des résultats concrets, mesurables</h2>
-        <p class="section-subtitle">Chaque intervention est conçue pour produire un impact tangible sur votre organisation.</p>
+        <p class="section-label" data-i18n="cases.label">Réalisations</p>
+        <h2 class="section-title" data-i18n="cases.title">Des résultats concrets, mesurables</h2>
+        <p class="section-subtitle" data-i18n="cases.subtitle">Chaque intervention est conçue pour produire un impact tangible sur votre organisation.</p>
       </div>
       <div class="clients-grid">
 
@@ -1215,8 +1233,8 @@
             <span class="client-name">COVEA</span>
             <span class="client-sector">Assurance · 22 000 salariés</span>
           </div>
-          <p>Conférence sur la semaine de travail repensée avec Q&A approfondi. Clarification des 30 formats possibles, des enjeux et de la méthode pour expérimenter.</p>
-          <div class="client-result">Clarification stratégique pour le COMEX</div>
+          <p data-i18n="case1.desc">Conférence sur la semaine de travail repensée avec Q&A approfondi. Clarification des 30 formats possibles, des enjeux et de la méthode pour expérimenter.</p>
+          <div class="client-result" data-i18n="case1.result">Clarification stratégique pour le COMEX</div>
         </div>
 
         <div class="client-card reveal">
@@ -1224,8 +1242,8 @@
             <span class="client-name">Plateau Urbain</span>
             <span class="client-sector">Immobilier · 100 salariés</span>
           </div>
-          <p>Refonte intégrale du modèle de travail : culture du renoncement, priorisation, automatisation IA et redistribution de l'autonomie décisionnelle.</p>
-          <div class="client-result">+3h productives/semaine/salarié · -40% temps de réunion visé</div>
+          <p data-i18n="case2.desc">Refonte intégrale du modèle de travail : culture du renoncement, priorisation, automatisation IA et redistribution de l'autonomie décisionnelle.</p>
+          <div class="client-result" data-i18n="case2.result">+3h productives/semaine/salarié · -40% temps de réunion visé</div>
         </div>
 
         <div class="client-card reveal">
@@ -1233,8 +1251,8 @@
             <span class="client-name">Addenda</span>
             <span class="client-sector">Bureau d'études · 20 salariés</span>
           </div>
-          <p>Projet-pilote semaine de 4 jours : co-construction du cadre, formation à l'efficacité opérationnelle, pilotage complet sur 8 mois.</p>
-          <div class="client-result">+90% de satisfaction · Maintien du CA et NPS client</div>
+          <p data-i18n="case3.desc">Projet-pilote semaine de 4 jours : co-construction du cadre, formation à l'efficacité opérationnelle, pilotage complet sur 8 mois.</p>
+          <div class="client-result" data-i18n="case3.result">+90% de satisfaction · Maintien du CA et NPS client</div>
         </div>
 
       </div>
@@ -1249,18 +1267,18 @@
           <span>PdP</span>
         </div>
         <div class="about-content reveal">
-          <p class="section-label">Fondateur</p>
-          <h3>Philippe du Payrat</h3>
-          <p class="about-role">Fondateur de HomoSapIA & 4jours.work · Dirigeant de Tempo Libre</p>
-          <p>Expert en excellence opérationnelle et organisation du travail. Entrepreneur social avec une expérience de COO chez La Ruche Qui Dit Oui et DG de MaVoie.org.</p>
-          <p>Plus de 30 clients PME et ETI accompagnés sur la transformation des organisations : people, process, performance et impact. Parcours chez Google (Industry Analyst), Simon-Kucher (Consultant), AramisAuto (BU Manager).</p>
-          <p>Premier pilote national de la semaine de 4 jours en France, en partenariat avec EM Lyon et 4 Day Week Global.</p>
+          <p class="section-label" data-i18n="about.label">Fondateur</p>
+          <h3 data-i18n="about.name">Philippe du Payrat</h3>
+          <p class="about-role" data-i18n="about.role">Fondateur de Homo SapIA & 4jours.work · Dirigeant de Tempo Libre</p>
+          <p data-i18n="about.p1">Expert en excellence opérationnelle et organisation du travail. Entrepreneur social avec une expérience de COO chez La Ruche Qui Dit Oui et DG de MaVoie.org.</p>
+          <p data-i18n="about.p2">Plus de 30 clients PME et ETI accompagnés sur la transformation des organisations : people, process, performance et impact. Parcours chez Google (Industry Analyst), Simon-Kucher (Consultant), AramisAuto (BU Manager).</p>
+          <p data-i18n="about.p3">Premier pilote national de la semaine de 4 jours en France, en partenariat avec EM Lyon et 4 Day Week Global.</p>
           <div class="about-links">
             <a href="https://4jours.work" target="_blank" class="about-link">4jours.work</a>
             <a href="mailto:philippe@homosapia.com" class="about-link">Contact</a>
           </div>
           <div class="communities">
-            <h4>Communautés</h4>
+            <h4 data-i18n="about.communities">Communautés</h4>
             <div class="community-badges">
               <span class="community-badge">The AI Fellowship</span>
               <span class="community-badge">Savoy IA</span>
@@ -1275,11 +1293,11 @@
   <section class="cta-section" id="contact">
     <div class="container">
       <div class="cta-content reveal">
-        <p class="section-label">Prêt à avancer ?</p>
-        <h2 class="section-title">Échangeons sur votre projet IA</h2>
-        <p class="section-subtitle">Un premier appel de 30 minutes pour comprendre vos enjeux et identifier les premières pistes d'action.</p>
+        <p class="section-label" data-i18n="cta.label">Prêt à avancer ?</p>
+        <h2 class="section-title" data-i18n="cta.title">Échangeons sur votre projet IA</h2>
+        <p class="section-subtitle" data-i18n="cta.subtitle">Un premier appel de 30 minutes pour comprendre vos enjeux et identifier les premières pistes d'action.</p>
         <div class="hero-actions" style="justify-content: center;">
-          <a href="https://meetings-eu1.hubspot.com/pdu-payrat?uuid=5a24cb40-61aa-41f5-aee3-8cc6a8cae0bf" target="_blank" rel="noopener" class="btn-primary">Prendre rendez-vous →</a>
+          <a href="https://meetings-eu1.hubspot.com/pdu-payrat?uuid=5a24cb40-61aa-41f5-aee3-8cc6a8cae0bf" target="_blank" rel="noopener" class="btn-primary" data-i18n="cta.btn">Prendre rendez-vous →</a>
         </div>
       </div>
     </div>
@@ -1289,8 +1307,8 @@
   <footer>
     <div class="container footer-inner">
       <div class="footer-left">
-        <a href="#" class="logo">HomoSap<span class="logo-ia">IA</span></a>
-        <span class="footer-copy">© 2026 HomoSapIA · Tempo Libre · Tous droits réservés</span>
+        <a href="#" class="logo">Homo Sap<span class="logo-ia">IA</span></a>
+        <span class="footer-copy" data-i18n="footer.copy">© 2026 Homo SapIA · Tempo Libre · Tous droits réservés</span>
       </div>
       <div class="footer-links">
         <a href="https://4jours.work" target="_blank">4jours.work</a>
@@ -1416,6 +1434,218 @@
       #cb-win { width:calc(100vw - 24px); right:12px; bottom:90px; max-height:72vh; }
     }
   </style>
+
+  <!-- ═══ I18N ENGINE (FR/EN/ES) ═══ -->
+  <script>
+  (function(){
+    var i18n = {
+      en: {
+        'nav.approach': 'Approach', 'nav.maturity': 'Maturity', 'nav.offers': 'Services',
+        'nav.cases': 'Case Studies', 'nav.about': 'About', 'nav.diagnostic': 'Free AI Diagnostic',
+        'nav.tribune': 'Our op-ed in Capital', 'nav.cta': "Let's Talk",
+        'hero.badge': 'AI consulting for businesses',
+        'hero.title': '<em>Artificial intelligence</em> at the service of people',
+        'hero.desc': 'Homo SapIA supports businesses at every stage of their AI transformation, from awareness to deployment, with a responsible, frugal, and human-centered approach.',
+        'hero.cta1': "Let's discuss your project →", 'hero.cta2': 'Discover our services',
+        'trust.label': 'They trust us',
+        'manifesto.label': 'Our DNA',
+        'manifesto.title': "AI doesn't replace humans.<br><span>It augments them.</span>",
+        'manifesto.p1': 'We believe successful AI adoption requires team trust, hands-on co-creation, and a progressive approach where every step creates measurable value.',
+        'manifesto.p2': 'Our mission: help you work better - not just faster - by integrating AI ethically, sovereignly, and frugally.',
+        'values.human.title': 'Human at the center', 'values.human.desc': 'Humans remain at the center of decisions. Every critical automation requires human validation.',
+        'values.frugal.title': 'Frugality', 'values.frugal.desc': 'Lightweight models, minimal energy consumption, optimized costs. Less is more.',
+        'values.sovereign.title': 'European sovereignty', 'values.sovereign.desc': 'European hosting, EU tools as priority, native GDPR compliance.',
+        'values.ethics.title': 'Ethics & transparency', 'values.ethics.desc': 'Bias prevention, open-source priority, visible and auditable processes.',
+        'maturity.label': 'Maturity path', 'maturity.title': '7 levels of intervention based on your maturity',
+        'maturity.subtitle': 'From first awareness to full-scale deployment, we step in where you are.',
+        'steps.1.title': 'Keynote', 'steps.1.desc': 'Raise awareness and inspire your teams', 'steps.1.price': 'From €1,800',
+        'steps.2.title': 'Workshop', 'steps.2.desc': 'Build AI culture with hands-on practice (1-2 days)', 'steps.2.price': 'From €2,500',
+        'steps.3.title': 'Audit', 'steps.3.desc': 'Diagnose AI blockers and potential', 'steps.3.price': 'From €8,000',
+        'steps.4.title': 'Training', 'steps.4.desc': 'Upskill your teams on AI', 'steps.4.price': '€800-1,000/person/day',
+        'steps.5.title': 'Pilot project', 'steps.5.desc': 'Test and learn on a controlled scope', 'steps.5.price': 'From €10,000',
+        'steps.6.title': 'Deployment', 'steps.6.desc': 'Scale while managing risks', 'steps.6.price': 'Custom quote',
+        'steps.7.title': 'Follow-up', 'steps.7.desc': 'Maintain, improve, sustain', 'steps.7.price': 'Custom quote',
+        'offers.label': 'Our services', 'offers.title': 'Tailored interventions for every need',
+        'offers.subtitle': 'For C-suite, managers, and employees - across a department or the whole company.',
+        'offer1.tag': 'Awareness', 'offer1.title': 'Keynote & debate',
+        'offer1.desc': 'Project your teams into the future of work and AI with a custom keynote.',
+        'offer1.li1': 'AI potential and usage optimization', 'offer1.li2': 'Towards sovereign, ethical, and frugal AI',
+        'offer1.li3': 'Futures of Work and how to prepare', 'offer1.detail': 'Keynote + materials',
+        'offer2.tag': 'Acculturation', 'offer2.title': 'Hands-on workshops',
+        'offer2.desc': '1 to 2 days of upskilling with hands-on tools and practical concepts.',
+        'offer2.li1': 'AI: demystify and identify potential', 'offer2.li2': 'AI Adoption roadmap for C-suite',
+        'offer2.li3': 'Freeing up time: bottlenecks and opportunities', 'offer2.detail': 'Max 8 people',
+        'offer3.tag': 'Diagnostic', 'offer3.title': 'AI & operational audit',
+        'offer3.desc': 'Diagnose blockers and potential across one or more departments: HR, processes, tools, data.',
+        'offer3.li1': 'AI adoption and data maturity audit', 'offer3.li2': 'Operational efficiency and friction points',
+        'offer3.li3': 'Prioritized and costed action plan', 'offer3.detail': 'Day rate €1,500 or package',
+        'offer4.tag': 'Upskilling', 'offer4.title': 'AI Training',
+        'offer4.desc': 'Training adapted to your context: generative AI, business tools, prompting, vibe-coding.',
+        'offer4.li1': 'AI tools for productivity', 'offer4.li2': 'From prompting to context engineering',
+        'offer4.li3': 'Tools: Copilot 365, n8n, Perplexity, Gamma...', 'offer4.li4': 'Vibe-coding basics (working PoC)',
+        'offer4.detail': '5 to 10 participants',
+        'offer5.tag': 'Experimentation', 'offer5.title': 'Pilot project & deployment',
+        'offer5.desc': 'From task automation to AI agents, through production deployment.',
+        'offer5.li1': 'Automate time-consuming tasks', 'offer5.li2': 'Train AI on your business specifics',
+        'offer5.li3': 'Develop disruptive AI agents', 'offer5.li4': 'AI-ready infrastructure and AI charter',
+        'offer5.detail': 'Duration: 2+ months',
+        'offer6.tag': 'Transformation', 'offer6.title': 'Full consulting',
+        'offer6.desc': 'Complete transformation: diagnosis, design, pilot, deployment and anchoring over 6 months.',
+        'offer6.li1': 'Complete mapping & diagnostic', 'offer6.li2': 'Target organization design & assessment',
+        'offer6.li3': 'Field validation with pilot team', 'offer6.li4': 'Full-scale deployment with change management',
+        'offer6.detail': 'Progressive engagement possible',
+        'cases.label': 'Case Studies', 'cases.title': 'Concrete, measurable results',
+        'cases.subtitle': 'Each intervention is designed to produce tangible impact on your organization.',
+        'case1.desc': 'Keynote on redesigning the work week with in-depth Q&A. Clarification of 30 possible formats, challenges, and methodology for experimentation.',
+        'case1.result': 'Strategic clarity for the Executive Committee',
+        'case2.desc': 'Complete overhaul of the working model: culture of prioritization, AI automation, and redistribution of decision-making autonomy.',
+        'case2.result': '+3h productive/week/employee · -40% meeting time targeted',
+        'case3.desc': '4-day week pilot: co-created framework, operational efficiency training, full management over 8 months.',
+        'case3.result': '+90% satisfaction · Revenue and client NPS maintained',
+        'about.label': 'Founder', 'about.name': 'Philippe du Payrat',
+        'about.role': 'Founder of Homo SapIA & 4jours.work · CEO of Tempo Libre',
+        'about.p1': 'Expert in operational excellence and work organization. Social entrepreneur with experience as COO at La Ruche Qui Dit Oui and CEO of MaVoie.org.',
+        'about.p2': '30+ SME and mid-cap clients supported on organizational transformation: people, process, performance and impact. Career at Google (Industry Analyst), Simon-Kucher (Consultant), AramisAuto (BU Manager).',
+        'about.p3': "Led France's first national 4-day work week pilot, in partnership with EM Lyon and 4 Day Week Global.",
+        'about.communities': 'Communities',
+        'cta.label': 'Ready to move forward?', 'cta.title': "Let's discuss your AI project",
+        'cta.subtitle': 'A 30-minute introductory call to understand your challenges and identify first action steps.',
+        'cta.btn': 'Book a meeting →',
+        'footer.copy': '© 2026 Homo SapIA · Tempo Libre · All rights reserved'
+      },
+      es: {
+        'nav.approach': 'Enfoque', 'nav.maturity': 'Madurez', 'nav.offers': 'Servicios',
+        'nav.cases': 'Casos de éxito', 'nav.about': 'Nosotros', 'nav.diagnostic': 'Diagnóstico IA gratuito',
+        'nav.tribune': 'Nuestra tribuna en Capital', 'nav.cta': 'Hablemos',
+        'hero.badge': 'Consultoría IA para empresas',
+        'hero.title': 'La <em>inteligencia artificial</em> al servicio del ser humano',
+        'hero.desc': 'Homo SapIA acompaña a las empresas en cada etapa de su transformación IA, desde la sensibilización hasta el despliegue, con un enfoque responsable, frugal y centrado en las personas.',
+        'hero.cta1': 'Hablemos de su proyecto →', 'hero.cta2': 'Descubrir nuestros servicios',
+        'trust.label': 'Confían en nosotros',
+        'manifesto.label': 'Nuestro ADN',
+        'manifesto.title': 'La IA no reemplaza al ser humano.<br><span>Lo potencia.</span>',
+        'manifesto.p1': 'Creemos que una adopción exitosa de la IA requiere confianza del equipo, co-creación en el terreno y un enfoque progresivo donde cada etapa genera valor medible.',
+        'manifesto.p2': 'Nuestra misión: ayudarle a trabajar mejor - no solo más rápido - integrando la IA de forma ética, soberana y frugal.',
+        'values.human.title': 'El humano en el centro', 'values.human.desc': 'El ser humano permanece en el centro de las decisiones. Toda automatización crítica pasa por una validación humana.',
+        'values.frugal.title': 'Frugalidad', 'values.frugal.desc': 'Modelos ligeros, consumo energético mínimo, costes optimizados. Menos es más.',
+        'values.sovereign.title': 'Soberanía europea', 'values.sovereign.desc': 'Alojamiento europeo, herramientas europeas prioritarias, cumplimiento nativo del RGPD.',
+        'values.ethics.title': 'Ética y transparencia', 'values.ethics.desc': 'Prevención de sesgos, código abierto prioritario, procesos visibles y auditables.',
+        'maturity.label': 'Recorrido de madurez', 'maturity.title': '7 niveles de intervención según su madurez',
+        'maturity.subtitle': 'Desde la primera toma de conciencia hasta el despliegue a escala, intervenimos donde usted se encuentra.',
+        'steps.1.title': 'Conferencia', 'steps.1.desc': 'Sensibilizar e inspirar a sus equipos', 'steps.1.price': 'Desde 1.800 €',
+        'steps.2.title': 'Taller', 'steps.2.desc': 'Construir cultura IA con práctica (1-2 días)', 'steps.2.price': 'Desde 2.500 €',
+        'steps.3.title': 'Auditoría', 'steps.3.desc': 'Diagnosticar frenos y potenciales IA', 'steps.3.price': 'Desde 8.000 €',
+        'steps.4.title': 'Formación', 'steps.4.desc': 'Capacitar a sus equipos en IA', 'steps.4.price': '800-1.000 €/pers/día',
+        'steps.5.title': 'Proyecto piloto', 'steps.5.desc': 'Probar y aprender en un perímetro controlado', 'steps.5.price': 'Desde 10.000 €',
+        'steps.6.title': 'Despliegue', 'steps.6.desc': 'Industrializar gestionando riesgos', 'steps.6.price': 'Bajo estudio',
+        'steps.7.title': 'Seguimiento', 'steps.7.desc': 'Mantener, mejorar, consolidar', 'steps.7.price': 'Bajo estudio',
+        'offers.label': 'Nuestros servicios', 'offers.title': 'Intervenciones adaptadas a cada necesidad',
+        'offers.subtitle': 'Para directivos, mandos intermedios y empleados - en un departamento o toda la empresa.',
+        'offer1.tag': 'Sensibilización', 'offer1.title': 'Conferencia y debate',
+        'offer1.desc': 'Proyecte a sus equipos hacia el futuro del trabajo y la IA con una conferencia a medida.',
+        'offer1.li1': 'Potenciales y optimización de usos IA', 'offer1.li2': 'Hacia una IA soberana, ética y frugal',
+        'offer1.li3': 'Futuros del trabajo y cómo prepararse', 'offer1.detail': 'Conferencia + materiales',
+        'offer2.tag': 'Aculturación', 'offer2.title': 'Talleres prácticos',
+        'offer2.desc': '1 a 2 días de capacitación con herramientas y conceptos concretos.',
+        'offer2.li1': 'IA: desmitificar e identificar potenciales', 'offer2.li2': 'Hoja de ruta "Adopción IA" para directivos',
+        'offer2.li3': 'Liberar tiempo: disfunciones y oportunidades', 'offer2.detail': 'Máximo 8 personas',
+        'offer3.tag': 'Diagnóstico', 'offer3.title': 'Auditoría IA y operativa',
+        'offer3.desc': 'Diagnosticar frenos y potenciales en uno o varios departamentos: RRHH, procesos, herramientas, datos.',
+        'offer3.li1': 'Auditoría de adopción IA y madurez de datos', 'offer3.li2': 'Eficiencia operativa y puntos de fricción',
+        'offer3.li3': 'Plan de acción priorizado y cuantificado', 'offer3.detail': 'Tarifa diaria 1.500 € o forfait',
+        'offer4.tag': 'Capacitación', 'offer4.title': 'Formaciones IA',
+        'offer4.desc': 'Formaciones adaptadas a su contexto: IA generativa, herramientas de negocio, prompting, vibe-coding.',
+        'offer4.li1': 'Herramientas IA para la productividad', 'offer4.li2': 'Del prompting al context engineering',
+        'offer4.li3': 'Herramientas: Copilot 365, n8n, Perplexity, Gamma...', 'offer4.li4': 'Bases del vibe-coding (PoC funcional)',
+        'offer4.detail': '5 a 10 participantes',
+        'offer5.tag': 'Experimentación', 'offer5.title': 'Proyecto piloto y despliegue',
+        'offer5.desc': 'De la automatización de tareas a los agentes IA, pasando por la puesta en producción.',
+        'offer5.li1': 'Automatizar tareas que consumen tiempo', 'offer5.li2': 'Entrenar la IA en sus especificidades',
+        'offer5.li3': 'Desarrollar agentes IA disruptivos', 'offer5.li4': 'Infraestructura AI-ready y carta IA',
+        'offer5.detail': 'Duración: 2+ meses',
+        'offer6.tag': 'Transformación', 'offer6.title': 'Acompañamiento integral',
+        'offer6.desc': 'Transformación completa: diagnóstico, diseño, piloto, despliegue y consolidación en 6 meses.',
+        'offer6.li1': 'Cartografía y diagnóstico completo', 'offer6.li2': 'Diseño y evaluación de la organización objetivo',
+        'offer6.li3': 'Validación en terreno con equipo piloto', 'offer6.li4': 'Despliegue a escala con gestión del cambio',
+        'offer6.detail': 'Compromiso progresivo posible',
+        'cases.label': 'Casos de éxito', 'cases.title': 'Resultados concretos y medibles',
+        'cases.subtitle': 'Cada intervención está diseñada para producir un impacto tangible en su organización.',
+        'case1.desc': 'Conferencia sobre el rediseño de la semana laboral con Q&A en profundidad. Aclaración de 30 formatos posibles, retos y metodología.',
+        'case1.result': 'Claridad estratégica para el Comité de Dirección',
+        'case2.desc': 'Rediseño integral del modelo de trabajo: cultura de priorización, automatización IA y redistribución de la autonomía decisional.',
+        'case2.result': '+3h productivas/semana/empleado · -40% tiempo de reuniones',
+        'case3.desc': 'Piloto de semana de 4 días: marco co-construido, formación en eficiencia operativa, gestión completa durante 8 meses.',
+        'case3.result': '+90% satisfacción · Facturación y NPS clientes mantenidos',
+        'about.label': 'Fundador', 'about.name': 'Philippe du Payrat',
+        'about.role': 'Fundador de Homo SapIA y 4jours.work · Director de Tempo Libre',
+        'about.p1': 'Experto en excelencia operativa y organización del trabajo. Emprendedor social con experiencia como COO en La Ruche Qui Dit Oui y Director General de MaVoie.org.',
+        'about.p2': 'Más de 30 clientes PYME y ETI acompañados en transformación organizacional: personas, procesos, rendimiento e impacto. Trayectoria en Google (Industry Analyst), Simon-Kucher (Consultor), AramisAuto (BU Manager).',
+        'about.p3': 'Líder del primer piloto nacional de semana de 4 días en Francia, en colaboración con EM Lyon y 4 Day Week Global.',
+        'about.communities': 'Comunidades',
+        'cta.label': '¿Listo para avanzar?', 'cta.title': 'Hablemos de su proyecto IA',
+        'cta.subtitle': 'Una llamada introductoria de 30 minutos para entender sus retos e identificar las primeras acciones.',
+        'cta.btn': 'Reservar una cita →',
+        'footer.copy': '© 2026 Homo SapIA · Tempo Libre · Todos los derechos reservados'
+      }
+    };
+
+    // Language cycle: fr → en → es → fr
+    var langCycle = ['fr', 'en', 'es'];
+    var langFlags = { fr: '🇬🇧', en: '🇪🇸', es: '🇫🇷' }; // flag shows NEXT language
+    var langCodes = { fr: 'fr', en: 'en', es: 'es' };
+    var currentLang = 'fr';
+
+    function setLang(targetLang) {
+      var els = document.querySelectorAll('[data-i18n]');
+      // Store FR originals on first switch
+      if (!window._i18nFrStored) {
+        els.forEach(function(el) {
+          var isHtml = el.getAttribute('data-i18n-html') === '1';
+          el.setAttribute('data-i18n-fr', isHtml ? el.innerHTML : el.textContent);
+        });
+        window._i18nFrStored = true;
+      }
+      if (targetLang === 'fr') {
+        // Restore FR originals
+        els.forEach(function(el) {
+          var fr = el.getAttribute('data-i18n-fr');
+          if (fr !== null) {
+            var isHtml = el.getAttribute('data-i18n-html') === '1';
+            if (isHtml) el.innerHTML = fr; else el.textContent = fr;
+          }
+        });
+      } else {
+        var dict = i18n[targetLang];
+        if (!dict) return;
+        els.forEach(function(el) {
+          var key = el.getAttribute('data-i18n');
+          if (dict[key]) {
+            var isHtml = el.getAttribute('data-i18n-html') === '1';
+            if (isHtml) el.innerHTML = dict[key]; else el.textContent = dict[key];
+          }
+        });
+      }
+      currentLang = targetLang;
+      document.documentElement.lang = langCodes[targetLang];
+      document.getElementById('langToggle').textContent = langFlags[targetLang];
+      localStorage.setItem('homosapia_lang', targetLang);
+    }
+
+    function toggleLang() {
+      var idx = langCycle.indexOf(currentLang);
+      var next = langCycle[(idx + 1) % langCycle.length];
+      setLang(next);
+    }
+
+    window.toggleLang = toggleLang;
+    window.setLang = setLang;
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var saved = localStorage.getItem('homosapia_lang');
+      if (saved && saved !== 'fr') setLang(saved);
+    });
+  })();
+  </script>
 
   <button id="cb-fab" aria-label="Discuter">
     <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>

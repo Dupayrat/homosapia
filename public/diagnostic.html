@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Diagnostic IA - HomoSapIA</title>
+  <title>Diagnostic IA - Homo SapIA</title>
   <meta name="description" content="Évaluez la maturité IA de votre entreprise en 5 minutes. Diagnostic gratuit avec résultats immédiats et plan d'action personnalisé.">
-  <meta property="og:title" content="Diagnostic IA en 5 minutes - HomoSapIA">
+  <meta property="og:title" content="Diagnostic IA en 5 minutes - Homo SapIA">
   <meta property="og:description" content="Évaluez la maturité IA de votre entreprise et recevez un plan d'action personnalisé.">
   <meta property="og:type" content="website">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -998,10 +998,185 @@
   <!-- NAV -->
   <nav>
     <div class="nav-inner">
-      <a href="https://homosapia.com" class="logo">HomoSap<span class="logo-ia">IA</span></a>
-      <a href="https://homosapia.com" class="nav-back">&larr; Retour au site</a>
+      <a href="https://homosapia.com" class="logo">Homo Sap<span class="logo-ia">IA</span></a>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <button id="langToggle" onclick="toggleLang()" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:100px;padding:6px 12px;font-size:14px;cursor:pointer;transition:all 0.2s;line-height:1;" aria-label="Switch language">🇬🇧</button>
+        <a href="https://homosapia.com" class="nav-back" data-i18n="nav.back">&larr; Retour au site</a>
+      </div>
     </div>
   </nav>
+
+  <!-- I18N Engine -->
+  <script>
+  (function(){
+    var i18nDiag = {
+      en: {
+        'nav.back': '\u2190 Back to site',
+        'landing.label': 'Free diagnostic',
+        'landing.title': 'AI <span class="highlight">Diagnostic</span> in 5 minutes',
+        'landing.subtitle': 'Assess your company\'s AI maturity and receive a personalized action plan',
+        'landing.btn': 'Start the diagnostic ',
+        'landing.badge1': '100% free',
+        'landing.badge2': '5 minutes',
+        'landing.badge3': 'Instant results',
+        'landing.card1.title': 'Precise diagnostic',
+        'landing.card1.desc': '15 questions covering 5 key AI maturity pillars',
+        'landing.card2.title': 'Actionable recommendations',
+        'landing.card2.desc': 'Concrete actions tailored to your maturity level',
+        'landing.card3.title': 'Prioritized action plan',
+        'landing.card3.desc': 'Identify the key levers to activate first for your business',
+        'profile.title': 'A few details about your company',
+        'profile.subtitle': 'This information helps us personalize your diagnostic',
+        'profile.company': 'Company name',
+        'profile.role': 'Your role',
+        'profile.sector': 'Industry',
+        'profile.size': 'Company size',
+        'profile.btn': 'Start the diagnostic ',
+        'q.back': 'Back',
+        'q.next': 'Next',
+        'gate.label': 'Final step',
+        'gate.title': 'Your results are <span class="highlight">ready</span>',
+        'gate.subtitle': 'Enter your details to access your full diagnostic and receive your personalized report by email.',
+        'gate.firstname': 'First name',
+        'gate.lastname': 'Last name',
+        'gate.email': 'Professional email',
+        'gate.phone': 'Phone <span style="opacity:0.5;font-weight:400">(optional)</span>',
+        'gate.btn': 'See my results ',
+        'gate.trust1': 'Confidential data',
+        'gate.trust2': 'No spam',
+        'gate.trust3': 'Instant results',
+        'gate.loading': 'Generating your personalized report...',
+        'results.label': 'Your results',
+        'results.title': 'Your AI Diagnostic',
+        'results.radar': 'Overview by pillar',
+        'results.detail': 'Detail by pillar',
+        'results.reco': 'Top 3 recommendations',
+        'results.sent': '&#9989; Report sent!',
+        'results.sentDesc': 'You will receive a personalized analysis with a detailed action plan within a few minutes at <strong id="sentToEmail"></strong>',
+        'results.cta.title': 'Let\'s discuss your results',
+        'results.cta.desc': 'A 30-minute exchange to turn this diagnostic into a concrete action plan',
+        'results.cta.btn': 'Book a meeting '
+      },
+      es: {
+        'nav.back': '\u2190 Volver al sitio',
+        'landing.label': 'Diagn\u00f3stico gratuito',
+        'landing.title': 'Diagn\u00f3stico <span class="highlight">IA</span> en 5 minutos',
+        'landing.subtitle': 'Eval\u00fae la madurez IA de su empresa y reciba un plan de acci\u00f3n personalizado',
+        'landing.btn': 'Iniciar el diagn\u00f3stico ',
+        'landing.badge1': '100% gratuito',
+        'landing.badge2': '5 minutos',
+        'landing.badge3': 'Resultados inmediatos',
+        'landing.card1.title': 'Diagn\u00f3stico preciso',
+        'landing.card1.desc': '15 preguntas sobre 5 pilares clave de madurez IA',
+        'landing.card2.title': 'Recomendaciones accionables',
+        'landing.card2.desc': 'Acciones concretas adaptadas a su nivel de madurez',
+        'landing.card3.title': 'Plan de acci\u00f3n priorizado',
+        'landing.card3.desc': 'Identifique las palancas a activar prioritariamente para su empresa',
+        'profile.title': 'Informaci\u00f3n sobre su empresa',
+        'profile.subtitle': 'Estos datos nos permiten personalizar su diagn\u00f3stico',
+        'profile.company': 'Nombre de la empresa',
+        'profile.role': 'Su funci\u00f3n',
+        'profile.sector': 'Sector de actividad',
+        'profile.size': 'Tama\u00f1o de la empresa',
+        'profile.btn': 'Comenzar el diagn\u00f3stico ',
+        'q.back': 'Atr\u00e1s',
+        'q.next': 'Siguiente',
+        'gate.label': '\u00daltimo paso',
+        'gate.title': 'Sus resultados est\u00e1n <span class="highlight">listos</span>',
+        'gate.subtitle': 'Ingrese sus datos para acceder a su diagn\u00f3stico completo y recibir su informe personalizado por email.',
+        'gate.firstname': 'Nombre',
+        'gate.lastname': 'Apellido',
+        'gate.email': 'Email profesional',
+        'gate.phone': 'Tel\u00e9fono <span style="opacity:0.5;font-weight:400">(opcional)</span>',
+        'gate.btn': 'Ver mis resultados ',
+        'gate.trust1': 'Datos confidenciales',
+        'gate.trust2': 'Sin spam',
+        'gate.trust3': 'Resultados inmediatos',
+        'gate.loading': 'Generando su informe personalizado...',
+        'results.label': 'Sus resultados',
+        'results.title': 'Su diagn\u00f3stico IA',
+        'results.radar': 'Visi\u00f3n general por pilar',
+        'results.detail': 'Detalle por pilar',
+        'results.reco': 'Top 3 recomendaciones',
+        'results.sent': '&#9989; \u00a1Informe enviado!',
+        'results.sentDesc': 'Recibir\u00e1 un an\u00e1lisis personalizado con un plan de acci\u00f3n detallado en unos minutos en <strong id="sentToEmail"></strong>',
+        'results.cta.title': 'Hablemos de sus resultados',
+        'results.cta.desc': 'Un intercambio de 30 minutos para transformar este diagn\u00f3stico en un plan de acci\u00f3n concreto',
+        'results.cta.btn': 'Reservar una cita '
+      }
+    };
+
+    var langCycle = ['fr', 'en', 'es'];
+    var langFlags = { fr: '\ud83c\uddec\ud83c\udde7', en: '\ud83c\uddea\ud83c\uddf8', es: '\ud83c\uddeb\ud83c\uddf7' };
+    var currentLang = localStorage.getItem('homosapia_lang') || 'fr';
+
+    function applyLang(lang) {
+      var els = document.querySelectorAll('[data-i18n]');
+      if (!window._i18nDiagFrStored) {
+        els.forEach(function(el) {
+          var isHtml = el.getAttribute('data-i18n-html') === '1';
+          el.setAttribute('data-i18n-fr', isHtml ? el.innerHTML : el.textContent);
+        });
+        window._i18nDiagFrStored = true;
+      }
+      if (lang === 'fr') {
+        els.forEach(function(el) {
+          var fr = el.getAttribute('data-i18n-fr');
+          if (fr !== null) {
+            var isHtml = el.getAttribute('data-i18n-html') === '1';
+            if (isHtml) el.innerHTML = fr; else el.textContent = fr;
+          }
+        });
+      } else {
+        var dict = i18nDiag[lang];
+        if (!dict) return;
+        els.forEach(function(el) {
+          var key = el.getAttribute('data-i18n');
+          if (dict[key]) {
+            var isHtml = el.getAttribute('data-i18n-html') === '1';
+            if (isHtml) el.innerHTML = dict[key]; else el.textContent = dict[key];
+          }
+        });
+      }
+      currentLang = lang;
+      if (typeof currentDiagLang !== 'undefined') window.currentDiagLang = lang;
+      document.documentElement.lang = lang;
+      var toggleBtn = document.getElementById('langToggle');
+      if (toggleBtn) toggleBtn.textContent = langFlags[lang];
+      localStorage.setItem('homosapia_lang', lang);
+
+      // Update dynamic sections if they are active
+      if (typeof renderQuestion === 'function' && document.getElementById('sectionQuestions') && document.getElementById('sectionQuestions').classList.contains('active')) {
+        renderQuestion();
+      }
+      // Re-render results if visible
+      if (typeof showResults === 'function' && document.getElementById('sectionResults') && document.getElementById('sectionResults').classList.contains('active')) {
+        var pillarScores = [0, 0, 0, 0, 0];
+        if (typeof QUESTIONS !== 'undefined' && typeof answers !== 'undefined') {
+          QUESTIONS.forEach(function(q, i) {
+            if (answers[i] !== null) pillarScores[q.pillar] += q.answers[answers[i]].score;
+          });
+          var totalScore = pillarScores.reduce(function(a, b) { return a + b; }, 0);
+          if (typeof renderLevel === 'function') renderLevel(totalScore);
+          if (typeof renderRadar === 'function') renderRadar(pillarScores);
+          if (typeof renderPillarBars === 'function') renderPillarBars(pillarScores);
+          if (typeof renderRecommendations === 'function') renderRecommendations(pillarScores);
+        }
+      }
+    }
+
+    window.toggleLang = function() {
+      var idx = langCycle.indexOf(currentLang);
+      var next = langCycle[(idx + 1) % langCycle.length];
+      applyLang(next);
+    };
+    window.diagLang = function() { return currentLang; };
+
+    document.addEventListener('DOMContentLoaded', function() {
+      if (currentLang !== 'fr') applyLang(currentLang);
+    });
+  })();
+  </script>
 
   <!-- PROGRESS BAR -->
   <div class="progress-bar-wrap" id="progressBar">
@@ -1012,32 +1187,32 @@
   <div class="section active" id="sectionLanding">
     <div class="container landing">
       <div class="landing-content">
-        <div class="landing-label">Diagnostic gratuit</div>
-        <h1>Diagnostic <span class="highlight">IA</span> en 5 minutes</h1>
-        <p class="subtitle">Évaluez la maturité IA de votre entreprise et recevez un plan d'action personnalisé</p>
+        <div class="landing-label" data-i18n="landing.label">Diagnostic gratuit</div>
+        <h1 data-i18n="landing.title" data-i18n-html="1">Diagnostic <span class="highlight">IA</span> en 5 minutes</h1>
+        <p class="subtitle" data-i18n="landing.subtitle">Évaluez la maturité IA de votre entreprise et recevez un plan d'action personnalisé</p>
         <button class="btn-primary" onclick="showStep0()">
-          Lancer le diagnostic <span>&rarr;</span>
+          <span data-i18n="landing.btn">Lancer le diagnostic </span><span>&rarr;</span>
         </button>
         <div class="badges">
-          <span class="badge"><span class="check">&#10003;</span> 100% gratuit</span>
-          <span class="badge"><span class="check">&#10003;</span> 5 minutes</span>
-          <span class="badge"><span class="check">&#10003;</span> Résultats immédiats</span>
+          <span class="badge"><span class="check">&#10003;</span> <span data-i18n="landing.badge1">100% gratuit</span></span>
+          <span class="badge"><span class="check">&#10003;</span> <span data-i18n="landing.badge2">5 minutes</span></span>
+          <span class="badge"><span class="check">&#10003;</span> <span data-i18n="landing.badge3">Résultats immédiats</span></span>
         </div>
         <div class="value-cards">
           <div class="value-card">
             <div class="value-card-icon">&#127919;</div>
-            <h3>Diagnostic précis</h3>
-            <p>15 questions couvrant 5 piliers clés de la maturité IA</p>
+            <h3 data-i18n="landing.card1.title">Diagnostic précis</h3>
+            <p data-i18n="landing.card1.desc">15 questions couvrant 5 piliers clés de la maturité IA</p>
           </div>
           <div class="value-card">
             <div class="value-card-icon">&#9889;</div>
-            <h3>Recommandations actionnables</h3>
-            <p>Des actions concrètes adaptées à votre niveau de maturité</p>
+            <h3 data-i18n="landing.card2.title">Recommandations actionnables</h3>
+            <p data-i18n="landing.card2.desc">Des actions concrètes adaptées à votre niveau de maturité</p>
           </div>
           <div class="value-card">
             <div class="value-card-icon">&#128203;</div>
-            <h3>Plan d'action priorisé</h3>
-            <p>Identifiez les leviers à activer en priorité pour votre entreprise</p>
+            <h3 data-i18n="landing.card3.title">Plan d'action priorisé</h3>
+            <p data-i18n="landing.card3.desc">Identifiez les leviers à activer en priorité pour votre entreprise</p>
           </div>
         </div>
       </div>
@@ -1047,15 +1222,15 @@
   <!-- ==================== STEP 0 - COMPANY PROFILE ==================== -->
   <div class="section" id="sectionProfile">
     <div class="container form-section">
-      <h2>Quelques informations sur votre entreprise</h2>
-      <p class="form-subtitle">Ces données nous permettent de personnaliser votre diagnostic</p>
+      <h2 data-i18n="profile.title">Quelques informations sur votre entreprise</h2>
+      <p class="form-subtitle" data-i18n="profile.subtitle">Ces données nous permettent de personnaliser votre diagnostic</p>
       <div class="form-grid">
         <div class="form-group full-width">
-          <label for="companyName">Nom de l'entreprise</label>
+          <label for="companyName" data-i18n="profile.company">Nom de l'entreprise</label>
           <input type="text" id="companyName" placeholder="ex: Acme Corp">
         </div>
         <div class="form-group">
-          <label for="role">Votre fonction</label>
+          <label for="role" data-i18n="profile.role">Votre fonction</label>
           <select id="role">
             <option value="" disabled selected>Sélectionnez</option>
             <option value="Dirigeant/CEO">Dirigeant / CEO</option>
@@ -1066,7 +1241,7 @@
           </select>
         </div>
         <div class="form-group">
-          <label for="sector">Secteur d'activité</label>
+          <label for="sector" data-i18n="profile.sector">Secteur d'activité</label>
           <select id="sector">
             <option value="" disabled selected>Sélectionnez</option>
             <option value="Services B2B">Services B2B</option>
@@ -1080,7 +1255,7 @@
           </select>
         </div>
         <div class="form-group full-width">
-          <label for="size">Taille de l'entreprise</label>
+          <label for="size" data-i18n="profile.size">Taille de l'entreprise</label>
           <select id="size">
             <option value="" disabled selected>Sélectionnez</option>
             <option value="1-20">1 - 20 collaborateurs</option>
@@ -1093,7 +1268,7 @@
       </div>
       <div class="form-actions">
         <button class="btn-primary" onclick="startDiagnostic()" id="btnStartDiag">
-          Commencer le diagnostic <span>&rarr;</span>
+          <span data-i18n="profile.btn">Commencer le diagnostic </span><span>&rarr;</span>
         </button>
       </div>
     </div>
@@ -1110,10 +1285,10 @@
       <div class="answer-cards" id="answerCards"></div>
       <div class="question-nav">
         <button class="btn-back" onclick="prevQuestion()" id="btnPrev">
-          <span>&larr;</span> Retour
+          <span>&larr;</span> <span data-i18n="q.back">Retour</span>
         </button>
         <button class="btn-next" id="btnNext" onclick="nextQuestion()">
-          Suivant <span>&rarr;</span>
+          <span data-i18n="q.next">Suivant</span> <span>&rarr;</span>
         </button>
       </div>
     </div>
@@ -1122,39 +1297,39 @@
   <!-- ==================== GATE (lead capture) ==================== -->
   <div class="section" id="sectionGate">
     <div class="container form-section gate-section">
-      <div class="landing-label">Dernière étape</div>
-      <h2>Vos résultats sont <span class="highlight">prêts</span></h2>
-      <p class="gate-subtitle">Renseignez vos coordonnées pour accéder à votre diagnostic complet et recevoir votre rapport personnalisé par email.</p>
+      <div class="landing-label" data-i18n="gate.label">Dernière étape</div>
+      <h2 data-i18n="gate.title" data-i18n-html="1">Vos résultats sont <span class="highlight">prêts</span></h2>
+      <p class="gate-subtitle" data-i18n="gate.subtitle">Renseignez vos coordonnées pour accéder à votre diagnostic complet et recevoir votre rapport personnalisé par email.</p>
       <div class="gate-form" id="gateForm">
         <div>
-          <label for="gateFirstname">Prénom</label>
+          <label for="gateFirstname" data-i18n="gate.firstname">Prénom</label>
           <input type="text" id="gateFirstname" placeholder="ex: Philippe">
         </div>
         <div>
-          <label for="gateLastname">Nom</label>
+          <label for="gateLastname" data-i18n="gate.lastname">Nom</label>
           <input type="text" id="gateLastname" placeholder="ex: du Payrat">
         </div>
         <div class="full-width">
-          <label for="gateEmail">Email professionnel</label>
+          <label for="gateEmail" data-i18n="gate.email">Email professionnel</label>
           <input type="email" id="gateEmail" placeholder="vous@entreprise.com">
         </div>
         <div class="full-width">
-          <label for="gatePhone">Téléphone <span style="opacity:0.5;font-weight:400">(optionnel)</span></label>
+          <label for="gatePhone" data-i18n="gate.phone" data-i18n-html="1">Téléphone <span style="opacity:0.5;font-weight:400">(optionnel)</span></label>
           <input type="tel" id="gatePhone" placeholder="06 00 00 00 00">
         </div>
         <div class="gate-actions">
           <button class="btn-primary" onclick="submitGate()">
-            Voir mes résultats <span>&rarr;</span>
+            <span data-i18n="gate.btn">Voir mes résultats </span><span>&rarr;</span>
           </button>
         </div>
         <div class="gate-trust">
-          <span><span class="gt-icon">&#128274;</span> Données confidentielles</span>
-          <span><span class="gt-icon">&#10003;</span> Pas de spam</span>
-          <span><span class="gt-icon">&#9889;</span> Résultats immédiats</span>
+          <span><span class="gt-icon">&#128274;</span> <span data-i18n="gate.trust1">Données confidentielles</span></span>
+          <span><span class="gt-icon">&#10003;</span> <span data-i18n="gate.trust2">Pas de spam</span></span>
+          <span><span class="gt-icon">&#9889;</span> <span data-i18n="gate.trust3">Résultats immédiats</span></span>
         </div>
         <div class="gate-loading" id="gateLoading">
           <div class="gate-spinner"></div>
-          <p>Génération de votre rapport personnalisé...</p>
+          <p data-i18n="gate.loading">Génération de votre rapport personnalisé...</p>
         </div>
       </div>
     </div>
@@ -1164,8 +1339,8 @@
   <div class="section section-results" id="sectionResults">
     <div class="container" style="padding-top: 120px; padding-bottom: 60px;">
       <div class="results-header">
-        <div class="landing-label">Vos résultats</div>
-        <h2>Votre diagnostic IA</h2>
+        <div class="landing-label" data-i18n="results.label">Vos résultats</div>
+        <h2 data-i18n="results.title">Votre diagnostic IA</h2>
         <p id="resultsCompany"></p>
       </div>
 
@@ -1188,36 +1363,36 @@
 
       <!-- Radar chart -->
       <div class="radar-wrap">
-        <h3 class="radar-title">Vue d'ensemble par pilier</h3>
+        <h3 class="radar-title" data-i18n="results.radar">Vue d'ensemble par pilier</h3>
         <svg class="radar-svg" id="radarChart" viewBox="0 0 320 320"></svg>
         <div class="radar-labels" id="radarLabels"></div>
       </div>
 
       <!-- Pillar bars -->
       <div class="pillar-bars">
-        <h3 class="pillar-bars-title">Détail par pilier</h3>
+        <h3 class="pillar-bars-title" data-i18n="results.detail">Détail par pilier</h3>
         <div id="pillarBarsContainer"></div>
       </div>
 
       <!-- Recommendations -->
       <div class="reco-section">
-        <h3 class="reco-title">Top 3 recommandations</h3>
+        <h3 class="reco-title" data-i18n="results.reco">Top 3 recommandations</h3>
         <div class="reco-cards" id="recoCards"></div>
       </div>
 
       <!-- Rapport envoyé confirmation -->
       <div class="lead-capture" id="reportSent" style="display:none;">
-        <h3>&#9989; Rapport envoyé !</h3>
-        <p class="lead-desc">Vous recevrez sous quelques minutes une analyse personnalisée avec un plan d'action détaillé à <strong id="sentToEmail"></strong></p>
+        <h3 data-i18n="results.sent" data-i18n-html="1">&#9989; Rapport envoyé !</h3>
+        <p class="lead-desc" data-i18n="results.sentDesc" data-i18n-html="1">Vous recevrez sous quelques minutes une analyse personnalisée avec un plan d'action détaillé à <strong id="sentToEmail"></strong></p>
       </div>
 
       <!-- CTA final -->
       <div class="cta-final">
-        <h3>Discutons de vos résultats</h3>
-        <p>Un échange de 30 minutes pour transformer ce diagnostic en plan d'action concret</p>
+        <h3 data-i18n="results.cta.title">Discutons de vos résultats</h3>
+        <p data-i18n="results.cta.desc">Un échange de 30 minutes pour transformer ce diagnostic en plan d'action concret</p>
         <a href="https://meetings-eu1.hubspot.com/pdu-payrat?uuid=5a24cb40-61aa-41f5-aee3-8cc6a8cae0bf" target="_blank" rel="noopener">
           <button class="btn-primary btn-sapiens">
-            Prendre rendez-vous <span>&rarr;</span>
+            <span data-i18n="results.cta.btn">Prendre rendez-vous </span><span>&rarr;</span>
           </button>
         </a>
       </div>
@@ -1228,13 +1403,248 @@
 // ============================================================
 // DATA
 // ============================================================
-const PILLARS = [
-  "Shadow IA & Usages",
-  "Souveraineté & Data",
-  "Frugalité & Impact",
-  "Éthique & Gouvernance",
-  "Acculturation & Compétences"
-];
+const PILLARS_I18N = {
+  fr: ["Shadow IA & Usages", "Souveraineté & Data", "Frugalité & Impact", "Éthique & Gouvernance", "Acculturation & Compétences"],
+  en: ["Shadow AI & Usage", "Sovereignty & Data", "Frugality & Impact", "Ethics & Governance", "AI Literacy & Skills"],
+  es: ["Shadow IA y Usos", "Soberanía y Datos", "Frugalidad e Impacto", "Ética y Gobernanza", "Aculturación y Competencias"]
+};
+
+var currentDiagLang = localStorage.getItem('homosapia_lang') || 'fr';
+Object.defineProperty(window, 'PILLARS', { get: function() { return PILLARS_I18N[currentDiagLang] || PILLARS_I18N.fr; } });
+
+const Q_TEXT = {
+  en: [
+    { text: "Do your employees use AI tools not approved by the company (ChatGPT, personal Copilot, etc.)?",
+      answers: [
+        { label: "No idea", desc: "we have no visibility on AI usage" },
+        { label: "Likely", desc: "we know some use unofficial tools" },
+        { label: "Identified", desc: "we have mapped unauthorized usage" },
+        { label: "Controlled", desc: "clear policy with official tools deployed" }
+      ] },
+    { text: "Is sensitive data (clients, strategy, HR) being entered into consumer AI tools?",
+      answers: [
+        { label: "Very likely", desc: "no guidelines exist on this topic" },
+        { label: "Possible", desc: "we discuss it but no real control" },
+        { label: "Partially managed", desc: "guidelines exist but not consistently followed" },
+        { label: "Under control", desc: "validated AI charter with data classification" }
+      ] },
+    { text: "Do you have a clear picture of the AI tools actually used in your organization?",
+      answers: [
+        { label: "Not at all", desc: "everyone uses whatever they want" },
+        { label: "Partial inventory", desc: "we know about some tools being used" },
+        { label: "Mapping in progress", desc: "usage audit launched" },
+        { label: "Complete mapping", desc: "up-to-date inventory with risk/benefit assessment" }
+      ] },
+    { text: "Where is the data processed by your AI tools hosted?",
+      answers: [
+        { label: "No idea", desc: "we don't know where our data goes" },
+        { label: "USA/non-EU", desc: "mainly with American providers (OpenAI, Google)" },
+        { label: "Mixed", desc: "some European tools, others not" },
+        { label: "Europe first", desc: "EU hosting and sovereign providers preferred" }
+      ] },
+    { text: "Does your company consider the European AI Act in its AI decisions?",
+      answers: [
+        { label: "Not aware", desc: "we don't know about the AI Act" },
+        { label: "Basic awareness", desc: "we know it exists but no concrete impact" },
+        { label: "Under review", desc: "we're assessing implications for our business" },
+        { label: "Integrated", desc: "the AI Act is factored into our tool choices and processes" }
+      ] },
+    { text: "Is your data structured and ready to feed AI tools?",
+      answers: [
+        { label: "Scattered", desc: "data in silos, not exploitable" },
+        { label: "Partially centralized", desc: "but insufficient quality" },
+        { label: "Structured", desc: "accessible and sufficient quality" },
+        { label: "Optimized", desc: "data pipeline in place, qualified and documented data" }
+      ] },
+    { text: "Do you consider the environmental impact of your AI usage?",
+      answers: [
+        { label: "Not at all", desc: "the topic is never mentioned" },
+        { label: "Awareness", desc: "we talk about it but no concrete measures" },
+        { label: "Selection criterion", desc: "environmental impact is one criterion among others" },
+        { label: "Active policy", desc: "systematic choice of lightweight and frugal models when possible" }
+      ] },
+    { text: "Do you use AI models suited to the complexity of your tasks (not GPT-4 for a simple summary)?",
+      answers: [
+        { label: "One model for everything", desc: "always the most powerful by default" },
+        { label: "No thought given", desc: "we use what we know" },
+        { label: "Partial differentiation", desc: "some choose the right model per task" },
+        { label: "Frugal strategy", desc: "systematic choice of adapted model (cost, energy, performance)" }
+      ] },
+    { text: "Do you measure the ROI of your AI usage (time saved, quality, costs)?",
+      answers: [
+        { label: "No measurement", desc: "we use AI without measuring impact" },
+        { label: "Gut feeling", desc: "we think it helps but no data" },
+        { label: "Some metrics", desc: "on certain use cases" },
+        { label: "Systematic ROI", desc: "every AI use case is measured and documented" }
+      ] },
+    { text: "Do you have an AI charter or defined ethical principles?",
+      answers: [
+        { label: "No charter", desc: "the topic hasn't been addressed" },
+        { label: "Under consideration", desc: "the need is identified but nothing formalized" },
+        { label: "Charter in progress", desc: "document being drafted/validated" },
+        { label: "Active charter", desc: "charter validated, distributed and enforced" }
+      ] },
+    { text: "Who validates decisions made with AI assistance in your organization?",
+      answers: [
+        { label: "Nobody", desc: "AI is used without supervision" },
+        { label: "The user alone", desc: "each person judges relevance" },
+        { label: "Partial process", desc: "human validation on certain sensitive cases" },
+        { label: "Human-in-the-loop", desc: "systematic human validation on critical decisions" }
+      ] },
+    { text: "Are your teams aware of AI biases and risks (hallucinations, bias, misinformation)?",
+      answers: [
+        { label: "Not at all", desc: "no training or awareness" },
+        { label: "Vaguely", desc: "some articles shared" },
+        { label: "One-off training", desc: "at least one awareness session completed" },
+        { label: "Integrated", desc: "continuous awareness with practical cases and internal guides" }
+      ] },
+    { text: "What is your teams' AI skill level?",
+      answers: [
+        { label: "No skills", desc: "no internal AI training" },
+        { label: "Some self-taught", desc: "experimenting on their own" },
+        { label: "One-off training", desc: "training sessions have been conducted" },
+        { label: "Structured program", desc: "AI upskilling plan in place" }
+      ] },
+    { text: "Does your leadership champion AI adoption as a strategic topic?",
+      answers: [
+        { label: "Not at all", desc: "the topic is not on the executive agenda" },
+        { label: "Declared interest", desc: "leadership talks about it but no action" },
+        { label: "Identified sponsor", desc: "a leadership member drives the topic" },
+        { label: "Integrated vision", desc: "AI roadmap aligned with business strategy" }
+      ] },
+    { text: "Do you have AI champions or referents internally?",
+      answers: [
+        { label: "No referent", desc: "nobody is identified on the topic" },
+        { label: "1-2 motivated", desc: "but not officially mandated" },
+        { label: "Designated referents", desc: "in some departments" },
+        { label: "Structured network", desc: "AI champions with coordination and CDO/AI lead" }
+      ] }
+  ],
+  es: [
+    { text: "\u00bfSus colaboradores utilizan herramientas IA no aprobadas por la empresa (ChatGPT, Copilot personal, etc.)?",
+      answers: [
+        { label: "Sin idea", desc: "no tenemos visibilidad sobre los usos de IA" },
+        { label: "Probable", desc: "sabemos que algunos usan herramientas no oficiales" },
+        { label: "Identificado", desc: "hemos mapeado los usos no autorizados" },
+        { label: "Controlado", desc: "pol\u00edtica clara con herramientas oficiales desplegadas" }
+      ] },
+    { text: "\u00bfSe ingresan datos sensibles (clientes, estrategia, RRHH) en herramientas IA de consumo masivo?",
+      answers: [
+        { label: "Muy probable", desc: "no existe ninguna directriz al respecto" },
+        { label: "Posible", desc: "se habla pero sin control real" },
+        { label: "Parcialmente gestionado", desc: "existen directrices pero no se siguen sistem\u00e1ticamente" },
+        { label: "Bajo control", desc: "carta IA validada con clasificaci\u00f3n de datos" }
+      ] },
+    { text: "\u00bfTiene una visi\u00f3n clara de las herramientas IA realmente utilizadas en su organizaci\u00f3n?",
+      answers: [
+        { label: "Para nada", desc: "cada uno usa lo que quiere" },
+        { label: "Inventario parcial", desc: "conocemos algunas herramientas utilizadas" },
+        { label: "Mapeo en curso", desc: "auditor\u00eda de usos iniciada" },
+        { label: "Mapeo completo", desc: "inventario actualizado con evaluaci\u00f3n riesgos/beneficios" }
+      ] },
+    { text: "\u00bfD\u00f3nde est\u00e1n alojados los datos procesados por sus herramientas IA?",
+      answers: [
+        { label: "Sin idea", desc: "no sabemos d\u00f3nde van nuestros datos" },
+        { label: "EEUU/fuera UE", desc: "principalmente con proveedores americanos (OpenAI, Google)" },
+        { label: "Mixto", desc: "algunas herramientas europeas, otras no" },
+        { label: "Europa prioritaria", desc: "alojamiento UE y proveedores soberanos priorizados" }
+      ] },
+    { text: "\u00bfSu empresa tiene en cuenta el AI Act europeo en sus decisiones de IA?",
+      answers: [
+        { label: "No informados", desc: "no conocemos el AI Act" },
+        { label: "Conocimiento b\u00e1sico", desc: "sabemos que existe pero sin impacto concreto" },
+        { label: "En an\u00e1lisis", desc: "evaluamos las implicaciones para nuestra actividad" },
+        { label: "Integrado", desc: "el AI Act se tiene en cuenta en nuestras elecciones de herramientas" }
+      ] },
+    { text: "\u00bfSus datos est\u00e1n estructurados y listos para alimentar herramientas IA?",
+      answers: [
+        { label: "Dispersos", desc: "datos en silos, no explotables" },
+        { label: "Parcialmente centralizados", desc: "pero calidad insuficiente" },
+        { label: "Estructurados", desc: "accesibles y calidad suficiente" },
+        { label: "Optimizados", desc: "pipeline de datos implementado, datos cualificados y documentados" }
+      ] },
+    { text: "\u00bfTiene en cuenta el impacto ambiental de sus usos de IA?",
+      answers: [
+        { label: "Para nada", desc: "el tema nunca se menciona" },
+        { label: "Sensibilidad", desc: "se habla pero sin medida concreta" },
+        { label: "Criterio de selecci\u00f3n", desc: "el impacto ambiental es un criterio entre otros" },
+        { label: "Pol\u00edtica activa", desc: "elecci\u00f3n sistem\u00e1tica de modelos ligeros y frugales cuando es posible" }
+      ] },
+    { text: "\u00bfUtiliza modelos IA adaptados a la complejidad de sus tareas (no GPT-4 para un simple resumen)?",
+      answers: [
+        { label: "Un solo modelo para todo", desc: "siempre el m\u00e1s potente por defecto" },
+        { label: "Sin reflexi\u00f3n", desc: "usamos lo que conocemos" },
+        { label: "Diferenciaci\u00f3n parcial", desc: "algunos eligen el modelo adecuado seg\u00fan la tarea" },
+        { label: "Estrategia frugal", desc: "elecci\u00f3n sistem\u00e1tica del modelo adaptado (coste, energ\u00eda, rendimiento)" }
+      ] },
+    { text: "\u00bfMide el ROI de sus usos de IA (tiempo ahorrado, calidad, costes)?",
+      answers: [
+        { label: "Sin medici\u00f3n", desc: "usamos IA sin medir el impacto" },
+        { label: "Sensaci\u00f3n", desc: "pensamos que ayuda pero sin datos" },
+        { label: "Algunas m\u00e9tricas", desc: "en ciertos casos de uso" },
+        { label: "ROI sistem\u00e1tico", desc: "cada uso de IA se mide y documenta" }
+      ] },
+    { text: "\u00bfTiene una carta IA o principios \u00e9ticos definidos?",
+      answers: [
+        { label: "Ninguna carta", desc: "el tema no se ha abordado" },
+        { label: "En reflexi\u00f3n", desc: "la necesidad est\u00e1 identificada pero nada formalizado" },
+        { label: "Carta en curso", desc: "documento en redacci\u00f3n/validaci\u00f3n" },
+        { label: "Carta activa", desc: "carta validada, difundida y aplicada" }
+      ] },
+    { text: "\u00bfQui\u00e9n valida las decisiones tomadas con ayuda de la IA en su organizaci\u00f3n?",
+      answers: [
+        { label: "Nadie", desc: "la IA se usa sin supervisi\u00f3n" },
+        { label: "El usuario solo", desc: "cada uno juzga la pertinencia" },
+        { label: "Proceso parcial", desc: "validaci\u00f3n humana en ciertos casos sensibles" },
+        { label: "Human-in-the-loop", desc: "validaci\u00f3n humana sistem\u00e1tica en decisiones cr\u00edticas" }
+      ] },
+    { text: "\u00bfSus equipos est\u00e1n sensibilizados sobre sesgos y riesgos de la IA (alucinaciones, sesgos, desinformaci\u00f3n)?",
+      answers: [
+        { label: "Para nada", desc: "ninguna formaci\u00f3n o sensibilizaci\u00f3n" },
+        { label: "Vagamente", desc: "algunos art\u00edculos compartidos" },
+        { label: "Formaci\u00f3n puntual", desc: "al menos una sesi\u00f3n de sensibilizaci\u00f3n realizada" },
+        { label: "Integrado", desc: "sensibilizaci\u00f3n continua con casos pr\u00e1cticos y gu\u00edas internas" }
+      ] },
+    { text: "\u00bfCu\u00e1l es el nivel de competencia IA de sus equipos?",
+      answers: [
+        { label: "Sin competencia", desc: "sin formaci\u00f3n IA interna" },
+        { label: "Algunos autodidactas", desc: "experimentando por su cuenta" },
+        { label: "Formaciones puntuales", desc: "se han realizado formaciones" },
+        { label: "Programa estructurado", desc: "plan de capacitaci\u00f3n IA implementado" }
+      ] },
+    { text: "\u00bfSu direcci\u00f3n impulsa la adopci\u00f3n de IA como tema estrat\u00e9gico?",
+      answers: [
+        { label: "Para nada", desc: "el tema no est\u00e1 en la agenda del comit\u00e9 de direcci\u00f3n" },
+        { label: "Inter\u00e9s declarado", desc: "la direcci\u00f3n habla pero sin acci\u00f3n" },
+        { label: "Sponsor identificado", desc: "un miembro de la direcci\u00f3n impulsa el tema" },
+        { label: "Visi\u00f3n integrada", desc: "hoja de ruta IA alineada con la estrategia de la empresa" }
+      ] },
+    { text: "\u00bfTiene referentes o champions IA internos?",
+      answers: [
+        { label: "Ning\u00fan referente", desc: "nadie est\u00e1 identificado en el tema" },
+        { label: "1-2 motivados", desc: "pero no mandatados oficialmente" },
+        { label: "Referentes designados", desc: "en algunos departamentos" },
+        { label: "Red estructurada", desc: "champions IA con coordinaci\u00f3n y CDO/responsable IA" }
+      ] }
+  ]
+};
+
+const RECO_TEXT = {
+  en: {
+    0: { insight: "Shadow AI is a major risk for your organization. Sensitive data is likely flowing through uncontrolled tools.", action: "Immediately map existing AI usage and deploy official tools. A Shadow AI audit is the first step.", offer: "AI & Operational Audit" },
+    1: { insight: "Your digital sovereignty is a blind spot. In a European regulatory context (AI Act, GDPR), this is a growing risk.", action: "Assess your technology dependencies and structure a sovereign data strategy with European alternatives.", offer: "Full Consulting" },
+    2: { insight: "Your AI usage lacks frugality. Without impact measurement, you can't optimize costs or footprint.", action: "Implement ROI metrics and adopt a frugal approach: the right model for the right task.", offer: "Hands-on Workshops" },
+    3: { insight: "The lack of an ethical framework exposes your organization to bias, hallucinations, and reputational risks.", action: "Co-create an AI charter with your teams and implement human validation processes for critical uses.", offer: "Pilot Project & Deployment" },
+    4: { insight: "AI literacy is insufficient for lasting transformation. Without internal skills, external dependency grows.", action: "Launch an AI training program adapted to each level (C-suite, managers, operational teams) with internal referents.", offer: "AI Training" }
+  },
+  es: {
+    0: { insight: "La Shadow IA es un riesgo mayor para su organizaci\u00f3n. Datos sensibles probablemente circulan por herramientas no controladas.", action: "Cartograf\u00ede inmediatamente los usos IA existentes y despliegue herramientas oficiales. Una auditor\u00eda Shadow IA es el primer paso.", offer: "Auditor\u00eda IA y operativa" },
+    1: { insight: "Su soberan\u00eda digital es un punto ciego. En un contexto regulatorio europeo (AI Act, RGPD), es un riesgo creciente.", action: "Eval\u00fae sus dependencias tecnol\u00f3gicas y estructure una estrategia de datos soberana con alternativas europeas.", offer: "Acompa\u00f1amiento integral" },
+    2: { insight: "Sus usos de IA carecen de frugalidad. Sin medici\u00f3n de impacto, no puede optimizar costes ni huella.", action: "Implemente m\u00e9tricas de ROI y adopte un enfoque frugal: el modelo adecuado para la tarea adecuada.", offer: "Talleres pr\u00e1cticos" },
+    3: { insight: "La ausencia de marco \u00e9tico expone su organizaci\u00f3n a sesgos, alucinaciones y riesgos reputacionales.", action: "Co-construya una carta IA con sus equipos e implemente procesos de validaci\u00f3n humana en usos cr\u00edticos.", offer: "Proyecto piloto y despliegue" },
+    4: { insight: "El nivel de aculturaci\u00f3n IA es insuficiente para una transformaci\u00f3n duradera. Sin competencias internas, la dependencia externa crece.", action: "Lance un programa de formaci\u00f3n IA adaptado a cada nivel (directivos, mandos, operativos) con referentes internos.", offer: "Formaciones IA" }
+  }
+};
 
 const QUESTIONS = [
   // Pilier 1 : Shadow IA & Usages
@@ -1509,11 +1919,16 @@ function startDiagnostic() {
 // ============================================================
 function renderQuestion() {
   const q = QUESTIONS[currentQuestion];
-  const pillarName = PILLARS[q.pillar];
+  const lang = window.diagLang ? window.diagLang() : 'fr';
+  const pillarName = (PILLARS_I18N[lang] || PILLARS_I18N.fr)[q.pillar];
 
-  document.getElementById('qStep').textContent = `Question ${currentQuestion + 1} / 15`;
+  const qPrefix = lang === 'es' ? 'Pregunta' : lang === 'en' ? 'Question' : 'Question';
+  document.getElementById('qStep').textContent = `${qPrefix} ${currentQuestion + 1} / 15`;
   document.getElementById('qPillar').textContent = pillarName;
-  document.getElementById('qText').textContent = q.text;
+
+  // Get translated text if available
+  const qTrans = (Q_TEXT[lang] && Q_TEXT[lang][currentQuestion]) ? Q_TEXT[lang][currentQuestion] : null;
+  document.getElementById('qText').textContent = qTrans ? qTrans.text : q.text;
 
   // Progress bar
   const pct = ((currentQuestion + 1) / 15) * 100;
@@ -1524,12 +1939,13 @@ function renderQuestion() {
   container.innerHTML = '';
 
   q.answers.forEach((a, idx) => {
+    const aTrans = qTrans ? qTrans.answers[idx] : null;
     const card = document.createElement('div');
     card.className = 'answer-card' + (answers[currentQuestion] === idx ? ' selected' : '');
     card.innerHTML = `
       <div class="answer-indicator">${idx + 1}</div>
       <div class="answer-label">
-        <strong>${a.label}</strong> <span>- ${a.desc}</span>
+        <strong>${aTrans ? aTrans.label : a.label}</strong> <span>- ${aTrans ? aTrans.desc : a.desc}</span>
       </div>
     `;
     card.addEventListener('click', () => selectAnswer(idx, card));
@@ -1564,15 +1980,18 @@ function selectAnswer(idx, card) {
 }
 
 function updateNextBtn() {
+  const lang = window.diagLang ? window.diagLang() : 'fr';
   const btn = document.getElementById('btnNext');
+  const seeResults = lang === 'es' ? 'Ver mis resultados' : lang === 'en' ? 'See my results' : 'Voir mes résultats';
+  const next = lang === 'es' ? 'Siguiente' : lang === 'en' ? 'Next' : 'Suivant';
   if (answers[currentQuestion] !== null) {
     btn.classList.add('enabled');
     btn.innerHTML = currentQuestion === 14
-      ? 'Voir mes résultats <span>&rarr;</span>'
-      : 'Suivant <span>&rarr;</span>';
+      ? seeResults + ' <span>&rarr;</span>'
+      : next + ' <span>&rarr;</span>';
   } else {
     btn.classList.remove('enabled');
-    btn.innerHTML = 'Suivant <span>&rarr;</span>';
+    btn.innerHTML = next + ' <span>&rarr;</span>';
   }
 }
 
@@ -1654,7 +2073,7 @@ function submitGate() {
       total: totalScore,
       maxTotal: 60,
       pct: Math.round((totalScore / 60) * 100),
-      pillars: PILLARS.map((name, i) => ({
+      pillars: PILLARS_I18N.fr.map((name, i) => ({
         name,
         score: pillarScores[i],
         max: 12,
@@ -1662,7 +2081,7 @@ function submitGate() {
       }))
     },
     answers: QUESTIONS.map((q, i) => ({
-      pillar: PILLARS[q.pillar],
+      pillar: PILLARS_I18N.fr[q.pillar],
       question: q.text,
       answer: answers[i] !== null ? q.answers[answers[i]].label : null,
       answerDetail: answers[i] !== null ? q.answers[answers[i]].desc : null,
@@ -1771,36 +2190,42 @@ function renderScoreCircle(score) {
 }
 
 function renderLevel(score) {
+  const lang = window.diagLang ? window.diagLang() : 'fr';
   const levelEl = document.getElementById('scoreLevel');
   const descEl = document.getElementById('scoreLevelDesc');
 
-  let level, desc, bg, color;
-  if (score < 25) {
-    level = 'Éveil';
-    desc = "Votre entreprise est au début de sa réflexion IA. Tout reste à construire, mais c'est une opportunité formidable.";
-    bg = 'rgba(232, 93, 58, 0.15)';
-    color = '#E85D3A';
-  } else if (score < 37) {
-    level = 'Exploration';
-    desc = "Des bases existent, il faut structurer. Vous avez l'avantage de ne pas partir de zéro.";
-    bg = 'rgba(242, 153, 58, 0.15)';
-    color = '#F2993A';
-  } else if (score < 49) {
-    level = 'Accélération';
-    desc = "Vous avez de bonnes fondations. Il est temps de passer à l'échelle et d'industrialiser vos initiatives.";
-    bg = 'rgba(58, 143, 242, 0.15)';
-    color = '#3A8FF2';
-  } else {
-    level = 'Excellence';
-    desc = "Votre maturité IA est avancée. Concentrez-vous sur l'optimisation et l'innovation continue.";
-    bg = 'rgba(76, 175, 80, 0.15)';
-    color = '#4CAF50';
-  }
+  const levels = {
+    fr: [
+      { name: '\u00c9veil', desc: "Votre entreprise est au d\u00e9but de sa r\u00e9flexion IA. Tout reste \u00e0 construire, mais c'est une opportunit\u00e9 formidable." },
+      { name: 'Exploration', desc: "Des bases existent, il faut structurer. Vous avez l'avantage de ne pas partir de z\u00e9ro." },
+      { name: 'Acc\u00e9l\u00e9ration', desc: "Vous avez de bonnes fondations. Il est temps de passer \u00e0 l'\u00e9chelle et d'industrialiser vos initiatives." },
+      { name: 'Excellence', desc: "Votre maturit\u00e9 IA est avanc\u00e9e. Concentrez-vous sur l'optimisation et l'innovation continue." }
+    ],
+    en: [
+      { name: 'Awakening', desc: "Your company is at the beginning of its AI journey. Everything is yet to be built, but it's a tremendous opportunity." },
+      { name: 'Exploration', desc: "Foundations exist, they need structure. You have the advantage of not starting from scratch." },
+      { name: 'Acceleration', desc: "You have solid foundations. It's time to scale up and industrialize your initiatives." },
+      { name: 'Excellence', desc: "Your AI maturity is advanced. Focus on optimization and continuous innovation." }
+    ],
+    es: [
+      { name: 'Despertar', desc: "Su empresa est\u00e1 al inicio de su reflexi\u00f3n IA. Todo est\u00e1 por construir, pero es una oportunidad formidable." },
+      { name: 'Exploraci\u00f3n', desc: "Las bases existen, hay que estructurar. Tiene la ventaja de no partir de cero." },
+      { name: 'Aceleraci\u00f3n', desc: "Tiene buenas bases. Es momento de escalar e industrializar sus iniciativas." },
+      { name: 'Excelencia', desc: "Su madurez IA es avanzada. Conc\u00e9ntrese en la optimizaci\u00f3n y la innovaci\u00f3n continua." }
+    ]
+  };
 
+  let levelIdx, bg, color;
+  if (score < 25) { levelIdx = 0; bg = 'rgba(232, 93, 58, 0.15)'; color = '#E85D3A'; }
+  else if (score < 37) { levelIdx = 1; bg = 'rgba(242, 153, 58, 0.15)'; color = '#F2993A'; }
+  else if (score < 49) { levelIdx = 2; bg = 'rgba(58, 143, 242, 0.15)'; color = '#3A8FF2'; }
+  else { levelIdx = 3; bg = 'rgba(76, 175, 80, 0.15)'; color = '#4CAF50'; }
+
+  const lvl = (levels[lang] || levels.fr)[levelIdx];
   levelEl.style.background = bg;
   levelEl.style.color = color;
-  levelEl.innerHTML = `<span style="font-size:1.1rem">&#9679;</span> ${level}`;
-  descEl.textContent = desc;
+  levelEl.innerHTML = `<span style="font-size:1.1rem">&#9679;</span> ${lvl.name}`;
+  descEl.textContent = lvl.desc;
 }
 
 function renderRadar(scores) {
@@ -1886,7 +2311,13 @@ function renderRadar(scores) {
     { dx: -14, dy: 4, anchor: 'end' }
   ];
 
-  const shortLabels = ['Culture', 'Usages', 'Data', 'Compétences', 'Stratégie'];
+  const shortLabelsI18N = {
+    fr: ['Culture', 'Usages', 'Data', 'Comp\u00e9tences', 'Strat\u00e9gie'],
+    en: ['Culture', 'Usage', 'Data', 'Skills', 'Strategy'],
+    es: ['Cultura', 'Usos', 'Datos', 'Competencias', 'Estrategia']
+  };
+  const lang = window.diagLang ? window.diagLang() : 'fr';
+  const shortLabels = shortLabelsI18N[lang] || shortLabelsI18N.fr;
 
   for (let i = 0; i < n; i++) {
     const p = getPoint(i, maxR + 18);
@@ -1902,17 +2333,20 @@ function renderRadar(scores) {
   }
 
   // Legend below chart
+  const pillarNames = (PILLARS_I18N[lang] || PILLARS_I18N.fr);
   const labelsEl = document.getElementById('radarLabels');
-  labelsEl.innerHTML = PILLARS.map((p, i) =>
+  labelsEl.innerHTML = pillarNames.map((p, i) =>
     `<span class="radar-label-item"><span class="radar-label-dot"></span>${p} : ${scores[i]}/12</span>`
   ).join('');
 }
 
 function renderPillarBars(scores) {
+  const lang = window.diagLang ? window.diagLang() : 'fr';
+  const pillarNames = (PILLARS_I18N[lang] || PILLARS_I18N.fr);
   const container = document.getElementById('pillarBarsContainer');
   container.innerHTML = '';
 
-  PILLARS.forEach((name, i) => {
+  pillarNames.forEach((name, i) => {
     const pct = (scores[i] / 12) * 100;
     let color;
     if (scores[i] <= 4) color = '#E85D3A';
@@ -1942,6 +2376,7 @@ function renderPillarBars(scores) {
 }
 
 function renderRecommendations(scores) {
+  const lang = window.diagLang ? window.diagLang() : 'fr';
   const container = document.getElementById('recoCards');
   container.innerHTML = '';
 
@@ -1950,9 +2385,14 @@ function renderRecommendations(scores) {
   indexed.sort((a, b) => a.score - b.score);
   const top3 = indexed.slice(0, 3);
 
+  const pillarNamesLocal = (PILLARS_I18N[lang] || PILLARS_I18N.fr);
+  const actionLabel = lang === 'es' ? 'Acci\u00f3n recomendada' : lang === 'en' ? 'Recommended action' : 'Action recommand\u00e9e';
+  const discoverLabel = lang === 'es' ? 'Descubrir' : lang === 'en' ? 'Discover' : 'D\u00e9couvrir';
+
   top3.forEach((item, rank) => {
     const reco = RECOMMENDATIONS[item.index];
-    const pillar = PILLARS[item.index];
+    const recoTrans = RECO_TEXT[lang] ? RECO_TEXT[lang][item.index] : null;
+    const pillar = pillarNamesLocal[item.index];
     const scoreColor = item.score <= 4 ? '#E85D3A' : item.score <= 7 ? '#F2993A' : '#3A8FF2';
 
     const card = document.createElement('div');
@@ -1963,13 +2403,13 @@ function renderRecommendations(scores) {
         <span class="reco-card-pillar" style="color:${scoreColor}">${pillar}</span>
         <span class="reco-card-score" style="background:${scoreColor}20;color:${scoreColor}">${item.score} / 12</span>
       </div>
-      <p class="reco-card-insight">${reco.insight}</p>
+      <p class="reco-card-insight">${recoTrans ? recoTrans.insight : reco.insight}</p>
       <div class="reco-card-action">
-        <div class="reco-card-action-label">Action recommandée</div>
-        <div class="reco-card-action-text">${reco.action}</div>
+        <div class="reco-card-action-label">${actionLabel}</div>
+        <div class="reco-card-action-text">${recoTrans ? recoTrans.action : reco.action}</div>
       </div>
       <a href="${reco.link}" target="_blank" class="reco-card-link">
-        Découvrir : ${reco.offer} <span>&rarr;</span>
+        ${discoverLabel} : ${recoTrans ? recoTrans.offer : reco.offer} <span>&rarr;</span>
       </a>
     `;
     container.appendChild(card);

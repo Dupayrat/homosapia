@@ -1,0 +1,3 @@
+# Les PDFs sont générés et stockés localement, pas dans le repo
+# Décommenter la ligne ci-dessous pour exclure les PDFs du repo Git
+# *.pdf

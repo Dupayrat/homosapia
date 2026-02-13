@@ -1,4 +1,4 @@
-# HomoSapIA - Design System & Charte Graphique
+# Homo SapIA - Design System & Charte Graphique
 
 ## Identité visuelle (extraite de 4jours.work + images LinkedIn)
 
@@ -53,12 +53,12 @@
 - Pas de couleurs vives en surface, tout est subtil et élégant
 - Emojis : utilisés avec parcimonie (🤖⏱🔥🛡), jamais plus de 1 par card
 
-## Contraintes éditoriales HomoSapIA
+## Contraintes éditoriales Homo SapIA
 
 - **Zéro em dash (—)** : utiliser · ou - ou reformuler
 - **Pas de "PDP"** : toujours "Philippe du Payrat" en entier
 - **Pas de mention explicite "semaine de 4 jours"** sur la page (sauf via lien 4jours.work)
-- **Ne pas mentionner 4 Day Week Global** sur le site HomoSapIA
+- **Ne pas mentionner 4 Day Week Global** sur le site Homo SapIA
 - Parler de "temps libéré", "redesign du temps de travail", "organisation augmentée"
 - Langue : français
 - Ton : expert mais accessible, pas corporate, pas bullshit

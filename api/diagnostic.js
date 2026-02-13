@@ -210,7 +210,7 @@ export default async function handler(req, res) {
 ${company.name ? `Entreprise : ${company.name}` : `Pour : ${contactName}`}
 ${company.sector ? `Secteur : ${company.sector}` : ''}
 Réalisé le ${dateStr}
-Préparé par Philippe du Payrat · HomoSapIA
+Préparé par Philippe du Payrat · Homo SapIA
 "L'IA au service de l'humain"
 
 ### Slide 2 — Votre score global
@@ -250,7 +250,7 @@ ${step2.details.map(d => `- ${d}`).join('\n')}
 
 Format : ${step2.format}
 
-### Slide 8 — Pourquoi HomoSapIA
+### Slide 8 — Pourquoi Homo SapIA
 Une approche unique qui allie expertise IA et vision humaine.
 
 Philippe du Payrat accompagne les dirigeants et leurs équipes dans la transformation IA avec une conviction : la technologie doit servir l'humain, pas l'inverse.
@@ -263,7 +263,7 @@ Nos engagements :
 - Formateur certifié : emlyon, Covéa CFE-CGC, PME et ETI
 
 ### Slide 9 — Références & confiance
-Ils font confiance à HomoSapIA :
+Ils font confiance à Homo SapIA :
 - Covéa (CFE-CGC) : conférence IA et accompagnement stratégique
 - emlyon business school : formation IA pour cadres dirigeants
 - +50 entreprises accompagnées (PME, ETI, grands groupes)
@@ -290,7 +290,7 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
     console.log('Gamma presentation prompt generated for:', contactName);
 
     // ================================================================
-    // EMAIL 1 — To PROSPECT (diagnostic report, HomoSapIA branded)
+    // EMAIL 1 — To PROSPECT (diagnostic report, Homo SapIA branded)
     // ================================================================
     const prospectEmailHtml = `
 <!DOCTYPE html>
@@ -298,7 +298,7 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Votre diagnostic IA - HomoSapIA</title>
+  <title>Votre diagnostic IA - Homo SapIA</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #0A0A0F; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #E8E6E1; -webkit-font-smoothing: antialiased;">
 
@@ -311,7 +311,7 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
 
         <!-- Header / Logo -->
         <tr><td style="padding: 0 0 32px; text-align: center;">
-          <span style="font-size: 28px; font-weight: 300; color: #E8E6E1; letter-spacing: -0.5px;">HomoSap</span><span style="font-size: 28px; font-weight: 300; color: #F26B3A; font-style: italic;">IA</span>
+          <span style="font-size: 28px; font-weight: 300; color: #E8E6E1; letter-spacing: -0.5px;">Homo Sap</span><span style="font-size: 28px; font-weight: 300; color: #F26B3A; font-style: italic;">IA</span>
         </td></tr>
 
         <!-- Hero Card -->
@@ -390,7 +390,7 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
 
         <!-- Footer -->
         <tr><td style="text-align: center; padding: 24px 0; border-top: 1px solid rgba(255,255,255,0.06);">
-          <p style="font-size: 13px; color: #8A8A95; margin: 0 0 4px;">Philippe du Payrat · HomoSapIA</p>
+          <p style="font-size: 13px; color: #8A8A95; margin: 0 0 4px;">Philippe du Payrat · Homo SapIA</p>
           <p style="font-size: 12px; color: #555; margin: 0;">L'IA au service de l'humain</p>
           <p style="font-size: 11px; color: #444; margin: 12px 0 0;"><a href="https://homosapia.com" style="color: #F26B3A; text-decoration: none;">homosapia.com</a></p>
         </td></tr>
@@ -480,7 +480,7 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
   </div>
 
   <div style="text-align: center; padding: 20px;">
-    <a href="mailto:${contact.email}?subject=${encodeURIComponent(`${contact.firstname}, votre diagnostic IA HomoSapIA`)}" style="display: inline-block; background: #F26B3A; color: white; padding: 14px 32px; border-radius: 100px; text-decoration: none; font-weight: 600;">Répondre à ${contact.firstname} &rarr;</a>
+    <a href="mailto:${contact.email}?subject=${encodeURIComponent(`${contact.firstname}, votre diagnostic IA Homo SapIA`)}" style="display: inline-block; background: #F26B3A; color: white; padding: 14px 32px; border-radius: 100px; text-decoration: none; font-weight: 600;">Répondre à ${contact.firstname} &rarr;</a>
   </div>
 </body></html>`;
 
@@ -496,7 +496,7 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
         method: 'POST',
         headers: { 'Authorization': `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          from: 'Philippe de HomoSapIA <diagnostic@homosapia.com>',
+          from: 'Philippe de Homo SapIA <diagnostic@homosapia.com>',
           to: [contact.email],
           subject: `${contact.firstname}, votre diagnostic IA est prêt (${scores.total}/60)`,
           html: prospectEmailHtml
@@ -512,7 +512,7 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
         method: 'POST',
         headers: { 'Authorization': `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          from: 'HomoSapIA Bot <diagnostic@homosapia.com>',
+          from: 'Homo SapIA Bot <diagnostic@homosapia.com>',
           to: [NOTIFY_EMAIL],
           subject: `&#127919; LEAD - ${contactName} @ ${company.name || 'N/A'} - ${scores.total}/60 (${level})`,
           html: internalEmailHtml

@@ -7,7 +7,7 @@ Copie-colle ceci dans Claude Code après avoir ouvert le dossier `homosapia-proj
 ```
 Lis BRIEF.md et docs/DESIGN-SYSTEM.md pour comprendre le projet.
 
-Tu dois créer le site web HomoSapIA :
+Tu dois créer le site web Homo SapIA :
 - Next.js 14+ (App Router) + Tailwind CSS 4 + Framer Motion
 - Déploiement sur Vercel
 - Supabase pour les formulaires de contact (backup HubSpot)

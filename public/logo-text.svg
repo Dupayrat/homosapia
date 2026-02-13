@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 60" width="440" height="60">
   <!--
-    Text logo for navbar: "HomoSap" in white, "IA" in orange.
+    Text logo for navbar: "Homo Sap" in white, "IA" in orange.
     Uses Instrument Serif font family (loaded via Google Fonts in the app).
     Simple, clean text treatment.
   -->
@@ -12,6 +12,6 @@
     font-weight="400"
     letter-spacing="-0.5"
   >
-    <tspan fill="#FFFFFF">HomoSap</tspan><tspan fill="#F26B3A">IA</tspan>
+    <tspan fill="#FFFFFF">Homo Sap</tspan><tspan fill="#F26B3A">IA</tspan>
   </text>
 </svg>
