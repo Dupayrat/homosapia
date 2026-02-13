@@ -825,7 +825,7 @@
         <li><a href="#offres">Offres</a></li>
         <li><a href="#realisations">Réalisations</a></li>
         <li><a href="#apropos">À propos</a></li>
-        <li><a href="https://www.capital.fr/votre-carriere/lia-va-faire-gagner-du-temps-aux-salaries-et-ce-temps-peut-leur-etre-rendu-1523366" target="_blank" rel="noopener">Tribune Capital</a></li>
+        <li><a href="https://www.capital.fr/votre-carriere/lia-va-faire-gagner-du-temps-aux-salaries-et-ce-temps-peut-leur-etre-rendu-1523366" target="_blank" rel="noopener">Notre tribune dans Capital</a></li>
         <li><a href="https://meetings-eu1.hubspot.com/pdu-payrat?uuid=5a24cb40-61aa-41f5-aee3-8cc6a8cae0bf" target="_blank" rel="noopener" class="nav-cta">Parlons-en</a></li>
       </ul>
       <button class="menu-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
@@ -1072,33 +1072,6 @@
 
         <div class="client-card reveal">
           <div class="client-meta">
-            <span class="client-name">Serfim TIC</span>
-            <span class="client-sector">BTP · 280 collaborateurs</span>
-          </div>
-          <p>Ateliers de 2 jours pour découvrir l'IA et identifier le potentiel dans un secteur faiblement digitalisé. Workshops pour techniciens, managers et CODIR.</p>
-          <div class="client-result">45 personnes initiées · Roadmap IA définie · KPIs réels</div>
-        </div>
-
-        <div class="client-card reveal">
-          <div class="client-meta">
-            <span class="client-name">Diapason</span>
-            <span class="client-sector">SaaS Finance · 250 salariés</span>
-          </div>
-          <p>Diagnostic complet de la situation IA : initiatives non structurées, ROI non atteint. Audit de toutes les équipes et mise en place d'un plan d'adoption en 3 phases sur 24 mois.</p>
-          <div class="client-result">Rapport de 60 pages · Plan d'action en 3 phases</div>
-        </div>
-
-        <div class="client-card reveal">
-          <div class="client-meta">
-            <span class="client-name">dSPACE</span>
-            <span class="client-sector">Automobile · 3 000 salariés</span>
-          </div>
-          <p>Formation ciblée pour les équipes techniques, commerciales et fonctions support. Cas d'usage métier et quick wins immédiats.</p>
-          <div class="client-result">Toute l'entité française initiée · Gains de temps immédiats</div>
-        </div>
-
-        <div class="client-card reveal">
-          <div class="client-meta">
             <span class="client-name">Plateau Urbain</span>
             <span class="client-sector">Immobilier · 100 salariés</span>
           </div>
@@ -1177,6 +1150,79 @@
     </div>
   </footer>
 
+  <!-- ═══ RDV BOT POPUP (après 3 min) ═══ -->
+  <div id="rdvBot" style="
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9998;
+    display: none;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+  ">
+    <!-- Bulle message -->
+    <div id="rdvBubble" style="
+      background: #16161F;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px 16px 4px 16px;
+      padding: 20px 24px;
+      max-width: 320px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    ">
+      <button onclick="document.getElementById('rdvBot').style.display='none'" style="
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        background: none;
+        border: none;
+        color: #8A8A95;
+        font-size: 18px;
+        cursor: pointer;
+        line-height: 1;
+      ">&times;</button>
+      <p style="
+        font-family: 'Instrument Serif', Georgia, serif;
+        font-size: 1.1rem;
+        color: #E8E6E1;
+        margin-bottom: 8px;
+        padding-right: 16px;
+      ">Un projet IA en tête ?</p>
+      <p style="
+        font-family: 'DM Sans', system-ui, sans-serif;
+        font-size: 0.88rem;
+        color: #8A8A95;
+        line-height: 1.6;
+        margin-bottom: 16px;
+      ">30 min pour comprendre vos enjeux et identifier les premières pistes d'action. Sans engagement.</p>
+      <a href="https://meetings-eu1.hubspot.com/pdu-payrat?uuid=5a24cb40-61aa-41f5-aee3-8cc6a8cae0bf" target="_blank" rel="noopener" style="
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #F26B3A;
+        color: #fff;
+        padding: 12px 24px;
+        border-radius: 100px;
+        text-decoration: none;
+        font-family: 'DM Sans', system-ui, sans-serif;
+        font-weight: 600;
+        font-size: 0.88rem;
+        transition: background 0.2s, transform 0.2s;
+      " onmouseover="this.style.background='#FF8855';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#F26B3A';this.style.transform='none'">
+        Prendre rendez-vous &rarr;
+      </a>
+    </div>
+  </div>
+
+  <style>
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+
   <!-- ═══ REVEAL SCRIPT ═══ -->
   <script>
     const observer = new IntersectionObserver((entries) => {
@@ -1188,6 +1234,12 @@
     }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // RDV Bot - apparaît après 3 minutes (180000ms)
+    setTimeout(() => {
+      const bot = document.getElementById('rdvBot');
+      if (bot) bot.style.display = 'flex';
+    }, 180000);
   </script>
 
 </body>
