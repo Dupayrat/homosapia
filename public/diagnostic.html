@@ -932,6 +932,28 @@
       text-decoration: none;
     }
 
+    /* Restart button */
+    .restart-wrap {
+      text-align: center;
+      margin-top: 32px;
+      margin-bottom: 48px;
+    }
+    .btn-restart {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 12px 28px;
+      border-radius: var(--radius);
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .btn-restart:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
     /* ---- RESPONSIVE ---- */
     @media (max-width: 640px) {
       .value-cards {
@@ -1055,7 +1077,8 @@
         'results.sentDesc': 'You will receive a personalized analysis with a detailed action plan within a few minutes at <strong id="sentToEmail"></strong>',
         'results.cta.title': 'Let\'s discuss your results',
         'results.cta.desc': 'A 30-minute exchange to turn this diagnostic into a concrete action plan',
-        'results.cta.btn': 'Book a meeting '
+        'results.cta.btn': 'Book a meeting ',
+        'results.restart': 'Retake the diagnostic'
       },
       es: {
         'nav.back': '\u2190 Volver al sitio',
@@ -1102,7 +1125,8 @@
         'results.sentDesc': 'Recibir\u00e1 un an\u00e1lisis personalizado con un plan de acci\u00f3n detallado en unos minutos en <strong id="sentToEmail"></strong>',
         'results.cta.title': 'Hablemos de sus resultados',
         'results.cta.desc': 'Un intercambio de 30 minutos para transformar este diagn\u00f3stico en un plan de acci\u00f3n concreto',
-        'results.cta.btn': 'Reservar una cita '
+        'results.cta.btn': 'Reservar una cita ',
+        'results.restart': 'Rehacer el diagn\u00f3stico'
       }
     };
 
@@ -1395,6 +1419,16 @@
             <span data-i18n="results.cta.btn">Prendre rendez-vous </span><span>&rarr;</span>
           </button>
         </a>
+      </div>
+
+      <!-- Restart diagnostic -->
+      <div class="restart-wrap">
+        <button class="btn-restart" onclick="restartDiagnostic()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="margin-right:6px;vertical-align:middle;">
+            <path d="M2 8a6 6 0 0 1 10.3-4.2L11 5h4V1l-1.6 1.6A7.97 7.97 0 0 0 0 8h2zm12 0a6 6 0 0 1-10.3 4.2L5 11H1v4l1.6-1.6A7.97 7.97 0 0 0 16 8h-2z" fill="currentColor"/>
+          </svg>
+          <span data-i18n="results.restart">Refaire le diagnostic</span>
+        </button>
       </div>
     </div>
   </div>
@@ -2439,6 +2473,39 @@ document.addEventListener('keydown', (e) => {
     prevQuestion();
   }
 });
+
+// ============================================================
+// RESTART DIAGNOSTIC
+// ============================================================
+function restartDiagnostic() {
+  // Clear state
+  localStorage.removeItem('homosapia_diag');
+  localStorage.removeItem('homosapia_diag_contact');
+  answers = new Array(15).fill(null);
+  currentQuestion = 0;
+  companyProfile = { name: '', role: '', sector: '', size: '' };
+
+  // Reset form fields
+  const profileForm = document.getElementById('profileForm');
+  if (profileForm) profileForm.reset();
+
+  // Reset gate form
+  const gateForm = document.getElementById('gateForm');
+  if (gateForm) gateForm.reset();
+
+  // Reset results display
+  document.getElementById('reportSent').style.display = 'none';
+
+  // Reset progress bar
+  const pb = document.getElementById('progressBar');
+  if (pb) pb.classList.remove('visible');
+
+  // Navigate to landing
+  showSection('sectionLanding');
+  setTimeout(() => {
+    document.getElementById('sectionLanding').classList.add('visible');
+  }, 50);
+}
 
 // ============================================================
 // INIT
