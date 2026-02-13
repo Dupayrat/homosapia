@@ -289,15 +289,27 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 48px;
+      gap: 56px;
       flex-wrap: wrap;
-      opacity: 0.5;
     }
-    .trust-logos span {
+    .trust-logo-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0.55;
+      transition: opacity 0.3s;
+    }
+    .trust-logo-item:hover {
+      opacity: 0.85;
+    }
+    .trust-logo-item svg {
+      flex-shrink: 0;
+    }
+    .trust-logo-item .trust-name {
       font-family: var(--sans);
-      font-size: 1rem;
+      font-size: 0.82rem;
       font-weight: 600;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
       color: var(--text-muted);
       white-space: nowrap;
     }
@@ -426,7 +438,7 @@
       font-weight: 600;
     }
 
-    /* ───── OFFRES DETAIL ───── */
+    /* ───── OFFRES DETAIL (style impliq.fr) ───── */
     .offres {
       padding: 120px 0;
     }
@@ -437,82 +449,115 @@
     .offres-header .section-subtitle { margin: 0 auto; }
     .offres-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
     }
     .offre-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 40px 32px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 0;
       position: relative;
       overflow: hidden;
-      transition: all 0.3s;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
     }
-    .offre-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--sapiens), var(--accent));
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    .offre-card:hover::before { opacity: 1; }
     .offre-card:hover {
-      border-color: rgba(255,255,255,0.1);
-      transform: translateY(-2px);
+      border-color: rgba(242, 107, 58, 0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(242, 107, 58, 0.15);
     }
-    .offre-icon {
-      font-size: 2rem;
-      margin-bottom: 20px;
+    .offre-card-header {
+      padding: 28px 28px 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
     }
-    .offre-card h3 {
-      font-family: var(--serif);
+    .offre-icon-wrap {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 1.4rem;
-      margin-bottom: 8px;
+      flex-shrink: 0;
+      background: var(--accent-glow);
+    }
+    .offre-card-header-text {
+      flex: 1;
     }
     .offre-tag {
       display: inline-block;
-      background: var(--accent-glow);
+      background: rgba(242, 107, 58, 0.1);
       color: var(--accent);
-      padding: 4px 12px;
+      padding: 3px 10px;
       border-radius: 100px;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: 600;
-      margin-bottom: 16px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
     }
-    .offre-card p {
+    .offre-card h3 {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      margin: 0;
+      line-height: 1.3;
+    }
+    .offre-card-body {
+      padding: 0 28px 20px;
+      flex: 1;
+    }
+    .offre-card-body > p {
       color: var(--text-muted);
-      font-size: 0.92rem;
-      line-height: 1.7;
+      font-size: 0.88rem;
+      line-height: 1.65;
       margin-bottom: 16px;
     }
     .offre-list {
       list-style: none;
-      margin-bottom: 24px;
+      margin: 0;
     }
     .offre-list li {
       color: var(--text-muted);
-      font-size: 0.88rem;
-      padding: 6px 0;
-      padding-left: 20px;
+      font-size: 0.84rem;
+      padding: 5px 0;
+      padding-left: 18px;
       position: relative;
+      line-height: 1.5;
     }
     .offre-list li::before {
-      content: '→';
+      content: '';
       position: absolute;
       left: 0;
-      color: var(--accent);
+      top: 12px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0.6;
+    }
+    .offre-card-footer {
+      padding: 16px 28px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: auto;
     }
     .offre-price {
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 600;
       color: var(--text);
-      padding-top: 16px;
-      border-top: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .offre-detail {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      white-space: nowrap;
     }
 
     /* ───── CAS CLIENTS ───── */
@@ -766,6 +811,9 @@
         aspect-ratio: 16/9;
         max-height: 300px;
       }
+      .offres-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
 
     @media (max-width: 768px) {
@@ -803,7 +851,14 @@
         grid-template-columns: 1fr;
       }
 
-      .trust-logos { gap: 28px; }
+      .trust-logos { gap: 24px; }
+      .trust-logo-item .trust-name { font-size: 0.75rem; }
+
+      .offre-card-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+      }
     }
 
     @media (max-width: 480px) {
@@ -825,6 +880,7 @@
         <li><a href="#offres">Offres</a></li>
         <li><a href="#realisations">Réalisations</a></li>
         <li><a href="#apropos">À propos</a></li>
+        <li><a href="/diagnostic.html" style="color:var(--accent);">Diagnostic IA gratuit</a></li>
         <li><a href="https://www.capital.fr/votre-carriere/lia-va-faire-gagner-du-temps-aux-salaries-et-ce-temps-peut-leur-etre-rendu-1523366" target="_blank" rel="noopener">Notre tribune dans Capital</a></li>
         <li><a href="https://meetings-eu1.hubspot.com/pdu-payrat?uuid=5a24cb40-61aa-41f5-aee3-8cc6a8cae0bf" target="_blank" rel="noopener" class="nav-cta">Parlons-en</a></li>
       </ul>
@@ -857,10 +913,49 @@
     <div class="container">
       <p class="trust-label">Ils nous font confiance</p>
       <div class="trust-logos">
-        <span>COVEA (CFE-CGC)</span>
-        <span>B Lab France</span>
-        <span>Plateau Urbain</span>
-        <span>Hub France IA</span>
+        <!-- COVEA -->
+        <div class="trust-logo-item">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="40" height="40" rx="8" fill="#1a1a2e"/>
+            <path d="M8 26V14l6-4 6 4v12l-6 4-6-4z" fill="#4A90D9" opacity="0.8"/>
+            <path d="M20 26V14l6-4 6 4v12l-6 4-6-4z" fill="#E8525B" opacity="0.8"/>
+            <path d="M14 28V16l6-4 6 4v12l-6 4-6-4z" fill="#5CB85C" opacity="0.6"/>
+          </svg>
+          <span class="trust-name">COVEA (CFE-CGC)</span>
+        </div>
+        <!-- B Lab France / B Corp -->
+        <div class="trust-logo-item">
+          <svg width="36" height="40" viewBox="0 0 36 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="18" cy="20" r="17" stroke="#E8E6E1" stroke-width="2" fill="none"/>
+            <text x="18" y="25" text-anchor="middle" font-family="'DM Sans', sans-serif" font-size="16" font-weight="700" fill="#E8E6E1">B</text>
+          </svg>
+          <span class="trust-name">B Lab France</span>
+        </div>
+        <!-- Plateau Urbain -->
+        <div class="trust-logo-item">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="20" width="8" height="16" rx="1" fill="#E8E6E1" opacity="0.7"/>
+            <rect x="14" y="12" width="8" height="24" rx="1" fill="#E8E6E1" opacity="0.5"/>
+            <rect x="24" y="8" width="12" height="28" rx="1" fill="#E8E6E1" opacity="0.85"/>
+            <rect x="2" y="36" width="36" height="2" rx="1" fill="#E8E6E1" opacity="0.4"/>
+          </svg>
+          <span class="trust-name">Plateau Urbain</span>
+        </div>
+        <!-- Hub France IA -->
+        <div class="trust-logo-item">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="5" fill="#3A8FF2" opacity="0.9"/>
+            <circle cx="9" cy="12" r="3" fill="#E8E6E1" opacity="0.5"/>
+            <circle cx="31" cy="12" r="3" fill="#E8E6E1" opacity="0.5"/>
+            <circle cx="9" cy="28" r="3" fill="#E8E6E1" opacity="0.5"/>
+            <circle cx="31" cy="28" r="3" fill="#E8E6E1" opacity="0.5"/>
+            <line x1="12" y1="13" x2="17" y2="18" stroke="#E8E6E1" stroke-width="1" opacity="0.3"/>
+            <line x1="28" y1="13" x2="23" y2="18" stroke="#E8E6E1" stroke-width="1" opacity="0.3"/>
+            <line x1="12" y1="27" x2="17" y2="22" stroke="#E8E6E1" stroke-width="1" opacity="0.3"/>
+            <line x1="28" y1="27" x2="23" y2="22" stroke="#E8E6E1" stroke-width="1" opacity="0.3"/>
+          </svg>
+          <span class="trust-name">Hub France IA</span>
+        </div>
       </div>
     </div>
   </section>
@@ -967,84 +1062,138 @@
       <div class="offres-grid">
 
         <div class="offre-card reveal">
-          <div class="offre-icon">🎤</div>
-          <span class="offre-tag">Sensibilisation</span>
-          <h3>Conférence & débat</h3>
-          <p>Projetez vos équipes dans les futurs du travail et de l'IA avec une conférence sur-mesure.</p>
-          <ul class="offre-list">
-            <li>Potentiels et optimisation des usages IA</li>
-            <li>Vers une IA souveraine, éthique et frugale</li>
-            <li>Les Futures of Work et comment s'y préparer</li>
-          </ul>
-          <div class="offre-price">1 800 € – 4 500 € · Conférence + support</div>
+          <div class="offre-card-header">
+            <div class="offre-icon-wrap">🎤</div>
+            <div class="offre-card-header-text">
+              <span class="offre-tag">Sensibilisation</span>
+              <h3>Conférence & débat</h3>
+            </div>
+          </div>
+          <div class="offre-card-body">
+            <p>Projetez vos équipes dans les futurs du travail et de l'IA avec une conférence sur-mesure.</p>
+            <ul class="offre-list">
+              <li>Potentiels et optimisation des usages IA</li>
+              <li>Vers une IA souveraine, éthique et frugale</li>
+              <li>Les Futures of Work et comment s'y préparer</li>
+            </ul>
+          </div>
+          <div class="offre-card-footer">
+            <span class="offre-price">1 800 - 4 500 €</span>
+            <span class="offre-detail">Conférence + support</span>
+          </div>
         </div>
 
         <div class="offre-card reveal">
-          <div class="offre-icon">🧪</div>
-          <span class="offre-tag">Acculturation</span>
-          <h3>Ateliers pratiques</h3>
-          <p>1 à 2 jours de montée en compétence en manipulant des outils et concepts concrets.</p>
-          <ul class="offre-list">
-            <li>IA : démystifier et identifier les potentiels</li>
-            <li>Roadmap "Adoption IA" pour CODIR</li>
-            <li>Libérer le temps : dysfonctionnements et potentiels</li>
-          </ul>
-          <div class="offre-price">2 500 € – 6 000 € · Max 8 personnes</div>
+          <div class="offre-card-header">
+            <div class="offre-icon-wrap">🧪</div>
+            <div class="offre-card-header-text">
+              <span class="offre-tag">Acculturation</span>
+              <h3>Ateliers pratiques</h3>
+            </div>
+          </div>
+          <div class="offre-card-body">
+            <p>1 à 2 jours de montée en compétence en manipulant des outils et concepts concrets.</p>
+            <ul class="offre-list">
+              <li>IA : démystifier et identifier les potentiels</li>
+              <li>Roadmap "Adoption IA" pour CODIR</li>
+              <li>Libérer le temps : dysfonctionnements et potentiels</li>
+            </ul>
+          </div>
+          <div class="offre-card-footer">
+            <span class="offre-price">2 500 - 6 000 €</span>
+            <span class="offre-detail">Max 8 personnes</span>
+          </div>
         </div>
 
         <div class="offre-card reveal">
-          <div class="offre-icon">🔍</div>
-          <span class="offre-tag">Diagnostic</span>
-          <h3>Audit IA & opérationnel</h3>
-          <p>Diagnostiquer les freins et les potentiels sur un ou plusieurs services : RH, processus, outils, data.</p>
-          <ul class="offre-list">
-            <li>Audit adoption IA et maturité data</li>
-            <li>Efficacité opérationnelle et points de friction</li>
-            <li>Plan d'action priorisé et chiffré</li>
-          </ul>
-          <div class="offre-price">TJM 1 500 € ou forfait à partir de 8 000 €</div>
+          <div class="offre-card-header">
+            <div class="offre-icon-wrap">🔍</div>
+            <div class="offre-card-header-text">
+              <span class="offre-tag">Diagnostic</span>
+              <h3>Audit IA & opérationnel</h3>
+            </div>
+          </div>
+          <div class="offre-card-body">
+            <p>Diagnostiquer les freins et les potentiels sur un ou plusieurs services : RH, processus, outils, data.</p>
+            <ul class="offre-list">
+              <li>Audit adoption IA et maturité data</li>
+              <li>Efficacité opérationnelle et points de friction</li>
+              <li>Plan d'action priorisé et chiffré</li>
+            </ul>
+          </div>
+          <div class="offre-card-footer">
+            <span class="offre-price">Dès 8 000 €</span>
+            <span class="offre-detail">TJM 1 500 € ou forfait</span>
+          </div>
         </div>
 
         <div class="offre-card reveal">
-          <div class="offre-icon">📚</div>
-          <span class="offre-tag">Montée en compétence</span>
-          <h3>Formations IA</h3>
-          <p>Formations adaptées à votre contexte : IA générative, outils métiers, prompting, vibe-coding.</p>
-          <ul class="offre-list">
-            <li>IA et ses outils pour la productivité</li>
-            <li>Du prompting au context engineering</li>
-            <li>Outils : Copilot 365, n8n, Perplexity, Gamma...</li>
-            <li>Les bases du vibe-coding (PoC fonctionnel)</li>
-          </ul>
-          <div class="offre-price">800 – 1 000 €/pers/jour · 5 à 10 participants</div>
+          <div class="offre-card-header">
+            <div class="offre-icon-wrap">📚</div>
+            <div class="offre-card-header-text">
+              <span class="offre-tag">Montée en compétence</span>
+              <h3>Formations IA</h3>
+            </div>
+          </div>
+          <div class="offre-card-body">
+            <p>Formations adaptées à votre contexte : IA générative, outils métiers, prompting, vibe-coding.</p>
+            <ul class="offre-list">
+              <li>IA et ses outils pour la productivité</li>
+              <li>Du prompting au context engineering</li>
+              <li>Outils : Copilot 365, n8n, Perplexity, Gamma...</li>
+              <li>Les bases du vibe-coding (PoC fonctionnel)</li>
+            </ul>
+          </div>
+          <div class="offre-card-footer">
+            <span class="offre-price">800 - 1 000 €/pers/jour</span>
+            <span class="offre-detail">5 à 10 participants</span>
+          </div>
         </div>
 
         <div class="offre-card reveal">
-          <div class="offre-icon">🚀</div>
-          <span class="offre-tag">Expérimentation</span>
-          <h3>Projet pilote & déploiement</h3>
-          <p>De l'automatisation de tâches à la création d'agents IA, en passant par la mise en production.</p>
-          <ul class="offre-list">
-            <li>Automatiser les tâches chronophages</li>
-            <li>Entraîner l'IA sur vos spécificités métier</li>
-            <li>Développer des agents IA disruptifs</li>
-            <li>Infrastructure AI-ready et charte IA</li>
-          </ul>
-          <div class="offre-price">À partir de 10 000 € · Durée : 2+ mois</div>
+          <div class="offre-card-header">
+            <div class="offre-icon-wrap">🚀</div>
+            <div class="offre-card-header-text">
+              <span class="offre-tag">Expérimentation</span>
+              <h3>Projet pilote & déploiement</h3>
+            </div>
+          </div>
+          <div class="offre-card-body">
+            <p>De l'automatisation de tâches à la création d'agents IA, en passant par la mise en production.</p>
+            <ul class="offre-list">
+              <li>Automatiser les tâches chronophages</li>
+              <li>Entraîner l'IA sur vos spécificités métier</li>
+              <li>Développer des agents IA disruptifs</li>
+              <li>Infrastructure AI-ready et charte IA</li>
+            </ul>
+          </div>
+          <div class="offre-card-footer">
+            <span class="offre-price">Dès 10 000 €</span>
+            <span class="offre-detail">Durée : 2+ mois</span>
+          </div>
         </div>
 
         <div class="offre-card reveal">
-          <div class="offre-icon">🏗️</div>
-          <span class="offre-tag">Transformation</span>
-          <h3>Accompagnement global</h3>
-          <p>Transformation complète : diagnostic, conception, pilote, déploiement et ancrage sur 6 mois.</p>
-          <ul class="offre-list">
-            <li>Cartographie & diagnostic complet</li>
-            <li>Évaluation & conception de l'organisation cible</li>
-            <li>Validation terrain sur équipe pilote</li>
-            <li>Déploiement à l'échelle avec conduite du changement</li>
-          </ul>
-          <div class="offre-price">Sur étude · Engagement progressif possible</div>
+          <div class="offre-card-header">
+            <div class="offre-icon-wrap">🏗️</div>
+            <div class="offre-card-header-text">
+              <span class="offre-tag">Transformation</span>
+              <h3>Accompagnement global</h3>
+            </div>
+          </div>
+          <div class="offre-card-body">
+            <p>Transformation complète : diagnostic, conception, pilote, déploiement et ancrage sur 6 mois.</p>
+            <ul class="offre-list">
+              <li>Cartographie & diagnostic complet</li>
+              <li>Évaluation & conception de l'organisation cible</li>
+              <li>Validation terrain sur équipe pilote</li>
+              <li>Déploiement à l'échelle avec conduite du changement</li>
+            </ul>
+          </div>
+          <div class="offre-card-footer">
+            <span class="offre-price">Sur étude</span>
+            <span class="offre-detail">Engagement progressif possible</span>
+          </div>
         </div>
 
       </div>

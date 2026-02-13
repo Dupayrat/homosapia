@@ -1,0 +1,1841 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagnostic IA - HomoSapIA</title>
+  <meta name="description" content="Évaluez la maturité IA de votre entreprise en 5 minutes. Diagnostic gratuit avec résultats immédiats et plan d'action personnalisé.">
+  <meta property="og:title" content="Diagnostic IA en 5 minutes - HomoSapIA">
+  <meta property="og:description" content="Évaluez la maturité IA de votre entreprise et recevez un plan d'action personnalisé.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0A0A0F;
+      --bg-elevated: #12121A;
+      --bg-card: #16161F;
+      --text: #E8E6E1;
+      --text-muted: #8A8A95;
+      --accent: #F26B3A;
+      --accent-glow: rgba(242, 107, 58, 0.15);
+      --accent-hover: #FF8855;
+      --sapiens: #3A8FF2;
+      --sapiens-glow: rgba(58, 143, 242, 0.12);
+      --border: rgba(255,255,255,0.06);
+      --serif: 'Instrument Serif', Georgia, serif;
+      --sans: 'DM Sans', system-ui, sans-serif;
+      --radius: 16px;
+      --max-w: 800px;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 16px;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ---- NAV ---- */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 16px 0;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(10, 10, 15, 0.8);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      color: var(--text);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+    .logo-ia { color: var(--accent); font-style: italic; }
+    .nav-back {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--text); }
+
+    /* ---- PROGRESS BAR ---- */
+    .progress-bar-wrap {
+      position: fixed;
+      top: 65px; left: 0; right: 0;
+      z-index: 999;
+      height: 3px;
+      background: var(--bg-elevated);
+      display: none;
+    }
+    .progress-bar-wrap.visible { display: block; }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--sapiens));
+      transition: width 0.4s ease;
+      width: 0%;
+      border-radius: 0 2px 2px 0;
+    }
+
+    /* ---- CONTAINER ---- */
+    .container {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ---- SECTIONS ---- */
+    .section {
+      display: none;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      padding-top: 100px;
+      min-height: 100vh;
+    }
+    .section.active {
+      display: block;
+    }
+    .section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .section-results {
+      min-height: auto;
+      padding-bottom: 80px;
+    }
+
+    /* ---- LANDING ---- */
+    .landing {
+      text-align: center;
+      padding-top: 140px;
+      position: relative;
+    }
+    .landing::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .landing::after {
+      content: '';
+      position: absolute;
+      bottom: -100px; left: -200px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, var(--sapiens-glow) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .landing-content {
+      position: relative;
+      z-index: 1;
+    }
+    .landing-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+    .landing h1 {
+      font-family: var(--serif);
+      font-size: clamp(2.4rem, 6vw, 3.6rem);
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+    .landing h1 .highlight {
+      color: var(--accent);
+      font-style: italic;
+    }
+    .landing .subtitle {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 540px;
+      margin: 0 auto 36px;
+      line-height: 1.7;
+    }
+
+    /* ---- BUTTONS ---- */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 16px 36px;
+      border-radius: 100px;
+      font-family: var(--sans);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 24px rgba(242, 107, 58, 0.25);
+    }
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 32px rgba(242, 107, 58, 0.35);
+    }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 14px 32px;
+      border-radius: 100px;
+      font-family: var(--sans);
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover {
+      border-color: rgba(255,255,255,0.15);
+      background: var(--bg-elevated);
+    }
+    .btn-sapiens {
+      background: var(--sapiens);
+      box-shadow: 0 4px 24px rgba(58, 143, 242, 0.25);
+    }
+    .btn-sapiens:hover {
+      background: #4D9BF5;
+      box-shadow: 0 6px 32px rgba(58, 143, 242, 0.35);
+    }
+
+    /* ---- BADGES ---- */
+    .badges {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 32px;
+      flex-wrap: wrap;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 8px 18px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .badge .check { color: var(--accent); }
+
+    /* ---- VALUE CARDS ---- */
+    .value-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 48px;
+    }
+    .value-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 20px;
+      text-align: center;
+    }
+    .value-card-icon {
+      width: 48px; height: 48px;
+      margin: 0 auto 16px;
+      background: var(--bg-elevated);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+    }
+    .value-card h3 {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      margin-bottom: 8px;
+    }
+    .value-card p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
+    /* ---- FORM SECTION (step0) ---- */
+    .form-section {
+      padding-top: 120px;
+    }
+    .form-section h2 {
+      font-family: var(--serif);
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .form-section .form-subtitle {
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 36px;
+      font-size: 0.95rem;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+    .form-group label {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+    .form-group input,
+    .form-group select {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-family: var(--sans);
+      font-size: 0.95rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .form-group select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%238A8A95' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 40px;
+      cursor: pointer;
+    }
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: var(--accent);
+    }
+    .form-group input::placeholder {
+      color: var(--text-muted);
+      opacity: 0.6;
+    }
+    .form-group select option {
+      background: var(--bg-card);
+      color: var(--text);
+    }
+    .form-actions {
+      text-align: center;
+      margin-top: 36px;
+    }
+
+    /* ---- QUESTION SECTION ---- */
+    .question-section {
+      padding-top: 120px;
+      min-height: calc(100vh - 68px);
+      display: flex;
+      flex-direction: column;
+    }
+    .question-header {
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .question-step {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .question-pillar {
+      font-size: 0.85rem;
+      color: var(--sapiens);
+      margin-bottom: 24px;
+      font-weight: 500;
+    }
+    .question-text {
+      font-family: var(--serif);
+      font-size: clamp(1.4rem, 3.5vw, 1.9rem);
+      line-height: 1.3;
+      text-align: center;
+      margin-bottom: 40px;
+      max-width: 650px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ---- ANSWER CARDS ---- */
+    .answer-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 620px;
+      margin: 0 auto;
+      flex-grow: 1;
+    }
+    .answer-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      user-select: none;
+    }
+    .answer-card:hover {
+      border-color: rgba(255,255,255,0.12);
+      background: var(--bg-elevated);
+      transform: translateX(4px);
+    }
+    .answer-card.selected {
+      border-color: var(--accent);
+      background: rgba(242, 107, 58, 0.06);
+      box-shadow: 0 0 0 1px var(--accent);
+    }
+    .answer-card.flash {
+      border-color: var(--accent);
+      background: rgba(242, 107, 58, 0.1);
+    }
+    .answer-indicator {
+      width: 28px; height: 28px;
+      min-width: 28px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      transition: all 0.25s;
+      margin-top: 2px;
+    }
+    .answer-card.selected .answer-indicator {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: #fff;
+    }
+    .answer-label {
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    .answer-label strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+    .answer-label span {
+      color: var(--text-muted);
+    }
+
+    /* ---- QUESTION NAVIGATION ---- */
+    .question-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 620px;
+      margin: 32px auto 0;
+      padding-bottom: 40px;
+    }
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      cursor: pointer;
+      padding: 10px 0;
+      transition: color 0.2s;
+    }
+    .btn-back:hover { color: var(--text); }
+    .btn-next {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 100px;
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      opacity: 0.4;
+      pointer-events: none;
+    }
+    .btn-next.enabled {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .btn-next.enabled:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    /* ---- RESULTS ---- */
+    .results-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .results-header h2 {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      margin-bottom: 8px;
+    }
+    .results-header p {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    /* Score circle */
+    .score-circle-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 48px;
+    }
+    .score-circle {
+      position: relative;
+      width: 200px; height: 200px;
+    }
+    .score-circle svg {
+      width: 200px; height: 200px;
+      transform: rotate(-90deg);
+    }
+    .score-circle-bg {
+      fill: none;
+      stroke: var(--bg-elevated);
+      stroke-width: 8;
+    }
+    .score-circle-fill {
+      fill: none;
+      stroke-width: 8;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 1.5s ease;
+    }
+    .score-circle-text {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .score-number {
+      font-family: var(--serif);
+      font-size: 3rem;
+      font-weight: 400;
+      line-height: 1;
+    }
+    .score-total {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .score-level {
+      margin-top: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      border-radius: 100px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .score-level-desc {
+      color: var(--text-muted);
+      margin-top: 12px;
+      font-size: 0.95rem;
+      text-align: center;
+      max-width: 480px;
+    }
+
+    /* Radar chart */
+    .radar-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 48px;
+    }
+    .radar-title {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    .radar-svg {
+      width: 320px; height: 320px;
+    }
+    .radar-labels {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px 20px;
+      margin-top: 16px;
+    }
+    .radar-label-item {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .radar-label-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    /* Pillar bars */
+    .pillar-bars {
+      margin-bottom: 48px;
+    }
+    .pillar-bars-title {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    .pillar-bar-item {
+      margin-bottom: 20px;
+    }
+    .pillar-bar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .pillar-bar-name {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    .pillar-bar-score {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .pillar-bar-track {
+      height: 10px;
+      background: var(--bg-elevated);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .pillar-bar-fill {
+      height: 100%;
+      border-radius: 5px;
+      transition: width 1.2s ease;
+      width: 0%;
+    }
+
+    /* Recommendations */
+    .reco-section {
+      margin-bottom: 48px;
+    }
+    .reco-title {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    .reco-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .reco-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    .reco-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px; height: 100%;
+    }
+    .reco-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .reco-card-pillar {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+    .reco-card-score {
+      font-size: 0.8rem;
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-weight: 600;
+    }
+    .reco-card-insight {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    .reco-card-action {
+      background: var(--bg-elevated);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .reco-card-action-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .reco-card-action-text {
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .reco-card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--sapiens);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .reco-card-link:hover { color: #5DA5F5; }
+
+    /* Lead capture */
+    .lead-capture {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 40px;
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .lead-capture h3 {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      margin-bottom: 8px;
+    }
+    .lead-capture .lead-desc {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+    }
+    .lead-form {
+      display: flex;
+      gap: 12px;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    .lead-form input {
+      flex: 1;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 14px 20px;
+      font-family: var(--sans);
+      font-size: 0.95rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .lead-form input:focus {
+      border-color: var(--accent);
+    }
+    .lead-form input::placeholder {
+      color: var(--text-muted);
+      opacity: 0.6;
+    }
+    .lead-form button {
+      white-space: nowrap;
+    }
+    .lead-small {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 12px;
+      opacity: 0.7;
+    }
+    .lead-success {
+      display: none;
+      color: #4CAF50;
+      font-weight: 500;
+      margin-top: 12px;
+    }
+
+    /* CTA final */
+    .cta-final {
+      text-align: center;
+      margin-bottom: 48px;
+      padding: 48px 24px;
+      background: linear-gradient(135deg, rgba(242, 107, 58, 0.08) 0%, rgba(58, 143, 242, 0.08) 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .cta-final h3 {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      margin-bottom: 12px;
+    }
+    .cta-final p {
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      font-size: 0.95rem;
+    }
+    .cta-final a {
+      text-decoration: none;
+    }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 640px) {
+      .value-cards {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .badges {
+        gap: 8px;
+      }
+      .badge {
+        font-size: 0.78rem;
+        padding: 6px 14px;
+      }
+      .answer-card {
+        padding: 16px 18px;
+      }
+      .lead-form {
+        flex-direction: column;
+      }
+      .lead-form button {
+        width: 100%;
+        justify-content: center;
+      }
+      .radar-svg {
+        width: 280px; height: 280px;
+      }
+      .reco-card {
+        padding: 20px;
+      }
+      .lead-capture {
+        padding: 28px 20px;
+      }
+      .cta-final {
+        padding: 32px 20px;
+      }
+    }
+
+    /* ---- ANIMATIONS ---- */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-in {
+      animation: fadeInUp 0.5s ease forwards;
+    }
+    .animate-delay-1 { animation-delay: 0.1s; opacity: 0; }
+    .animate-delay-2 { animation-delay: 0.2s; opacity: 0; }
+    .animate-delay-3 { animation-delay: 0.3s; opacity: 0; }
+    .animate-delay-4 { animation-delay: 0.4s; opacity: 0; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <a href="https://homosapia.com" class="logo">HomoSap<span class="logo-ia">IA</span></a>
+      <a href="https://homosapia.com" class="nav-back">&larr; Retour au site</a>
+    </div>
+  </nav>
+
+  <!-- PROGRESS BAR -->
+  <div class="progress-bar-wrap" id="progressBar">
+    <div class="progress-bar-fill" id="progressFill"></div>
+  </div>
+
+  <!-- ==================== LANDING ==================== -->
+  <div class="section active" id="sectionLanding">
+    <div class="container landing">
+      <div class="landing-content">
+        <div class="landing-label">Diagnostic gratuit</div>
+        <h1>Diagnostic <span class="highlight">IA</span> en 5 minutes</h1>
+        <p class="subtitle">Évaluez la maturité IA de votre entreprise et recevez un plan d'action personnalisé</p>
+        <button class="btn-primary" onclick="showStep0()">
+          Lancer le diagnostic <span>&rarr;</span>
+        </button>
+        <div class="badges">
+          <span class="badge"><span class="check">&#10003;</span> 100% gratuit</span>
+          <span class="badge"><span class="check">&#10003;</span> 5 minutes</span>
+          <span class="badge"><span class="check">&#10003;</span> Résultats immédiats</span>
+        </div>
+        <div class="value-cards">
+          <div class="value-card">
+            <div class="value-card-icon">&#127919;</div>
+            <h3>Diagnostic précis</h3>
+            <p>15 questions couvrant 5 piliers clés de la maturité IA</p>
+          </div>
+          <div class="value-card">
+            <div class="value-card-icon">&#9889;</div>
+            <h3>Recommandations actionnables</h3>
+            <p>Des actions concrètes adaptées à votre niveau de maturité</p>
+          </div>
+          <div class="value-card">
+            <div class="value-card-icon">&#128203;</div>
+            <h3>Plan d'action priorisé</h3>
+            <p>Identifiez les leviers à activer en priorité pour votre entreprise</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== STEP 0 - COMPANY PROFILE ==================== -->
+  <div class="section" id="sectionProfile">
+    <div class="container form-section">
+      <h2>Quelques informations sur votre entreprise</h2>
+      <p class="form-subtitle">Ces données nous permettent de personnaliser votre diagnostic</p>
+      <div class="form-grid">
+        <div class="form-group full-width">
+          <label for="companyName">Nom de l'entreprise</label>
+          <input type="text" id="companyName" placeholder="ex: Acme Corp">
+        </div>
+        <div class="form-group">
+          <label for="role">Votre fonction</label>
+          <select id="role">
+            <option value="" disabled selected>Sélectionnez</option>
+            <option value="Dirigeant/CEO">Dirigeant / CEO</option>
+            <option value="DRH/RH">DRH / RH</option>
+            <option value="DSI/CTO">DSI / CTO</option>
+            <option value="Manager">Manager</option>
+            <option value="Autre">Autre</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="sector">Secteur d'activité</label>
+          <select id="sector">
+            <option value="" disabled selected>Sélectionnez</option>
+            <option value="Services B2B">Services B2B</option>
+            <option value="Industrie">Industrie</option>
+            <option value="Tech/SaaS">Tech / SaaS</option>
+            <option value="Commerce/Retail">Commerce / Retail</option>
+            <option value="Santé">Santé</option>
+            <option value="Finance/Assurance">Finance / Assurance</option>
+            <option value="BTP">BTP</option>
+            <option value="Autre">Autre</option>
+          </select>
+        </div>
+        <div class="form-group full-width">
+          <label for="size">Taille de l'entreprise</label>
+          <select id="size">
+            <option value="" disabled selected>Sélectionnez</option>
+            <option value="1-20">1 - 20 collaborateurs</option>
+            <option value="21-50">21 - 50 collaborateurs</option>
+            <option value="51-200">51 - 200 collaborateurs</option>
+            <option value="201-1000">201 - 1 000 collaborateurs</option>
+            <option value="1000+">1 000+ collaborateurs</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn-primary" onclick="startDiagnostic()" id="btnStartDiag">
+          Commencer le diagnostic <span>&rarr;</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== QUESTIONS ==================== -->
+  <div class="section" id="sectionQuestions">
+    <div class="container question-section">
+      <div class="question-header">
+        <div class="question-step" id="qStep"></div>
+        <div class="question-pillar" id="qPillar"></div>
+      </div>
+      <div class="question-text" id="qText"></div>
+      <div class="answer-cards" id="answerCards"></div>
+      <div class="question-nav">
+        <button class="btn-back" onclick="prevQuestion()" id="btnPrev">
+          <span>&larr;</span> Retour
+        </button>
+        <button class="btn-next" id="btnNext" onclick="nextQuestion()">
+          Suivant <span>&rarr;</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== RESULTS ==================== -->
+  <div class="section section-results" id="sectionResults">
+    <div class="container" style="padding-top: 120px; padding-bottom: 60px;">
+      <div class="results-header">
+        <div class="landing-label">Vos résultats</div>
+        <h2>Votre diagnostic IA</h2>
+        <p id="resultsCompany"></p>
+      </div>
+
+      <!-- Score circle -->
+      <div class="score-circle-wrap">
+        <div class="score-circle">
+          <svg viewBox="0 0 200 200">
+            <circle class="score-circle-bg" cx="100" cy="100" r="88"/>
+            <circle class="score-circle-fill" id="scoreCircleFill" cx="100" cy="100" r="88"
+              stroke-dasharray="553" stroke-dashoffset="553"/>
+          </svg>
+          <div class="score-circle-text">
+            <span class="score-number" id="scoreNumber">0</span>
+            <span class="score-total">/ 60</span>
+          </div>
+        </div>
+        <div class="score-level" id="scoreLevel"></div>
+        <p class="score-level-desc" id="scoreLevelDesc"></p>
+      </div>
+
+      <!-- Radar chart -->
+      <div class="radar-wrap">
+        <h3 class="radar-title">Vue d'ensemble par pilier</h3>
+        <svg class="radar-svg" id="radarChart" viewBox="0 0 320 320"></svg>
+        <div class="radar-labels" id="radarLabels"></div>
+      </div>
+
+      <!-- Pillar bars -->
+      <div class="pillar-bars">
+        <h3 class="pillar-bars-title">Détail par pilier</h3>
+        <div id="pillarBarsContainer"></div>
+      </div>
+
+      <!-- Recommendations -->
+      <div class="reco-section">
+        <h3 class="reco-title">Top 3 recommandations</h3>
+        <div class="reco-cards" id="recoCards"></div>
+      </div>
+
+      <!-- Lead capture -->
+      <div class="lead-capture">
+        <h3>Recevez votre rapport détaillé</h3>
+        <p class="lead-desc">Nous vous enverrons une analyse complète avec un plan d'action personnalisé</p>
+        <div class="lead-form" id="leadForm">
+          <input type="email" id="leadEmail" placeholder="votre@email.com" required>
+          <button class="btn-primary" onclick="submitLead()">Recevoir mon rapport</button>
+        </div>
+        <p class="lead-success" id="leadSuccess">Merci ! Vous recevrez votre rapport détaillé très prochainement.</p>
+        <p class="lead-small">Pas de spam. Juste votre diagnostic détaillé.</p>
+      </div>
+
+      <!-- CTA final -->
+      <div class="cta-final">
+        <h3>Discutons de vos résultats</h3>
+        <p>Un échange de 30 minutes pour transformer ce diagnostic en plan d'action concret</p>
+        <a href="https://meetings-eu1.hubspot.com/pdu-payrat?uuid=5a24cb40-61aa-41f5-aee3-8cc6a8cae0bf" target="_blank" rel="noopener">
+          <button class="btn-primary btn-sapiens">
+            Prendre rendez-vous <span>&rarr;</span>
+          </button>
+        </a>
+      </div>
+    </div>
+  </div>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const PILLARS = [
+  "Shadow IA & Usages",
+  "Souveraineté & Data",
+  "Frugalité & Impact",
+  "Éthique & Gouvernance",
+  "Acculturation & Compétences"
+];
+
+const QUESTIONS = [
+  // Pilier 1 : Shadow IA & Usages
+  {
+    pillar: 0,
+    text: "Vos collaborateurs utilisent-ils des outils IA non validés par l'entreprise (ChatGPT, Copilot perso, etc.) ?",
+    answers: [
+      { label: "Aucune idée", desc: "nous n'avons aucune visibilité sur les usages IA", score: 1 },
+      { label: "Probable", desc: "nous savons que certains utilisent des outils non officiels", score: 2 },
+      { label: "Identifié", desc: "nous avons cartographié les usages non encadrés", score: 3 },
+      { label: "Maîtrisé", desc: "politique claire avec outils officiels déployés", score: 4 }
+    ]
+  },
+  {
+    pillar: 0,
+    text: "Des données sensibles (clients, stratégie, RH) sont-elles saisies dans des outils IA grand public ?",
+    answers: [
+      { label: "Très probable", desc: "aucune consigne n'existe sur ce sujet", score: 1 },
+      { label: "Possible", desc: "on en parle mais pas de contrôle réel", score: 2 },
+      { label: "Encadré partiellement", desc: "des consignes existent mais ne sont pas systématiquement suivies", score: 3 },
+      { label: "Sous contrôle", desc: "charte IA validée avec classification des données", score: 4 }
+    ]
+  },
+  {
+    pillar: 0,
+    text: "Avez-vous une vision claire des outils IA réellement utilisés dans votre organisation ?",
+    answers: [
+      { label: "Pas du tout", desc: "chacun utilise ce qu'il veut", score: 1 },
+      { label: "Inventaire partiel", desc: "nous connaissons quelques outils utilisés", score: 2 },
+      { label: "Cartographie en cours", desc: "audit des usages lancé", score: 3 },
+      { label: "Cartographie complète", desc: "inventaire à jour avec évaluation risques/bénéfices", score: 4 }
+    ]
+  },
+  // Pilier 2 : Souveraineté & Data
+  {
+    pillar: 1,
+    text: "Où sont hébergées les données traitées par vos outils IA ?",
+    answers: [
+      { label: "Aucune idée", desc: "nous ne savons pas où vont nos données", score: 1 },
+      { label: "USA/hors UE", desc: "principalement chez des acteurs américains (OpenAI, Google)", score: 2 },
+      { label: "Mixte", desc: "certains outils européens, d'autres non", score: 3 },
+      { label: "Europe prioritaire", desc: "hébergement UE et fournisseurs souverains privilégiés", score: 4 }
+    ]
+  },
+  {
+    pillar: 1,
+    text: "Votre entreprise prend-elle en compte l'AI Act européen dans ses choix IA ?",
+    answers: [
+      { label: "Pas informés", desc: "nous ne connaissons pas l'AI Act", score: 1 },
+      { label: "Connaissance basique", desc: "on sait que ça existe mais sans impact concret", score: 2 },
+      { label: "En analyse", desc: "nous évaluons les implications pour notre activité", score: 3 },
+      { label: "Intégré", desc: "l'AI Act est pris en compte dans nos choix d'outils et processus", score: 4 }
+    ]
+  },
+  {
+    pillar: 1,
+    text: "Vos données sont-elles structurées et prêtes pour alimenter des outils IA ?",
+    answers: [
+      { label: "Dispersées", desc: "données en silos, pas exploitables", score: 1 },
+      { label: "Partiellement centralisées", desc: "mais qualité insuffisante", score: 2 },
+      { label: "Structurées", desc: "accessibles et de qualité suffisante", score: 3 },
+      { label: "Optimisées", desc: "data pipeline en place, données qualifiées et documentées", score: 4 }
+    ]
+  },
+  // Pilier 3 : Frugalité & Impact
+  {
+    pillar: 2,
+    text: "Prenez-vous en compte l'impact environnemental de vos usages IA ?",
+    answers: [
+      { label: "Pas du tout", desc: "le sujet n'est jamais évoqué", score: 1 },
+      { label: "Sensibilité", desc: "on en parle mais sans mesure concrète", score: 2 },
+      { label: "Critère de choix", desc: "l'impact environnemental est un critère parmi d'autres", score: 3 },
+      { label: "Politique active", desc: "choix systématique de modèles légers et frugaux quand c'est possible", score: 4 }
+    ]
+  },
+  {
+    pillar: 2,
+    text: "Utilisez-vous des modèles IA adaptés à la complexité de vos tâches (pas de GPT-4 pour un simple résumé) ?",
+    answers: [
+      { label: "Un seul modèle pour tout", desc: "toujours le plus puissant par défaut", score: 1 },
+      { label: "Pas de réflexion", desc: "on utilise ce qu'on connaît", score: 2 },
+      { label: "Différenciation partielle", desc: "certains choisissent le bon modèle selon la tâche", score: 3 },
+      { label: "Stratégie frugale", desc: "choix systématique du modèle adapté (coût, énergie, performance)", score: 4 }
+    ]
+  },
+  {
+    pillar: 2,
+    text: "Mesurez-vous le ROI de vos usages IA (temps gagné, qualité, coûts) ?",
+    answers: [
+      { label: "Aucune mesure", desc: "on utilise l'IA sans mesurer l'impact", score: 1 },
+      { label: "Ressenti", desc: "on pense que ça aide mais pas de données", score: 2 },
+      { label: "Quelques métriques", desc: "sur certains cas d'usage", score: 3 },
+      { label: "ROI systématique", desc: "chaque usage IA est mesuré et documenté", score: 4 }
+    ]
+  },
+  // Pilier 4 : Éthique & Gouvernance
+  {
+    pillar: 3,
+    text: "Avez-vous une charte IA ou des principes éthiques définis ?",
+    answers: [
+      { label: "Aucune charte", desc: "le sujet n'a pas été abordé", score: 1 },
+      { label: "En réflexion", desc: "le besoin est identifié mais rien de formalisé", score: 2 },
+      { label: "Charte en cours", desc: "document en cours de rédaction / validation", score: 3 },
+      { label: "Charte active", desc: "charte validée, diffusée et appliquée", score: 4 }
+    ]
+  },
+  {
+    pillar: 3,
+    text: "Qui valide les décisions prises avec l'aide de l'IA dans votre organisation ?",
+    answers: [
+      { label: "Personne", desc: "l'IA est utilisée sans supervision", score: 1 },
+      { label: "L'utilisateur seul", desc: "chacun juge de la pertinence", score: 2 },
+      { label: "Processus partiel", desc: "validation humaine sur certains cas sensibles", score: 3 },
+      { label: "Human-in-the-loop", desc: "validation humaine systématique sur les décisions critiques", score: 4 }
+    ]
+  },
+  {
+    pillar: 3,
+    text: "Vos équipes sont-elles sensibilisées aux biais et risques de l'IA (hallucinations, biais, désinformation) ?",
+    answers: [
+      { label: "Pas du tout", desc: "aucune formation ou sensibilisation", score: 1 },
+      { label: "Vaguement", desc: "quelques articles partagés", score: 2 },
+      { label: "Formation ponctuelle", desc: "au moins une session de sensibilisation réalisée", score: 3 },
+      { label: "Intégré", desc: "sensibilisation continue avec cas pratiques et guides internes", score: 4 }
+    ]
+  },
+  // Pilier 5 : Acculturation & Compétences
+  {
+    pillar: 4,
+    text: "Quel est le niveau de compétence IA de vos équipes ?",
+    answers: [
+      { label: "Aucune compétence", desc: "pas de formation IA en interne", score: 1 },
+      { label: "Quelques autodidactes", desc: "qui expérimentent par eux-mêmes", score: 2 },
+      { label: "Formations ponctuelles", desc: "des formations ont été réalisées", score: 3 },
+      { label: "Programme structuré", desc: "plan de montée en compétences IA en place", score: 4 }
+    ]
+  },
+  {
+    pillar: 4,
+    text: "Votre direction porte-t-elle l'adoption IA comme un sujet stratégique ?",
+    answers: [
+      { label: "Pas du tout", desc: "le sujet n'est pas à l'agenda du CODIR", score: 1 },
+      { label: "Intérêt déclaré", desc: "le CODIR en parle mais pas d'action", score: 2 },
+      { label: "Sponsor identifié", desc: "un membre du CODIR porte le sujet", score: 3 },
+      { label: "Vision intégrée", desc: "roadmap IA alignée sur la stratégie d'entreprise", score: 4 }
+    ]
+  },
+  {
+    pillar: 4,
+    text: "Avez-vous des référents ou champions IA en interne ?",
+    answers: [
+      { label: "Aucun référent", desc: "personne n'est identifié sur le sujet", score: 1 },
+      { label: "1-2 motivés", desc: "mais pas mandatés officiellement", score: 2 },
+      { label: "Référents désignés", desc: "dans certains services", score: 3 },
+      { label: "Réseau structuré", desc: "champions IA avec coordination et CDO/responsable IA", score: 4 }
+    ]
+  }
+];
+
+const RECOMMENDATIONS = {
+  0: {
+    insight: "La Shadow IA est un risque majeur pour votre organisation. Des données sensibles circulent probablement sur des outils non maîtrisés.",
+    action: "Cartographiez immédiatement les usages IA existants et déployez des outils officiels. Un audit Shadow IA est la première étape.",
+    offer: "Audit IA & opérationnel",
+    link: "https://homosapia.com#offres"
+  },
+  1: {
+    insight: "Votre souveraineté numérique est un angle mort. Dans un contexte réglementaire européen (AI Act, RGPD), c'est un risque croissant.",
+    action: "Évaluez vos dépendances technologiques et structurez une stratégie data souveraine avec des alternatives européennes.",
+    offer: "Accompagnement global",
+    link: "https://homosapia.com#offres"
+  },
+  2: {
+    insight: "Vos usages IA manquent de sobriété. Sans mesure d'impact, vous ne pouvez pas optimiser vos coûts ni votre empreinte.",
+    action: "Mettez en place des métriques de ROI et adoptez une approche frugale : le bon modèle pour la bonne tâche.",
+    offer: "Ateliers pratiques",
+    link: "https://homosapia.com#offres"
+  },
+  3: {
+    insight: "L'absence de cadre éthique expose votre organisation aux biais, hallucinations et risques réputationnels liés à l'IA.",
+    action: "Co-construisez une charte IA avec vos équipes et mettez en place des processus de validation humaine sur les usages critiques.",
+    offer: "Projet pilote & déploiement",
+    link: "https://homosapia.com#offres"
+  },
+  4: {
+    insight: "Le niveau d'acculturation IA est insuffisant pour une transformation pérenne. Sans compétences internes, la dépendance externe grandit.",
+    action: "Lancez un programme de formation IA adapté à chaque niveau (CODIR, managers, opérationnels) avec des référents internes.",
+    offer: "Formations IA",
+    link: "https://homosapia.com#offres"
+  }
+};
+
+// ============================================================
+// STATE
+// ============================================================
+let currentQuestion = 0;
+let answers = new Array(15).fill(null);
+let companyProfile = { name: '', role: '', sector: '', size: '' };
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem('homosapia_diag');
+    if (saved) {
+      const data = JSON.parse(saved);
+      if (data.answers) answers = data.answers;
+      if (data.currentQuestion !== undefined) currentQuestion = data.currentQuestion;
+      if (data.companyProfile) companyProfile = data.companyProfile;
+    }
+  } catch(e) {}
+}
+
+function saveState() {
+  try {
+    localStorage.setItem('homosapia_diag', JSON.stringify({
+      answers,
+      currentQuestion,
+      companyProfile
+    }));
+  } catch(e) {}
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => {
+    s.classList.remove('active', 'visible');
+  });
+  const section = document.getElementById(id);
+  section.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      section.classList.add('visible');
+    });
+  });
+}
+
+function showStep0() {
+  showSection('sectionProfile');
+  if (companyProfile.name) document.getElementById('companyName').value = companyProfile.name;
+  if (companyProfile.role) document.getElementById('role').value = companyProfile.role;
+  if (companyProfile.sector) document.getElementById('sector').value = companyProfile.sector;
+  if (companyProfile.size) document.getElementById('size').value = companyProfile.size;
+}
+
+function startDiagnostic() {
+  companyProfile.name = document.getElementById('companyName').value.trim();
+  companyProfile.role = document.getElementById('role').value;
+  companyProfile.sector = document.getElementById('sector').value;
+  companyProfile.size = document.getElementById('size').value;
+
+  if (!companyProfile.name || !companyProfile.role || !companyProfile.sector || !companyProfile.size) {
+    ['companyName', 'role', 'sector', 'size'].forEach(id => {
+      const el = document.getElementById(id);
+      if (!el.value || el.value === '') {
+        el.style.borderColor = 'var(--accent)';
+        setTimeout(() => { el.style.borderColor = ''; }, 2000);
+      }
+    });
+    return;
+  }
+
+  saveState();
+  document.getElementById('progressBar').classList.add('visible');
+  showSection('sectionQuestions');
+  renderQuestion();
+}
+
+// ============================================================
+// QUESTIONS
+// ============================================================
+function renderQuestion() {
+  const q = QUESTIONS[currentQuestion];
+  const pillarName = PILLARS[q.pillar];
+
+  document.getElementById('qStep').textContent = `Question ${currentQuestion + 1} / 15`;
+  document.getElementById('qPillar').textContent = pillarName;
+  document.getElementById('qText').textContent = q.text;
+
+  // Progress bar
+  const pct = ((currentQuestion + 1) / 15) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+
+  // Answer cards
+  const container = document.getElementById('answerCards');
+  container.innerHTML = '';
+
+  q.answers.forEach((a, idx) => {
+    const card = document.createElement('div');
+    card.className = 'answer-card' + (answers[currentQuestion] === idx ? ' selected' : '');
+    card.innerHTML = `
+      <div class="answer-indicator">${idx + 1}</div>
+      <div class="answer-label">
+        <strong>${a.label}</strong> <span>- ${a.desc}</span>
+      </div>
+    `;
+    card.addEventListener('click', () => selectAnswer(idx, card));
+    container.appendChild(card);
+  });
+
+  // Back button visibility
+  document.getElementById('btnPrev').style.visibility = currentQuestion === 0 ? 'hidden' : 'visible';
+
+  updateNextBtn();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function selectAnswer(idx, card) {
+  answers[currentQuestion] = idx;
+  saveState();
+
+  document.querySelectorAll('.answer-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected', 'flash');
+  setTimeout(() => card.classList.remove('flash'), 300);
+
+  updateNextBtn();
+
+  // Auto-advance after brief highlight
+  setTimeout(() => {
+    if (currentQuestion < 14) {
+      nextQuestion();
+    } else {
+      showResults();
+    }
+  }, 400);
+}
+
+function updateNextBtn() {
+  const btn = document.getElementById('btnNext');
+  if (answers[currentQuestion] !== null) {
+    btn.classList.add('enabled');
+    btn.innerHTML = currentQuestion === 14
+      ? 'Voir mes résultats <span>&rarr;</span>'
+      : 'Suivant <span>&rarr;</span>';
+  } else {
+    btn.classList.remove('enabled');
+    btn.innerHTML = 'Suivant <span>&rarr;</span>';
+  }
+}
+
+function nextQuestion() {
+  if (answers[currentQuestion] === null) return;
+  if (currentQuestion < 14) {
+    currentQuestion++;
+    saveState();
+    renderQuestion();
+  } else {
+    showResults();
+  }
+}
+
+function prevQuestion() {
+  if (currentQuestion > 0) {
+    currentQuestion--;
+    saveState();
+    renderQuestion();
+  } else {
+    document.getElementById('progressBar').classList.remove('visible');
+    showSection('sectionProfile');
+  }
+}
+
+// ============================================================
+// RESULTS
+// ============================================================
+function showResults() {
+  document.getElementById('progressBar').classList.remove('visible');
+  showSection('sectionResults');
+
+  const pillarScores = [0, 0, 0, 0, 0];
+  QUESTIONS.forEach((q, i) => {
+    if (answers[i] !== null) {
+      pillarScores[q.pillar] += q.answers[answers[i]].score;
+    }
+  });
+
+  const totalScore = pillarScores.reduce((a, b) => a + b, 0);
+
+  const companyEl = document.getElementById('resultsCompany');
+  companyEl.textContent = companyProfile.name ? companyProfile.name : '';
+
+  renderScoreCircle(totalScore);
+  renderLevel(totalScore);
+  renderRadar(pillarScores);
+  renderPillarBars(pillarScores);
+  renderRecommendations(pillarScores);
+}
+
+function renderScoreCircle(score) {
+  const circumference = 2 * Math.PI * 88;
+  const pct = score / 60;
+  const offset = circumference * (1 - pct);
+
+  const fill = document.getElementById('scoreCircleFill');
+
+  let color;
+  if (score < 25) color = '#E85D3A';
+  else if (score < 37) color = '#F2993A';
+  else if (score < 49) color = '#3A8FF2';
+  else color = '#4CAF50';
+
+  fill.setAttribute('stroke', color);
+  fill.setAttribute('stroke-dasharray', circumference);
+
+  setTimeout(() => {
+    fill.setAttribute('stroke-dashoffset', offset);
+  }, 200);
+
+  // Animated counter
+  const numEl = document.getElementById('scoreNumber');
+  let current = 0;
+  const duration = 1200;
+  const step = score / (duration / 16);
+  function animate() {
+    current += step;
+    if (current >= score) {
+      numEl.textContent = score;
+      return;
+    }
+    numEl.textContent = Math.floor(current);
+    requestAnimationFrame(animate);
+  }
+  animate();
+}
+
+function renderLevel(score) {
+  const levelEl = document.getElementById('scoreLevel');
+  const descEl = document.getElementById('scoreLevelDesc');
+
+  let level, desc, bg, color;
+  if (score < 25) {
+    level = 'Éveil';
+    desc = "Votre entreprise est au début de sa réflexion IA. Tout reste à construire, mais c'est une opportunité formidable.";
+    bg = 'rgba(232, 93, 58, 0.15)';
+    color = '#E85D3A';
+  } else if (score < 37) {
+    level = 'Exploration';
+    desc = "Des bases existent, il faut structurer. Vous avez l'avantage de ne pas partir de zéro.";
+    bg = 'rgba(242, 153, 58, 0.15)';
+    color = '#F2993A';
+  } else if (score < 49) {
+    level = 'Accélération';
+    desc = "Vous avez de bonnes fondations. Il est temps de passer à l'échelle et d'industrialiser vos initiatives.";
+    bg = 'rgba(58, 143, 242, 0.15)';
+    color = '#3A8FF2';
+  } else {
+    level = 'Excellence';
+    desc = "Votre maturité IA est avancée. Concentrez-vous sur l'optimisation et l'innovation continue.";
+    bg = 'rgba(76, 175, 80, 0.15)';
+    color = '#4CAF50';
+  }
+
+  levelEl.style.background = bg;
+  levelEl.style.color = color;
+  levelEl.innerHTML = `<span style="font-size:1.1rem">&#9679;</span> ${level}`;
+  descEl.textContent = desc;
+}
+
+function renderRadar(scores) {
+  const svg = document.getElementById('radarChart');
+  svg.innerHTML = '';
+
+  const cx = 160, cy = 160, maxR = 120;
+  const n = 5;
+  const angleStep = (2 * Math.PI) / n;
+  const startAngle = -Math.PI / 2;
+
+  function getPoint(index, radius) {
+    const angle = startAngle + index * angleStep;
+    return {
+      x: cx + radius * Math.cos(angle),
+      y: cy + radius * Math.sin(angle)
+    };
+  }
+
+  // Grid levels
+  [0.33, 0.66, 1].forEach(level => {
+    const points = [];
+    for (let i = 0; i < n; i++) {
+      const p = getPoint(i, maxR * level);
+      points.push(`${p.x},${p.y}`);
+    }
+    const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+    poly.setAttribute('points', points.join(' '));
+    poly.setAttribute('fill', 'none');
+    poly.setAttribute('stroke', 'rgba(255,255,255,0.06)');
+    poly.setAttribute('stroke-width', '1');
+    svg.appendChild(poly);
+  });
+
+  // Axes
+  for (let i = 0; i < n; i++) {
+    const p = getPoint(i, maxR);
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', cx);
+    line.setAttribute('y1', cy);
+    line.setAttribute('x2', p.x);
+    line.setAttribute('y2', p.y);
+    line.setAttribute('stroke', 'rgba(255,255,255,0.04)');
+    line.setAttribute('stroke-width', '1');
+    svg.appendChild(line);
+  }
+
+  // Data polygon
+  const dataPoints = [];
+  for (let i = 0; i < n; i++) {
+    const pct = scores[i] / 12;
+    const p = getPoint(i, maxR * pct);
+    dataPoints.push(`${p.x},${p.y}`);
+  }
+
+  const fillPoly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+  fillPoly.setAttribute('points', dataPoints.join(' '));
+  fillPoly.setAttribute('fill', 'rgba(242, 107, 58, 0.15)');
+  fillPoly.setAttribute('stroke', '#F26B3A');
+  fillPoly.setAttribute('stroke-width', '2');
+  svg.appendChild(fillPoly);
+
+  // Data dots
+  for (let i = 0; i < n; i++) {
+    const pct = scores[i] / 12;
+    const p = getPoint(i, maxR * pct);
+    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circle.setAttribute('cx', p.x);
+    circle.setAttribute('cy', p.y);
+    circle.setAttribute('r', '5');
+    circle.setAttribute('fill', '#F26B3A');
+    circle.setAttribute('stroke', '#0A0A0F');
+    circle.setAttribute('stroke-width', '2');
+    svg.appendChild(circle);
+  }
+
+  // Axis labels
+  const labelOffsets = [
+    { dx: 0, dy: -14, anchor: 'middle' },
+    { dx: 14, dy: 4, anchor: 'start' },
+    { dx: 10, dy: 14, anchor: 'start' },
+    { dx: -10, dy: 14, anchor: 'end' },
+    { dx: -14, dy: 4, anchor: 'end' }
+  ];
+
+  const shortLabels = ['Culture', 'Usages', 'Data', 'Compétences', 'Stratégie'];
+
+  for (let i = 0; i < n; i++) {
+    const p = getPoint(i, maxR + 18);
+    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    text.setAttribute('x', p.x + labelOffsets[i].dx);
+    text.setAttribute('y', p.y + labelOffsets[i].dy);
+    text.setAttribute('text-anchor', labelOffsets[i].anchor);
+    text.setAttribute('fill', '#8A8A95');
+    text.setAttribute('font-size', '11');
+    text.setAttribute('font-family', 'DM Sans, sans-serif');
+    text.textContent = shortLabels[i];
+    svg.appendChild(text);
+  }
+
+  // Legend below chart
+  const labelsEl = document.getElementById('radarLabels');
+  labelsEl.innerHTML = PILLARS.map((p, i) =>
+    `<span class="radar-label-item"><span class="radar-label-dot"></span>${p} : ${scores[i]}/12</span>`
+  ).join('');
+}
+
+function renderPillarBars(scores) {
+  const container = document.getElementById('pillarBarsContainer');
+  container.innerHTML = '';
+
+  PILLARS.forEach((name, i) => {
+    const pct = (scores[i] / 12) * 100;
+    let color;
+    if (scores[i] <= 4) color = '#E85D3A';
+    else if (scores[i] <= 7) color = '#F2993A';
+    else if (scores[i] <= 10) color = '#3A8FF2';
+    else color = '#4CAF50';
+
+    const item = document.createElement('div');
+    item.className = 'pillar-bar-item';
+    item.innerHTML = `
+      <div class="pillar-bar-header">
+        <span class="pillar-bar-name">${name}</span>
+        <span class="pillar-bar-score" style="color:${color}">${scores[i]} / 12</span>
+      </div>
+      <div class="pillar-bar-track">
+        <div class="pillar-bar-fill" style="background:${color}" data-width="${pct}"></div>
+      </div>
+    `;
+    container.appendChild(item);
+  });
+
+  setTimeout(() => {
+    document.querySelectorAll('.pillar-bar-fill').forEach(bar => {
+      bar.style.width = bar.dataset.width + '%';
+    });
+  }, 300);
+}
+
+function renderRecommendations(scores) {
+  const container = document.getElementById('recoCards');
+  container.innerHTML = '';
+
+  // 3 weakest pillars
+  const indexed = scores.map((s, i) => ({ score: s, index: i }));
+  indexed.sort((a, b) => a.score - b.score);
+  const top3 = indexed.slice(0, 3);
+
+  top3.forEach((item, rank) => {
+    const reco = RECOMMENDATIONS[item.index];
+    const pillar = PILLARS[item.index];
+    const scoreColor = item.score <= 4 ? '#E85D3A' : item.score <= 7 ? '#F2993A' : '#3A8FF2';
+
+    const card = document.createElement('div');
+    card.className = 'reco-card animate-in animate-delay-' + (rank + 1);
+    card.innerHTML = `
+      <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:${scoreColor};border-radius:4px 0 0 4px;"></div>
+      <div class="reco-card-header">
+        <span class="reco-card-pillar" style="color:${scoreColor}">${pillar}</span>
+        <span class="reco-card-score" style="background:${scoreColor}20;color:${scoreColor}">${item.score} / 12</span>
+      </div>
+      <p class="reco-card-insight">${reco.insight}</p>
+      <div class="reco-card-action">
+        <div class="reco-card-action-label">Action recommandée</div>
+        <div class="reco-card-action-text">${reco.action}</div>
+      </div>
+      <a href="${reco.link}" target="_blank" class="reco-card-link">
+        Découvrir : ${reco.offer} <span>&rarr;</span>
+      </a>
+    `;
+    container.appendChild(card);
+  });
+}
+
+// ============================================================
+// LEAD CAPTURE
+// ============================================================
+function submitLead() {
+  const email = document.getElementById('leadEmail').value.trim();
+  if (!email || !email.includes('@')) {
+    document.getElementById('leadEmail').style.borderColor = 'var(--accent)';
+    setTimeout(() => {
+      document.getElementById('leadEmail').style.borderColor = '';
+    }, 2000);
+    return;
+  }
+
+  const pillarScores = [0, 0, 0, 0, 0];
+  QUESTIONS.forEach((q, i) => {
+    if (answers[i] !== null) {
+      pillarScores[q.pillar] += q.answers[answers[i]].score;
+    }
+  });
+  const totalScore = pillarScores.reduce((a, b) => a + b, 0);
+
+  const leadData = {
+    email,
+    companyProfile,
+    totalScore,
+    pillarScores,
+    answers: answers.map((a, i) => a !== null ? QUESTIONS[i].answers[a].score : null),
+    timestamp: new Date().toISOString()
+  };
+
+  try {
+    localStorage.setItem('homosapia_diag_lead', JSON.stringify(leadData));
+  } catch(e) {}
+
+  document.getElementById('leadForm').style.display = 'none';
+  document.getElementById('leadSuccess').style.display = 'block';
+}
+
+// ============================================================
+// KEYBOARD NAVIGATION
+// ============================================================
+document.addEventListener('keydown', (e) => {
+  const qSection = document.getElementById('sectionQuestions');
+  if (!qSection.classList.contains('active')) return;
+
+  if (e.key >= '1' && e.key <= '4') {
+    const idx = parseInt(e.key) - 1;
+    const cards = document.querySelectorAll('.answer-card');
+    if (cards[idx]) cards[idx].click();
+  }
+
+  if (e.key === 'ArrowRight' || e.key === 'Enter') {
+    if (answers[currentQuestion] !== null) nextQuestion();
+  }
+
+  if (e.key === 'ArrowLeft') {
+    prevQuestion();
+  }
+});
+
+// ============================================================
+// INIT
+// ============================================================
+loadState();
+
+if (answers.some(a => a !== null)) {
+  if (answers.every(a => a !== null)) {
+    // All answered - show results directly
+    document.getElementById('progressBar').classList.remove('visible');
+    showSection('sectionResults');
+    setTimeout(() => {
+      const pillarScores = [0, 0, 0, 0, 0];
+      QUESTIONS.forEach((q, i) => {
+        if (answers[i] !== null) {
+          pillarScores[q.pillar] += q.answers[answers[i]].score;
+        }
+      });
+      const totalScore = pillarScores.reduce((a, b) => a + b, 0);
+      renderScoreCircle(totalScore);
+      renderLevel(totalScore);
+      renderRadar(pillarScores);
+      renderPillarBars(pillarScores);
+      renderRecommendations(pillarScores);
+      if (companyProfile.name) {
+        document.getElementById('resultsCompany').textContent = companyProfile.name;
+      }
+    }, 100);
+  }
+}
+
+// Trigger landing animation
+setTimeout(() => {
+  const landing = document.getElementById('sectionLanding');
+  if (landing.classList.contains('active')) {
+    landing.classList.add('visible');
+  }
+}, 50);
+</script>
+
+</body>
+</html>
