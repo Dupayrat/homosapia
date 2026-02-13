@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HomoSapIA | L'IA au service de l'humain</title>
+  <meta name="description" content="HomoSapIA accompagne les entreprises dans leur transformation par l'IA et l'organisation du travail. Human in the loop, temps libéré, engagement durable.">
+  <meta property="og:title" content="HomoSapIA | L'IA au service de l'humain">
+  <meta property="og:description" content="IA + Organisation + Temps libéré. L'humain au centre de la transformation.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0A0A0F; --bg-elevated: #12121A; --bg-card: #16161F;
+      --text: #E8E6E1; --text-muted: #8A8A95;
+      --accent: #F26B3A; --accent-glow: rgba(242,107,58,0.15); --accent-hover: #FF8855;
+      --sapiens: #3A8FF2; --sapiens-glow: rgba(58,143,242,0.12);
+      --border: rgba(255,255,255,0.06);
+      --serif: 'Instrument Serif', Georgia, serif; --sans: 'DM Sans', system-ui, sans-serif;
+      --radius: 16px; --max-w: 1200px;
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.65;font-size:16px;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+    body::before{content:'';position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9999}
+    .container{max-width:var(--max-w);margin:0 auto;padding:0 24px}
+    .section-label{font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+    .section-title{font-family:var(--serif);font-size:clamp(2rem,5vw,3.2rem);line-height:1.15;margin-bottom:20px}
+    .section-subtitle{color:var(--text-muted);font-size:1.05rem;max-width:600px;line-height:1.7}
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:16px 0;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(10,10,15,0.8);border-bottom:1px solid var(--border);transition:all .3s}
+    nav .container{display:flex;align-items:center;justify-content:space-between}
+    .logo{font-family:var(--serif);font-size:1.5rem;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:2px}
+    .logo-ia{color:var(--accent);font-style:italic}
+    .nav-links{display:flex;align-items:center;gap:32px;list-style:none}
+    .nav-links a{color:var(--text-muted);text-decoration:none;font-size:.9rem;font-weight:500;transition:color .2s}
+    .nav-links a:hover{color:var(--text)}
+    .nav-cta{background:var(--accent)!important;color:#fff!important;padding:10px 24px;border-radius:100px;font-weight:600!important;font-size:.85rem!important;transition:background .2s,transform .2s!important}
+    .nav-cta:hover{background:var(--accent-hover)!important;transform:translateY(-1px)}
+    .menu-toggle{display:none;background:none;border:none;cursor:pointer;width:32px;height:24px;flex-direction:column;justify-content:space-between}
+    .menu-toggle span{display:block;height:2px;background:var(--text);border-radius:2px;transition:all .3s}
+
+    .hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:120px 0 80px}
+    .hero::before{content:'';position:absolute;top:-200px;right:-200px;width:800px;height:800px;background:radial-gradient(circle,var(--accent-glow) 0%,transparent 70%);pointer-events:none}
+    .hero::after{content:'';position:absolute;bottom:-200px;left:-200px;width:600px;height:600px;background:radial-gradient(circle,var(--sapiens-glow) 0%,transparent 70%);pointer-events:none}
+    .hero-content{position:relative;z-index:1}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:100px;padding:8px 20px;font-size:.82rem;color:var(--text-muted);margin-bottom:40px;animation:fadeInUp .8s ease-out}
+    .hero-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pulse-dot 2s infinite}
+    .hero h1{font-family:var(--serif);font-size:clamp(2.8rem,7vw,5.5rem);line-height:1.05;margin-bottom:28px;max-width:900px;animation:fadeInUp .8s ease-out .1s both}
+    .hero h1 em{font-style:italic;color:var(--accent)}
+    .hero-desc{font-size:1.15rem;color:var(--text-muted);max-width:620px;line-height:1.75;margin-bottom:44px;animation:fadeInUp .8s ease-out .2s both}
+    .hero-actions{display:flex;gap:16px;flex-wrap:wrap;animation:fadeInUp .8s ease-out .3s both}
+    .btn-primary{background:var(--accent);color:#fff;padding:16px 36px;border-radius:100px;text-decoration:none;font-weight:600;font-size:.95rem;transition:all .25s;display:inline-flex;align-items:center;gap:8px}
+    .btn-primary:hover{background:var(--accent-hover);transform:translateY(-2px);box-shadow:0 12px 40px rgba(242,107,58,.3)}
+    .btn-secondary{background:transparent;color:var(--text);padding:16px 36px;border-radius:100px;text-decoration:none;font-weight:500;font-size:.95rem;border:1px solid rgba(255,255,255,.15);transition:all .25s}
+    .btn-secondary:hover{border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.03)}
+
+    .trust-bar{padding:60px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+    .trust-label{text-align:center;font-size:.8rem;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;font-weight:500;margin-bottom:32px}
+    .trust-logos{display:flex;align-items:center;justify-content:center;gap:48px;flex-wrap:wrap;opacity:.5}
+    .trust-logos span{font-family:var(--sans);font-size:1rem;font-weight:600;letter-spacing:1px;color:var(--text-muted);white-space:nowrap}
+
+    .convictions{padding:120px 0}
+    .convictions-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+    .convictions-text .section-title span{color:var(--accent)}
+    .convictions-text p{color:var(--text-muted);font-size:1.05rem;line-height:1.8;margin-bottom:16px}
+    .convictions-cards{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .conv-card{background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius);padding:28px;transition:all .3s}
+    .conv-card:hover{border-color:rgba(242,107,58,.2);transform:translateY(-2px)}
+    .conv-icon{font-size:1.6rem;margin-bottom:12px}
+    .conv-card h4{font-family:var(--serif);font-size:1.1rem;margin-bottom:8px}
+    .conv-card p{color:var(--text-muted);font-size:.85rem;line-height:1.6}
+
+    .impact{padding:80px 0}
+    .impact-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center}
+    .impact-item{padding:32px 16px}
+    .impact-num{font-family:var(--serif);font-size:clamp(2rem,4vw,3rem);color:var(--accent);margin-bottom:8px}
+    .impact-label{color:var(--text-muted);font-size:.88rem;line-height:1.5}
+
+    .conferences{padding:120px 0;background:var(--bg-elevated)}
+    .conf-header{text-align:center;margin-bottom:64px}
+    .conf-header .section-subtitle{margin:0 auto}
+    .conf-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:24px}
+    .conf-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:40px 32px;position:relative;overflow:hidden;transition:all .3s}
+    .conf-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--sapiens),var(--accent));opacity:0;transition:opacity .3s}
+    .conf-card:hover::before{opacity:1}
+    .conf-card:hover{border-color:rgba(255,255,255,.1);transform:translateY(-2px)}
+    .conf-tag{display:inline-block;background:var(--accent-glow);color:var(--accent);padding:4px 12px;border-radius:100px;font-size:.75rem;font-weight:600;margin-bottom:16px}
+    .conf-card h3{font-family:var(--serif);font-size:1.4rem;margin-bottom:12px}
+    .conf-card>p{color:var(--text-muted);font-size:.92rem;line-height:1.7;margin-bottom:16px}
+    .conf-list{list-style:none;margin-bottom:24px}
+    .conf-list li{color:var(--text-muted);font-size:.88rem;padding:6px 0 6px 20px;position:relative}
+    .conf-list li::before{content:'\2192';position:absolute;left:0;color:var(--accent)}
+    .conf-format{font-size:.82rem;color:var(--sapiens);font-weight:500;padding-top:16px;border-top:1px solid var(--border)}
+
+    .realisations{padding:120px 0}
+    .real-header{text-align:center;margin-bottom:64px}
+    .real-header .section-subtitle{margin:0 auto}
+    .real-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:24px}
+    .real-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:36px;transition:all .3s}
+    .real-card:hover{border-color:rgba(255,255,255,.1)}
+    .real-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:8px}
+    .real-name{font-family:var(--serif);font-size:1.2rem}
+    .real-sector{font-size:.78rem;color:var(--text-muted);background:var(--bg-elevated);padding:4px 12px;border-radius:100px}
+    .real-card>p{color:var(--text-muted);font-size:.9rem;line-height:1.7;margin-bottom:16px}
+    .real-result{font-size:.88rem;font-weight:600;color:var(--accent)}
+
+    .press{padding:80px 0;border-top:1px solid var(--border)}
+    .press-header{text-align:center;margin-bottom:40px}
+    .press-logos{display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap}
+    .press-link{color:var(--text-muted);text-decoration:none;font-size:1rem;font-weight:600;letter-spacing:.5px;opacity:.6;transition:all .2s;padding:12px 24px;border:1px solid transparent;border-radius:100px}
+    .press-link:hover{opacity:1;color:var(--text);border-color:var(--border)}
+    a.press-link{cursor:pointer}
+    span.press-link{cursor:default}
+
+    .about{padding:120px 0;background:var(--bg-elevated)}
+    .about-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:80px;align-items:start}
+    .about-photo{width:100%;aspect-ratio:4/5;background:var(--bg);border-radius:var(--radius);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--sans);font-size:1rem;color:var(--text-muted);position:relative;overflow:hidden;text-align:center;padding:20px}
+    .about-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--accent-glow),var(--sapiens-glow))}
+    .about-photo span{position:relative;z-index:1}
+    .about-content h3{font-family:var(--serif);font-size:1.8rem;margin-bottom:8px}
+    .about-role{color:var(--accent);font-size:.9rem;font-weight:500;margin-bottom:24px}
+    .about-content>p{color:var(--text-muted);font-size:.95rem;line-height:1.8;margin-bottom:16px}
+    .about-links{display:flex;gap:16px;margin-top:28px}
+    .about-link{color:var(--text-muted);text-decoration:none;font-size:.88rem;font-weight:500;padding:8px 20px;border:1px solid var(--border);border-radius:100px;transition:all .2s}
+    .about-link:hover{color:var(--text);border-color:rgba(255,255,255,.2)}
+    .communities{margin-top:48px;padding-top:32px;border-top:1px solid var(--border)}
+    .communities h4{font-size:.82rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:16px;font-weight:500}
+    .community-badges{display:flex;gap:12px;flex-wrap:wrap}
+    .community-badge{background:var(--bg);border:1px solid var(--border);padding:10px 20px;border-radius:100px;font-size:.85rem;font-weight:500;color:var(--text);display:inline-flex;align-items:center;gap:8px}
+    .community-icon{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700}
+    .community-icon.ai{background:var(--sapiens);color:#fff}
+    .community-icon.sav{background:var(--accent);color:#fff}
+
+    .partners{padding:60px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+    .partners-label{text-align:center;font-size:.8rem;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;font-weight:500;margin-bottom:32px}
+    .partners-logos{display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap;opacity:.5}
+    .partners-logos span{font-family:var(--sans);font-size:.9rem;font-weight:600;letter-spacing:.5px;color:var(--text-muted);white-space:nowrap}
+
+    .cta-section{padding:120px 0;text-align:center;position:relative;overflow:hidden}
+    .cta-section::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:800px;height:400px;background:radial-gradient(ellipse,var(--accent-glow) 0%,transparent 70%);pointer-events:none}
+    .cta-content{position:relative;z-index:1}
+    .cta-content .section-title{max-width:700px;margin:0 auto 20px}
+    .cta-content .section-subtitle{margin:0 auto 44px;text-align:center}
+    .cta-details{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;margin-bottom:40px}
+    .cta-detail{color:var(--text-muted);font-size:.9rem;display:flex;align-items:center;gap:8px}
+    .cta-detail span{color:var(--accent);font-size:1.1rem}
+
+    footer{padding:48px 0;border-top:1px solid var(--border)}
+    .footer-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px}
+    .footer-left{display:flex;align-items:center;gap:24px}
+    .footer-left .logo{font-size:1.2rem}
+    .footer-copy{color:var(--text-muted);font-size:.82rem}
+    .footer-links{display:flex;gap:24px}
+    .footer-links a{color:var(--text-muted);text-decoration:none;font-size:.85rem;transition:color .2s}
+    .footer-links a:hover{color:var(--text)}
+
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.4}}
+    .reveal{opacity:0;transform:translateY(30px);transition:all .7s cubic-bezier(.16,1,.3,1)}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+
+    @media(max-width:968px){
+      .convictions-grid,.about-grid{grid-template-columns:1fr;gap:48px}
+      .impact-grid{grid-template-columns:repeat(2,1fr)}
+      .about-photo{aspect-ratio:16/9;max-height:300px}
+    }
+    @media(max-width:768px){
+      .nav-links{display:none}
+      .menu-toggle{display:flex}
+      .nav-links.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:var(--bg);border-bottom:1px solid var(--border);padding:24px;gap:20px}
+      .hero h1{font-size:clamp(2.2rem,8vw,3.5rem)}
+      .hero-desc{font-size:1rem}
+      .hero-actions{flex-direction:column}
+      .btn-primary,.btn-secondary{text-align:center;justify-content:center}
+      .convictions-cards{grid-template-columns:1fr}
+      .impact-grid{grid-template-columns:1fr 1fr}
+      .conf-grid,.real-grid{grid-template-columns:1fr}
+      .cta-details{flex-direction:column;align-items:center}
+      .press-logos{gap:16px}
+      .partners-logos{gap:24px}
+      .footer-inner{flex-direction:column;text-align:center}
+      .footer-left{flex-direction:column}
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="container">
+      <a href="#" class="logo">HomoSap<span class="logo-ia">IA</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#convictions">Convictions</a></li>
+        <li><a href="#conferences">Conférences</a></li>
+        <li><a href="#realisations">Réalisations</a></li>
+        <li><a href="#apropos">À propos</a></li>
+        <li><a href="https://meetings-eu1.hubspot.com/pdu-payrat?uuid=5a24cb40-61aa-41f5-aae3-8cc6a8cae0bf" target="_blank" class="nav-cta">Prendre RDV</a></li>
+      </ul>
+      <button class="menu-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <section class="hero" id="hero">
+    <div class="container hero-content">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        IA · Organisation · Temps libéré
+      </div>
+      <h1>L'<em>intelligence artificielle</em> au service de l'humain</h1>
+      <p class="hero-desc">L'IA transforme les organisations. Mais sans l'humain au centre, elle ne crée que du bruit. Nous accompagnons les dirigeants et DRH pour engager leurs équipes, libérer du temps utile et transformer durablement.</p>
+      <div class="hero-actions">
+        <a href="https://meetings-eu1.hubspot.com/pdu-payrat?uuid=5a24cb40-61aa-41f5-aae3-8cc6a8cae0bf" target="_blank" class="btn-primary">Réserver un créneau →</a>
+        <a href="#conferences" class="btn-secondary">Découvrir nos conférences</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="trust-bar">
+    <div class="container">
+      <p class="trust-label">Ils nous font confiance</p>
+      <div class="trust-logos">
+        <span>COVEA</span>
+        <span>HubFrance IA</span>
+        <span>Plateau Urbain</span>
+        <span>dSPACE</span>
+        <span>Serfim TIC</span>
+        <span>Diapason</span>
+        <span>Addenda</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="convictions" id="convictions">
+    <div class="container">
+      <div class="convictions-grid">
+        <div class="convictions-text reveal">
+          <p class="section-label">Nos convictions</p>
+          <h2 class="section-title">L'IA ne remplace pas l'humain.<br><span>Elle l'augmente.</span></h2>
+          <p>Les entreprises dont les collaborateurs sont fortement engagés sont en moyenne 21 % plus rentables que les autres. L'IA est un accélérateur, mais c'est l'engagement humain qui crée la performance durable.</p>
+          <p>Notre mission : vous aider à travailler mieux, pas juste plus vite. En plaçant l'humain au centre, en libérant du temps pour ce qui compte vraiment, et en intégrant l'IA de manière responsable.</p>
+        </div>
+        <div class="convictions-cards reveal">
+          <div class="conv-card">
+            <div class="conv-icon">🤖</div>
+            <h4>Human in the loop</h4>
+            <p>L'IA excelle sur l'analytique et le répétitif. L'humain garde l'empathie, la créativité, le jugement et la décision.</p>
+          </div>
+          <div class="conv-card">
+            <div class="conv-icon">⏱</div>
+            <h4>Le temps libéré, un levier stratégique</h4>
+            <p>Où va le temps gagné par l'IA ? Apprentissage, innovation, accompagnement humain. Ce choix est stratégique.</p>
+          </div>
+          <div class="conv-card">
+            <div class="conv-icon">🔥</div>
+            <h4>L'engagement comme moteur</h4>
+            <p>En prenant soin des salariés, vous prenez soin de votre business. 84 % des salariés placent l'équilibre de vie devant le salaire.</p>
+          </div>
+          <div class="conv-card">
+            <div class="conv-icon">🛡</div>
+            <h4>IA responsable et souveraine</h4>
+            <p>Frugalité, hébergement européen, respect RGPD natif, prévention des biais. Le moins pour le mieux.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="impact">
+    <div class="container">
+      <div class="impact-grid reveal">
+        <div class="impact-item">
+          <div class="impact-num">30+</div>
+          <div class="impact-label">Entreprises accompagnées</div>
+        </div>
+        <div class="impact-item">
+          <div class="impact-num">400+</div>
+          <div class="impact-label">Pilotes étudiés dans 15 pays</div>
+        </div>
+        <div class="impact-item">
+          <div class="impact-num">+21%</div>
+          <div class="impact-label">Rentabilité des équipes engagées</div>
+        </div>
+        <div class="impact-item">
+          <div class="impact-num">91%</div>
+          <div class="impact-label">Pilotes poursuivis après expérimentation</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="conferences" id="conferences">
+    <div class="container">
+      <div class="conf-header reveal">
+        <p class="section-label">Conférences</p>
+        <h2 class="section-title">Trois keynotes pour transformer votre vision</h2>
+        <p class="section-subtitle">Des interventions conçues pour les COMEX, DRH, CSE et managers. De la prise de conscience au plan d'action.</p>
+      </div>
+      <div class="conf-grid">
+        <div class="conf-card reveal">
+          <span class="conf-tag">Keynote 1</span>
+          <h3>IA et organisation du travail</h3>
+          <p>L'IA ne remplace pas le travail, elle le redessine. Mais sans stratégie d'organisation explicite, on crée du volume, du stress et du désengagement.</p>
+          <ul class="conf-list">
+            <li>De la hype à la réalité : où l'IA crée vraiment de la valeur</li>
+            <li>Human in the loop : ce que les machines ne savent pas faire</li>
+            <li>Que fait-on du temps libéré ? Apprentissage, innovation, qualité de vie</li>
+            <li>Vers des organisations AI-enabled et human-centered</li>
+          </ul>
+          <div class="conf-format">45 à 60 min ou keynote + atelier co-construction (1h30)</div>
+        </div>
+        <div class="conf-card reveal">
+          <span class="conf-tag">Keynote 2</span>
+          <h3>Les futurs du travail probables</h3>
+          <p>Le travail est au cœur de 3 transitions majeures (écologique, démographique, technologique) qui vont redessiner les organisations d'ici 2030.</p>
+          <ul class="conf-list">
+            <li>5 futurs interconnectés : flexibilité, compétences, contrat social, égalité, IA</li>
+            <li>Cas de pionniers qui intègrent déjà ces futurs en système</li>
+            <li>Impact par fonction : COMEX, RH, CSE, Opérations</li>
+            <li>Feuille de route 2025 à 2030 pour en faire un avantage concurrentiel</li>
+          </ul>
+          <div class="conf-format">45 à 60 min ou keynote + atelier roadmap Futurs du travail (1h30)</div>
+        </div>
+        <div class="conf-card reveal">
+          <span class="conf-tag">Keynote 3</span>
+          <h3>Repenser le temps de travail</h3>
+          <p>Le modèle actuel est en crise : désengagement, burnout, difficulté de recrutement. Comment retrouver plaisir et performance en repensant la semaine de travail ?</p>
+          <ul class="conf-list">
+            <li>Résultats mesurés de 400+ entreprises dans 15 pays</li>
+            <li>30 formats possibles selon votre secteur et vos contraintes</li>
+            <li>Les mythes qui freinent et les réalités qui rassurent</li>
+            <li>Plan d'action en 5 étapes : de l'audit à la célébration</li>
+          </ul>
+          <div class="conf-format">45 à 60 min ou keynote + atelier par groupe COMEX/RH/CSE (1h30)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="realisations" id="realisations">
+    <div class="container">
+      <div class="real-header reveal">
+        <p class="section-label">Réalisations</p>
+        <h2 class="section-title">Des résultats concrets, mesurables</h2>
+        <p class="section-subtitle">Chaque intervention est conçue pour produire un impact tangible sur votre organisation.</p>
+      </div>
+      <div class="real-grid">
+        <div class="real-card reveal">
+          <div class="real-meta">
+            <span class="real-name">COVEA</span>
+            <span class="real-sector">Assurance, mutuelle · 22 000 salariés</span>
+          </div>
+          <p>Conférence sur le redesign du temps de travail à l'ère de l'IA. Clarification des enjeux, des formats possibles et de la méthode pour expérimenter en maîtrise.</p>
+          <div class="real-result">Clarification stratégique pour le COMEX</div>
+        </div>
+        <div class="real-card reveal">
+          <div class="real-meta">
+            <span class="real-name">HubFrance IA</span>
+            <span class="real-sector">Écosystème IA français</span>
+          </div>
+          <p>Expertise croisée IA et organisation du travail. Contributions aux réflexions sur l'IA responsable en France et l'impact organisationnel de l'intelligence artificielle.</p>
+          <div class="real-result">Contributions IA responsable et transformation des métiers</div>
+        </div>
+        <div class="real-card reveal">
+          <div class="real-meta">
+            <span class="real-name">Plateau Urbain</span>
+            <span class="real-sector">Immobilier, coopérative · 100 salariés</span>
+          </div>
+          <p>Transformation complète du modèle de travail : culture du renoncement, priorisation, automatisation IA et redistribution de l'autonomie décisionnelle.</p>
+          <div class="real-result">-40% temps de réunion · +3h productives/semaine/salarié</div>
+        </div>
+        <div class="real-card reveal">
+          <div class="real-meta">
+            <span class="real-name">Serfim TIC</span>
+            <span class="real-sector">BTP · 280 collaborateurs</span>
+          </div>
+          <p>Ateliers de 2 jours pour découvrir l'IA et identifier le potentiel dans un secteur faiblement digitalisé. Workshops pour techniciens, managers et CODIR.</p>
+          <div class="real-result">45 personnes initiées · Roadmap IA définie · KPIs réels</div>
+        </div>
+        <div class="real-card reveal">
+          <div class="real-meta">
+            <span class="real-name">Diapason</span>
+            <span class="real-sector">SaaS Finance · 250 salariés</span>
+          </div>
+          <p>Diagnostic complet de la situation IA : initiatives non structurées, ROI non atteint. Audit de toutes les équipes et plan d'adoption en 3 phases sur 24 mois.</p>
+          <div class="real-result">Rapport de 60 pages · Plan d'action en 3 phases</div>
+        </div>
+        <div class="real-card reveal">
+          <div class="real-meta">
+            <span class="real-name">Addenda</span>
+            <span class="real-sector">Bureau d'études · 20 salariés</span>
+          </div>
+          <p>Pilote de transformation organisationnelle : co-construction du cadre, formation à l'excellence opérationnelle, pilotage complet sur 8 mois.</p>
+          <div class="real-result">+90% de satisfaction · Maintien du CA et NPS client</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="press reveal">
+    <div class="container">
+      <div class="press-header">
+        <p class="section-label">Ils parlent de nous</p>
+      </div>
+      <div class="press-logos">
+        <a href="https://www.capital.fr/votre-carriere/lia-va-faire-gagner-du-temps-aux-salaries-et-ce-temps-peut-leur-etre-rendu-1523366" target="_blank" class="press-link">Capital</a>
+        <span class="press-link">Les Échos</span>
+        <span class="press-link">Choiseul Magazine</span>
+        <span class="press-link">HelloWork</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="apropos">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-photo reveal">
+          <span>Photo à venir</span>
+        </div>
+        <div class="about-content reveal">
+          <p class="section-label">Fondateur</p>
+          <h3>Philippe du Payrat</h3>
+          <p class="about-role">Expert français des futurs du travail · Fondateur de HomoSapIA et 4jours.work</p>
+          <p>Entrepreneur social, professeur vacataire à emlyon business school où il co-anime Cap 2035 : Futurs du Travail Ne(x)twork. Coordinateur France de 4 Day Week Global. Plus de 30 missions auprès de PME, ETI et grands groupes sur les enjeux people, process, performance et impact.</p>
+          <p>Parcours : COO de La Ruche Qui Dit Oui, DG de MaVoie.org (1ère association et start-up tech soutenue 4 fois par Google.org), Google (Industry Analyst), Simon-Kucher (Consultant), AramisAuto (BU Manager).</p>
+          <p>Distinctions : Alumni de l'année ESCP 2022 (sur 90 000 alumni), Lauréat Prix Envi 2025, Expert inclusion et diversité chez ChangeNOW depuis 2023.</p>
+          <div class="about-links">
+            <a href="https://4jours.work" target="_blank" class="about-link">4jours.work</a>
+            <a href="mailto:philippe@homosapia.com" class="about-link">Contact</a>
+          </div>
+          <div class="communities">
+            <h4>Communautés</h4>
+            <div class="community-badges">
+              <span class="community-badge"><span class="community-icon ai">AI</span> The AI Fellowship</span>
+              <span class="community-badge"><span class="community-icon sav">S</span> Savoy IA</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="partners reveal">
+    <div class="container">
+      <p class="partners-label">Partenaires</p>
+      <div class="partners-logos">
+        <span>emlyon business school</span>
+        <span>B Lab France</span>
+        <span>4 Day Week Global</span>
+        <span>CFE-CGC</span>
+        <span>Tomorrow Theory</span>
+        <span>ChangeNOW</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section" id="contact">
+    <div class="container">
+      <div class="cta-content reveal">
+        <p class="section-label">Prêt à avancer ?</p>
+        <h2 class="section-title">Échangeons sur vos enjeux</h2>
+        <p class="section-subtitle">30 minutes pour comprendre votre contexte, identifier les leviers et définir la bonne approche.</p>
+        <div class="cta-details">
+          <div class="cta-detail"><span>⏱</span> 30 minutes</div>
+          <div class="cta-detail"><span>🎯</span> Diagnostic contextuel</div>
+          <div class="cta-detail"><span>⚡</span> Premières pistes d'action</div>
+        </div>
+        <div class="hero-actions" style="justify-content:center">
+          <a href="https://meetings-eu1.hubspot.com/pdu-payrat?uuid=5a24cb40-61aa-41f5-aae3-8cc6a8cae0bf" target="_blank" class="btn-primary">Réserver un créneau →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-inner">
+      <div class="footer-left">
+        <a href="#" class="logo">HomoSap<span class="logo-ia">IA</span></a>
+        <span class="footer-copy">© 2025 Tempo Libre SAS</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://4jours.work" target="_blank">4jours.work</a>
+        <a href="mailto:philippe@homosapia.com">philippe@homosapia.com</a>
+        <a href="https://meetings-eu1.hubspot.com/pdu-payrat?uuid=5a24cb40-61aa-41f5-aae3-8cc6a8cae0bf" target="_blank">Prendre RDV</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>

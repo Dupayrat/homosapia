@@ -1,5 +1,8 @@
 {
-  "buildCommand": null,
   "outputDirectory": "public",
-  "framework": null
+  "functions": {
+    "api/**/*.js": {
+      "runtime": "@vercel/node@3"
+    }
+  }
 }
