@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://homosapia.com/sitemap.xml

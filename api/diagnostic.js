@@ -284,10 +284,39 @@ Philippe du Payrat
 philippe@homosapia.com · homosapia.com
 Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
 
-    // We'll call Gamma API if key is available (async, don't block response)
-    // Note: Gamma generation is done in the background via the MCP tool
-    // For now, log the prompt for manual generation
-    console.log('Gamma presentation prompt generated for:', contactName);
+    // Call Gamma API to generate personalized presentation (fire-and-forget)
+    let gammaGenerationId = null;
+    if (GAMMA_API_KEY) {
+      try {
+        const gammaRes = await fetch('https://public-api.gamma.app/v1.0/generations', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-API-KEY': GAMMA_API_KEY
+          },
+          body: JSON.stringify({
+            inputText: gammaPrompt,
+            textMode: 'preserve',
+            format: 'presentation',
+            numCards: 10
+          })
+        });
+        if (gammaRes.ok) {
+          const gammaData = await gammaRes.json();
+          gammaGenerationId = gammaData.generationId || gammaData.id || null;
+          if (gammaGenerationId) {
+            gammaUrl = `https://gamma.app/generations/${gammaGenerationId}`;
+            console.log('Gamma generation started:', gammaGenerationId);
+          }
+        } else {
+          console.error('Gamma API error:', gammaRes.status, await gammaRes.text());
+        }
+      } catch (gammaErr) {
+        console.error('Gamma API call failed:', gammaErr.message);
+      }
+    } else {
+      console.log('Gamma presentation prompt generated (no API key):', contactName);
+    }
 
     // ================================================================
     // EMAIL 1 — To PROSPECT (diagnostic report, Homo SapIA branded)
@@ -475,8 +504,12 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
   </div>
 
   <div style="background: #ECFAED; border-radius: 12px; padding: 24px; margin-bottom: 16px; border: 1px solid #4CAF5033;">
-    <h2 style="margin: 0 0 8px; font-size: 16px; color: #4CAF50;">&#128444; Prompt Gamma (copier-coller pour générer la présentation)</h2>
-    <pre style="font-size: 11px; color: #333; white-space: pre-wrap; word-wrap: break-word; max-height: 200px; overflow-y: auto; background: white; padding: 12px; border-radius: 8px; border: 1px solid #eee;">${gammaPrompt.substring(0, 2000)}${gammaPrompt.length > 2000 ? '\n...(tronqué)' : ''}</pre>
+    <h2 style="margin: 0 0 8px; font-size: 16px; color: #4CAF50;">&#128444; Présentation Gamma</h2>
+    ${gammaUrl ? `<p style="margin: 0 0 12px; font-size: 14px;"><strong>Génération lancée :</strong> <a href="${gammaUrl}" style="color: #4CAF50;">${gammaUrl}</a></p>` : '<p style="margin: 0 0 12px; font-size: 14px; color: #999;">Génération non lancée (clé API manquante ou erreur)</p>'}
+    <details style="margin-top: 8px;">
+      <summary style="cursor: pointer; font-size: 12px; color: #666;">Voir le prompt Gamma</summary>
+      <pre style="font-size: 11px; color: #333; white-space: pre-wrap; word-wrap: break-word; max-height: 200px; overflow-y: auto; background: white; padding: 12px; border-radius: 8px; border: 1px solid #eee; margin-top: 8px;">${gammaPrompt.substring(0, 2000)}${gammaPrompt.length > 2000 ? '\n...(tronqué)' : ''}</pre>
+    </details>
   </div>
 
   <div style="text-align: center; padding: 20px;">
@@ -530,7 +563,9 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
       success: true,
       level,
       steps: recommendedSteps.map(s => ({ num: s.num, title: s.title, subtitle: s.subtitle })),
-      gammaPrompt: gammaPrompt.substring(0, 500) + '...'
+      gammaPrompt: gammaPrompt.substring(0, 500) + '...',
+      gammaUrl: gammaUrl || null,
+      gammaGenerationId: gammaGenerationId || null
     });
 
   } catch (error) {

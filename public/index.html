@@ -8,7 +8,18 @@
   <meta property="og:title" content="Homo SapIA - L'IA au service de l'humain">
   <meta property="og:description" content="Accompagnement IA pour entreprises : conférences, ateliers, audits, formations, projets pilotes et déploiement.">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://homosapia.com/">
+  <meta property="og:image" content="https://homosapia.com/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="fr_FR">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Homo SapIA - L'IA au service de l'humain">
+  <meta name="twitter:description" content="Accompagnement IA pour entreprises : conférences, ateliers, audits, formations, projets pilotes et déploiement.">
+  <meta name="twitter:image" content="https://homosapia.com/og-image.jpg">
+  <link rel="canonical" href="https://homosapia.com/">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preload" as="image" href="/philippe-du-payrat.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
@@ -749,12 +760,21 @@
       flex-wrap: wrap;
     }
     .community-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
       background: var(--bg-elevated);
       border: 1px solid var(--border);
       padding: 10px 20px;
       border-radius: 100px;
       font-size: 0.85rem;
       font-weight: 500;
+      color: var(--text);
+      text-decoration: none;
+      transition: border-color 0.2s;
+    }
+    .community-badge:hover {
+      border-color: rgba(255,255,255,0.2);
       color: var(--text);
     }
 
@@ -1340,7 +1360,7 @@
           <p data-i18n="about.p3">Premier pilote national de la semaine de 4 jours en France, en partenariat avec EM Lyon et 4 Day Week Global.</p>
           <div class="about-links">
             <a href="https://4jours.work" target="_blank" class="about-link">4jours.work</a>
-            <a href="mailto:contact@4jours.work" class="about-link">Contact</a>
+            <a href="mailto:contact@homosapia.com" class="about-link">Contact</a>
           </div>
           <div class="communities">
             <h4 data-i18n="about.communities">Communautés</h4>
@@ -1359,7 +1379,10 @@
               </div>
             </a>
             <div class="community-badges">
-              <span class="community-badge">Savoy IA</span>
+              <a href="https://www.savoy-ia.fr" target="_blank" rel="noopener" class="community-badge community-badge-logo">
+                <img src="/savoy-ia-logo.jpeg" alt="Savoy IA" width="28" height="28" style="border-radius: 6px;">
+                Savoy IA
+              </a>
             </div>
           </div>
         </div>
@@ -1391,7 +1414,7 @@
       <div class="footer-links">
         <a href="https://4jours.work" target="_blank">Tempo Libre</a>
         <a href="https://4jours.work" target="_blank">4jours.work</a>
-        <a href="mailto:contact@4jours.work">Contact</a>
+        <a href="mailto:contact@homosapia.com">Contact</a>
       </div>
     </div>
   </footer>
