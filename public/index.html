@@ -1876,7 +1876,7 @@
   function cta(){
     const box=document.getElementById('cbAct'); box.innerHTML='';
     const w=document.createElement('div'); w.className='cb-cta-box';
-    w.innerHTML=`<a href="${HS}" target="_blank" rel="noopener" class="cb-cta-btn">Choisir un créneau avec Philippe &rarr;</a><a href="/diagnostic.html" class="cb-alt">Ou tester d'abord le diagnostic IA gratuit</a>`;
+    w.innerHTML=`<a href="${HS}" target="_blank" rel="noopener" class="cb-cta-btn">Réserver un créneau &rarr;</a><a href="/diagnostic.html" class="cb-alt">Ou réaliser d'abord votre diagnostic IA gratuit</a>`;
     box.appendChild(w);
   }
 
@@ -1887,12 +1887,12 @@
     const h = new Date().getHours();
     const greet = h<12 ? 'Bonjour' : h<18 ? 'Bonjour' : 'Bonsoir';
     botSay([
-      greet+' ! Philippe ici.',
-      "Je vois que vous vous intéressez à l'IA pour votre boîte, c'est un sujet passionnant en ce moment."
+      greet+', Philippe du Payrat.',
+      "Ravi de vous voir ici. L'IA est un levier majeur pour les entreprises — et c'est mon métier de vous aider à en tirer le meilleur."
     ], 0, ()=>{
       setTimeout(()=>{
-        botSay(["Vous en êtes où côté IA, si c'est pas indiscret ?"], 0, ()=>{
-          pills(["On commence à y réfléchir","On a des usages mais c'est le bazar","On veut structurer tout ça","Juste en veille pour l'instant"]);
+        botSay(["Où en êtes-vous dans votre démarche IA ?"], 0, ()=>{
+          pills(["Nous démarrons la réflexion","Des usages existent, pas encore cadrés","Nous voulons structurer notre approche","En veille pour l'instant"]);
         });
       },400);
     });
@@ -1908,17 +1908,17 @@
   function phase2(t){
     cbPhase=2; cbCtx.stade=t;
     let r;
-    if(t.includes('commence')||t.includes('réfléchir')){
-      r=["Ah ok, c'est souvent le meilleur moment pour bien faire les choses, avant que la Shadow IA s'installe partout.","Du coup... c'est quoi le truc qui vous motive le plus ?"];
-    } else if(t.includes('bazar')){
-      r=["Ha, le fameux \"tout le monde utilise ChatGPT dans son coin\" ? On voit ça dans 7 entreprises sur 10, vous êtes pas seuls.","Qu'est-ce qui vous préoccupe le plus ?"];
-    } else if(t.includes('structurer')){
-      r=["Top, c'est la bonne démarche. Passer de l'expérimentation à quelque chose de solide, c'est là que ça devient intéressant.","C'est quoi votre priorité ?"];
+    if(t.includes('démarr')||t.includes('réfléch')||t.includes('commence')){
+      r=["C'est le bon moment pour structurer les choses dès le départ, avant que les usages non encadrés ne se multiplient.","Quel est le sujet qui vous mobilise le plus ?"];
+    } else if(t.includes('cadr')||t.includes('existent')){
+      r=["C'est une situation très fréquente. L'enjeu est de passer d'usages dispersés à une démarche cohérente et maîtrisée.","Quelle est votre priorité ?"];
+    } else if(t.includes('structur')){
+      r=["Excellente démarche. C'est la transition de l'expérimentation vers un cadre solide qui crée le plus de valeur.","Quelle est votre priorité ?"];
     } else {
-      r=["Bien joué, la veille c'est déjà un premier pas ! Le truc c'est que ça bouge tellement vite en ce moment...","Si vous deviez avancer sur un sujet, ce serait lequel ?"];
+      r=["La veille est un bon point de départ. Le domaine évolue très vite, et il est utile d'identifier les premiers leviers concrets.","Si vous deviez avancer sur un sujet, lequel ?"];
     }
     botSay(r, 0, ()=>{
-      pills(["Productivité & automatisation","Former les équipes","Cadrer la Shadow IA","Stratégie et roadmap IA"]);
+      pills(["Productivité & automatisation","Formation des équipes","Cadrer la Shadow IA","Stratégie et roadmap IA"]);
     });
   }
 
@@ -1926,16 +1926,16 @@
     cbPhase=3; cbCtx.enjeu=t;
     let r;
     if(t.includes('roductivité')||t.includes('automatisation')){
-      r=["L'automatisation, c'est souvent le quick win le plus visible. On a des clients qui récupèrent 3 à 5h par semaine par personne, sans exagérer.","Et vous, c'est pour combien de personnes à peu près ?"];
-    } else if(t.includes('ormer')){
-      r=["La formation, c'est la clé. Parce que l'outil sans la compétence, ça donne... pas grand chose. On fait du sur-mesure, du prompting au vibe-coding.","C'est pour quelle taille d'équipe ?"];
+      r=["L'automatisation est souvent le levier le plus rapide. Nos clients constatent en moyenne 3 à 5 heures gagnées par personne et par semaine.","Quelle est la taille de votre organisation ?"];
+    } else if(t.includes('orm')){
+      r=["La montée en compétences est essentielle. Nous proposons des formats adaptés, du prompting à l'intégration d'outils métier.","Quelle est la taille de votre organisation ?"];
     } else if(t.includes('hadow')){
-      r=["Ah là c'est un vrai sujet de fond. Des données confidentielles dans ChatGPT, pas de charte, pas de visibilité... On voit ça partout.","C'est dans quel type de structure ?"];
+      r=["C'est un enjeu de gouvernance majeur : données confidentielles exposées, usages non tracés, absence de charte. Nous accompagnons nos clients sur ce sujet.","Quelle est la taille de votre structure ?"];
     } else {
-      r=["Construire une vraie roadmap IA, c'est ce qui fait la différence entre les boîtes qui avancent et celles qui restent au stade PowerPoint.","Vous êtes dans quelle taille d'entreprise ?"];
+      r=["Une roadmap IA claire, c'est ce qui distingue les entreprises qui avancent de celles qui restent au stade de l'intention.","Quelle est la taille de votre entreprise ?"];
     }
     botSay(r, 0, ()=>{
-      pills(["PME (< 50)","ETI (50-500)","Grande entreprise (+500)"]);
+      pills(["PME (< 50 personnes)","ETI (50-500)","Grand groupe (+500)"]);
     });
   }
 
@@ -1945,18 +1945,18 @@
     let personal;
     const e=cbCtx.enjeu||'';
     if(e.includes('roductivité')){
-      personal="Typiquement, sur une "+t.toLowerCase()+" comme la vôtre, on commence par cartographier les tâches chronophages, et en 2-3 semaines on a des premiers résultats concrets.";
-    } else if(e.includes('ormer')){
-      personal="Pour une "+t.toLowerCase()+", on adapte le format : du CODIR qui a besoin de vision aux opérationnels qui veulent du concret avec les outils.";
+      personal="Pour une structure de type "+t.toLowerCase()+", nous commençons par cartographier les tâches chronophages. Les premiers résultats sont visibles en 2 à 3 semaines.";
+    } else if(e.includes('orm')){
+      personal="Pour une "+t.toLowerCase()+", nous adaptons le format : vision stratégique pour le CODIR, pratique opérationnelle pour les équipes métier.";
     } else if(e.includes('hadow')){
-      personal="En "+t.toLowerCase()+" la Shadow IA c'est un vrai risque. On fait un audit rapide, on cartographie, et on met en place une charte + les bons outils.";
+      personal="En "+t.toLowerCase()+", la Shadow IA représente un risque réel. Nous réalisons un audit, cartographions les usages, et mettons en place une charte adaptée.";
     } else {
-      personal="Pour une "+t.toLowerCase()+", l'enjeu c'est d'avoir une roadmap réaliste, pas un truc théorique. On part du terrain.";
+      personal="Pour une "+t.toLowerCase()+", l'essentiel est de construire une roadmap réaliste, ancrée dans vos réalités métier.";
     }
     botSay([
       personal,
-      "Honnêtement, le mieux c'est qu'on en parle 30 min. Sans engagement, c'est vraiment pour comprendre votre contexte et voir si on peut vous aider.",
-      "Ça vous dit ?"
+      "Je vous propose un échange de 30 minutes, sans engagement, pour comprendre votre contexte et identifier les premiers leviers.",
+      "Souhaitez-vous réserver un créneau ?"
     ], 0, ()=>{ cta(); });
   }
 
@@ -1975,40 +1975,40 @@
     if(cbPhase===1){
       // Try to match intent
       const low=v.toLowerCase();
-      if(low.includes('oui')||low.includes('réfléch')||low.includes('commence')||low.includes('début')) cbPick("On commence à y réfléchir");
-      else if(low.includes('bazar')||low.includes('bordel')||low.includes('partout')||low.includes('chatgpt')) cbPick("On a des usages mais c'est le bazar");
-      else if(low.includes('structur')||low.includes('organis')||low.includes('cadrer')) cbPick("On veut structurer tout ça");
+      if(low.includes('oui')||low.includes('réfléch')||low.includes('commence')||low.includes('début')||low.includes('démarr')) cbPick("Nous démarrons la réflexion");
+      else if(low.includes('bazar')||low.includes('bordel')||low.includes('partout')||low.includes('chatgpt')||low.includes('pas cadré')) cbPick("Des usages existent, pas encore cadrés");
+      else if(low.includes('structur')||low.includes('organis')||low.includes('cadrer')) cbPick("Nous voulons structurer notre approche");
       else {
-        botSay(["Ok, je comprends ! Et du coup, si vous deviez avancer sur un aspect de l'IA, ce serait quoi ?"], 0, ()=>{
+        botSay(["Je comprends. Si vous deviez avancer sur un aspect de l'IA, lequel serait prioritaire ?"], 0, ()=>{
           cbPhase=2;
-          pills(["Productivité & automatisation","Former les équipes","Cadrer la Shadow IA","Stratégie et roadmap IA"]);
+          pills(["Productivité & automatisation","Formation des équipes","Cadrer la Shadow IA","Stratégie et roadmap IA"]);
         });
       }
     } else if(cbPhase===2){
       const low=v.toLowerCase();
       if(low.includes('product')||low.includes('autom')||low.includes('temps')||low.includes('efficac')) cbPick("Productivité & automatisation");
-      else if(low.includes('form')||low.includes('compét')||low.includes('apprend')) cbPick("Former les équipes");
+      else if(low.includes('form')||low.includes('compét')||low.includes('apprend')) cbPick("Formation des équipes");
       else if(low.includes('shadow')||low.includes('cadr')||low.includes('risque')||low.includes('sécur')) cbPick("Cadrer la Shadow IA");
       else if(low.includes('strat')||low.includes('road')||low.includes('vision')) cbPick("Stratégie et roadmap IA");
       else {
-        botSay(["C'est intéressant ce que vous décrivez ! Pour mieux vous orienter..."], 0, ()=>{
-          pills(["Productivité & automatisation","Former les équipes","Cadrer la Shadow IA","Stratégie et roadmap IA"]);
+        botSay(["Merci pour ces précisions. Pour mieux vous orienter :"], 0, ()=>{
+          pills(["Productivité & automatisation","Formation des équipes","Cadrer la Shadow IA","Stratégie et roadmap IA"]);
         });
       }
     } else if(cbPhase===3){
       const low=v.toLowerCase();
-      if(low.match(/\d/) && parseInt(low.match(/\d+/)[0])<50) cbPick("PME (< 50)");
-      else if(low.includes('pme')||low.includes('petit')) cbPick("PME (< 50)");
+      if(low.match(/\d/) && parseInt(low.match(/\d+/)[0])<50) cbPick("PME (< 50 personnes)");
+      else if(low.includes('pme')||low.includes('petit')) cbPick("PME (< 50 personnes)");
       else if(low.includes('eti')||low.match(/\b(50|100|200|300|400|500)\b/)) cbPick("ETI (50-500)");
-      else if(low.includes('grand')||low.match(/\b(\d{4,})\b/)) cbPick("Grande entreprise (+500)");
+      else if(low.includes('grand')||low.match(/\b(\d{4,})\b/)) cbPick("Grand groupe (+500)");
       else {
-        botSay(["Pas de souci ! C'est grosso modo quelle taille ?"], 0, ()=>{
-          pills(["PME (< 50)","ETI (50-500)","Grande entreprise (+500)"]);
+        botSay(["Quelle est approximativement la taille de votre structure ?"], 0, ()=>{
+          pills(["PME (< 50 personnes)","ETI (50-500)","Grand groupe (+500)"]);
         });
       }
     } else {
       // Already at CTA phase, just re-show CTA
-      botSay(["Si vous voulez, on bloque 30 min et on voit tout ça ensemble ?"], 0, ()=>{ cta(); });
+      botSay(["Je vous propose un échange de 30 minutes pour approfondir votre situation."], 0, ()=>{ cta(); });
     }
   }
 
