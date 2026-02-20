@@ -1,8 +1,19 @@
 // Vercel Serverless Function — receives diagnostic data, sends emails + generates Gamma presentation
 // POST /api/diagnostic
 
+// Sanitize user input to prevent HTML injection in emails
+function esc(str) {
+  if (!str || typeof str !== 'string') return str || '';
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// Basic email format validation
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Origin', 'https://homosapia.com');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
@@ -15,7 +26,29 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
+    if (!isValidEmail(data.contact.email)) {
+      return res.status(400).json({ error: 'Invalid email address' });
+    }
+
     const { contact, company, scores, answers, level, timestamp } = data;
+
+    // Sanitize all user-provided strings
+    contact.firstname = esc(contact.firstname);
+    contact.lastname = esc(contact.lastname);
+    contact.phone = esc(contact.phone);
+    if (company) {
+      company.name = esc(company.name);
+      company.sector = esc(company.sector);
+      company.size = esc(company.size);
+      company.role = esc(company.role);
+    }
+    if (answers) {
+      answers.forEach(a => {
+        a.question = esc(a.question);
+        a.answer = esc(a.answer);
+        a.pillar = esc(a.pillar);
+      });
+    }
     const contactName = `${contact.firstname} ${contact.lastname}`;
     const dateStr = new Date(timestamp).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Paris' });
 
@@ -521,36 +554,62 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
     // SEND EMAILS
     // ================================================================
     const RESEND_API_KEY = process.env.RESEND_API_KEY;
-    const NOTIFY_EMAIL = process.env.NOTIFY_EMAIL || 'philippe@4jours.work';
+    const NOTIFY_EMAIL = process.env.NOTIFY_EMAIL || 'philippe@homosapia.com';
+
+    let emailStatus = { prospect: 'skipped', internal: 'skipped' };
 
     if (RESEND_API_KEY) {
       // Send prospect email
-      const prospectResult = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          from: 'Philippe de Homo SapIA <diagnostic@homosapia.com>',
-          to: [contact.email],
-          subject: `${contact.firstname}, votre diagnostic IA est prêt (${scores.total}/60)`,
-          html: prospectEmailHtml
-        })
-      });
+      try {
+        const prospectResult = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            from: 'Philippe du Payrat <diagnostic@homosapia.com>',
+            to: [contact.email],
+            subject: `${contact.firstname}, votre diagnostic IA est prêt (${scores.total}/60)`,
+            html: prospectEmailHtml
+          })
+        });
 
-      if (!prospectResult.ok) {
-        console.error('Resend prospect email error:', await prospectResult.text());
+        if (prospectResult.ok) {
+          const result = await prospectResult.json();
+          emailStatus.prospect = 'sent';
+          console.log('Prospect email sent:', result.id);
+        } else {
+          const errText = await prospectResult.text();
+          emailStatus.prospect = 'error';
+          console.error('Resend prospect email error:', prospectResult.status, errText);
+        }
+      } catch (emailErr) {
+        emailStatus.prospect = 'error';
+        console.error('Resend prospect email failed:', emailErr.message);
       }
 
-      // Send internal notification (separate, more detailed)
-      await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          from: 'Homo SapIA Bot <diagnostic@homosapia.com>',
-          to: [NOTIFY_EMAIL],
-          subject: `&#127919; LEAD - ${contactName} @ ${company.name || 'N/A'} - ${scores.total}/60 (${level})`,
-          html: internalEmailHtml
-        })
-      });
+      // Send internal notification
+      try {
+        const internalResult = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            from: 'Homo SapIA Bot <diagnostic@homosapia.com>',
+            to: [NOTIFY_EMAIL],
+            subject: `🎯 LEAD - ${contactName} @ ${company.name || 'N/A'} - ${scores.total}/60 (${level})`,
+            html: internalEmailHtml
+          })
+        });
+
+        if (internalResult.ok) {
+          emailStatus.internal = 'sent';
+          console.log('Internal notification sent to', NOTIFY_EMAIL);
+        } else {
+          emailStatus.internal = 'error';
+          console.error('Resend internal email error:', internalResult.status, await internalResult.text());
+        }
+      } catch (emailErr) {
+        emailStatus.internal = 'error';
+        console.error('Resend internal email failed:', emailErr.message);
+      }
     } else {
       console.log('=== NEW DIAGNOSTIC (no Resend key) ===');
       console.log(`Contact: ${contactName} <${contact.email}>`);
@@ -562,6 +621,7 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
     return res.status(200).json({
       success: true,
       level,
+      emailStatus,
       steps: recommendedSteps.map(s => ({ num: s.num, title: s.title, subtitle: s.subtitle })),
       gammaPrompt: gammaPrompt.substring(0, 500) + '...',
       gammaUrl: gammaUrl || null,
