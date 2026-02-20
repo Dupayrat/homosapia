@@ -307,7 +307,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      opacity: 0.55;
+      opacity: 0.7;
       transition: opacity 0.3s;
     }
     .trust-logo-item:hover {
@@ -367,7 +367,7 @@
       font-size: 1.6rem;
       margin-bottom: 12px;
     }
-    .value-card h4 {
+    .value-card h3 {
       font-family: var(--serif);
       font-size: 1.1rem;
       margin-bottom: 8px;
@@ -435,7 +435,7 @@
       justify-content: center;
       margin: 0 auto 16px;
     }
-    .step-card h4 {
+    .step-card h3 {
       font-family: var(--serif);
       font-size: 1rem;
       margin-bottom: 8px;
@@ -694,7 +694,7 @@
       padding-top: 32px;
       border-top: 1px solid var(--border);
     }
-    .communities h4 {
+    .communities h3 {
       font-size: 0.82rem;
       letter-spacing: 2px;
       text-transform: uppercase;
@@ -989,9 +989,11 @@
     </div>
   </nav>
 
+  <main>
+
   <!-- Language toggle (fixed, below nav) -->
   <div class="lang-bar">
-    <button id="langToggle" class="lang-toggle-btn" onclick="toggleLang()" aria-label="Switch language"><strong>FR</strong> · <span style="opacity:0.4">EN</span> · <span style="opacity:0.4">ES</span></button>
+    <button id="langToggle" class="lang-toggle-btn" onclick="toggleLang()" aria-label="Switch language"><strong>FR</strong> · <span style="opacity:0.6">EN</span> · <span style="opacity:0.6">ES</span></button>
   </div>
 
   <!-- ═══ HERO ═══ -->
@@ -1049,22 +1051,22 @@
         <div class="manifesto-values reveal">
           <div class="value-card">
             <div class="value-icon">🎯</div>
-            <h4 data-i18n="values.human.title">L'humain au centre</h4>
+            <h3 data-i18n="values.human.title">L'humain au centre</h3>
             <p data-i18n="values.human.desc">L'humain reste au centre des décisions. Toute automatisation critique passe par une validation humaine.</p>
           </div>
           <div class="value-card">
             <div class="value-icon">🌱</div>
-            <h4 data-i18n="values.frugal.title">Frugalité</h4>
+            <h3 data-i18n="values.frugal.title">Frugalité</h3>
             <p data-i18n="values.frugal.desc">Modèles légers, consommation énergétique minimale, coûts optimisés. Le moins pour le mieux.</p>
           </div>
           <div class="value-card">
             <div class="value-icon">🔒</div>
-            <h4 data-i18n="values.sovereign.title">Souveraineté européenne</h4>
+            <h3 data-i18n="values.sovereign.title">Souveraineté européenne</h3>
             <p data-i18n="values.sovereign.desc">Hébergement européen, outils européens prioritaires, respect RGPD natif.</p>
           </div>
           <div class="value-card">
             <div class="value-icon">⚖️</div>
-            <h4 data-i18n="values.ethics.title">Éthique & transparence</h4>
+            <h3 data-i18n="values.ethics.title">Éthique & transparence</h3>
             <p data-i18n="values.ethics.desc">Prévention des biais, open-source prioritaire, processus visibles et auditables.</p>
           </div>
         </div>
@@ -1083,43 +1085,43 @@
       <div class="maturite-track reveal">
         <div class="step-card">
           <div class="step-num">1</div>
-          <h4 data-i18n="steps.1.title">Conférence</h4>
+          <h3 data-i18n="steps.1.title">Conférence</h3>
           <p data-i18n="steps.1.desc">Sensibiliser et faire réfléchir vos équipes</p>
           <div class="step-price" data-i18n="steps.1.price">À partir de 1 800 €</div>
         </div>
         <div class="step-card">
           <div class="step-num">2</div>
-          <h4 data-i18n="steps.2.title">Atelier</h4>
+          <h3 data-i18n="steps.2.title">Atelier</h3>
           <p data-i18n="steps.2.desc">Acculturer et mettre en pratique (1-2 jours)</p>
           <div class="step-price" data-i18n="steps.2.price">À partir de 2 500 €</div>
         </div>
         <div class="step-card">
           <div class="step-num">3</div>
-          <h4 data-i18n="steps.3.title">Audit</h4>
+          <h3 data-i18n="steps.3.title">Audit</h3>
           <p data-i18n="steps.3.desc">Diagnostiquer freins et potentiels IA</p>
           <div class="step-price" data-i18n="steps.3.price">À partir de 8 000 €</div>
         </div>
         <div class="step-card">
           <div class="step-num">4</div>
-          <h4 data-i18n="steps.4.title">Formation</h4>
+          <h3 data-i18n="steps.4.title">Formation</h3>
           <p data-i18n="steps.4.desc">Faire monter vos équipes en compétence</p>
           <div class="step-price" data-i18n="steps.4.price">800-1 000 €/pers/jour</div>
         </div>
         <div class="step-card">
           <div class="step-num">5</div>
-          <h4 data-i18n="steps.5.title">Projet pilote</h4>
+          <h3 data-i18n="steps.5.title">Projet pilote</h3>
           <p data-i18n="steps.5.desc">Tester et apprendre sur un périmètre maîtrisé</p>
           <div class="step-price" data-i18n="steps.5.price">À partir de 10 000 €</div>
         </div>
         <div class="step-card">
           <div class="step-num">6</div>
-          <h4 data-i18n="steps.6.title">Déploiement</h4>
+          <h3 data-i18n="steps.6.title">Déploiement</h3>
           <p data-i18n="steps.6.desc">Industrialiser en maîtrisant les risques</p>
           <div class="step-price" data-i18n="steps.6.price">Sur étude</div>
         </div>
         <div class="step-card">
           <div class="step-num">7</div>
-          <h4 data-i18n="steps.7.title">Suivi</h4>
+          <h3 data-i18n="steps.7.title">Suivi</h3>
           <p data-i18n="steps.7.desc">Maintenir, améliorer, pérenniser</p>
           <div class="step-price" data-i18n="steps.7.price">Sur étude</div>
         </div>
@@ -1336,7 +1338,7 @@
             <a href="mailto:contact@4jours.work" class="about-link">Contact</a>
           </div>
           <div class="communities">
-            <h4 data-i18n="about.communities">Communautés</h4>
+            <h3 data-i18n="about.communities">Communautés</h3>
             <a href="https://www.theaifellowship.com" target="_blank" rel="noopener" class="community-featured">
               <div class="community-featured-logo">
                 <img src="/ai-fellowship-logo.png" alt="The AI Fellowship" loading="lazy">
@@ -1384,6 +1386,8 @@
       </div>
     </div>
   </section>
+
+  </main>
 
   <!-- ═══ FOOTER ═══ -->
   <footer>
@@ -1732,7 +1736,7 @@
       var btn = document.getElementById('langToggle');
       if (btn) {
         btn.innerHTML = langCycle.map(function(l) {
-          return l === targetLang ? '<strong>' + langLabels[l] + '</strong>' : '<span style="opacity:0.4">' + langLabels[l] + '</span>';
+          return l === targetLang ? '<strong>' + langLabels[l] + '</strong>' : '<span style="opacity:0.6">' + langLabels[l] + '</span>';
         }).join(' · ');
       }
       localStorage.setItem('homosapia_lang', targetLang);
