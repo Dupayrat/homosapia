@@ -316,11 +316,13 @@
     .trust-logo-item svg,
     .trust-logo-item img {
       flex-shrink: 0;
-      height: 36px;
+      height: 40px;
       width: auto;
+      max-width: 140px;
+      object-fit: contain;
     }
     .trust-logo-item img[src*="addenda"] {
-      filter: brightness(0) invert(1);
+      filter: invert(1);
     }
     .trust-logo-item .trust-name {
       font-family: var(--sans);
@@ -1030,7 +1032,6 @@
         <!-- Plateau Urbain -->
         <div class="trust-logo-item">
           <img src="/plateau-urbain-logo.png" alt="Plateau Urbain" loading="lazy" width="440" height="161">
-          <span class="trust-name">Plateau Urbain</span>
         </div>
         <!-- Hub France IA -->
         <div class="trust-logo-item">
@@ -1045,7 +1046,6 @@
         <!-- Circulab -->
         <div class="trust-logo-item">
           <img src="/circulab-logo.png" alt="Circulab" loading="lazy" width="539" height="98">
-          <span class="trust-name">Circulab</span>
         </div>
         <!-- emlyon business school -->
         <div class="trust-logo-item">
