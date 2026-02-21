@@ -2,6 +2,9 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <!-- Google Analytics 4 — remplacer G-XXXXXXXXXX par votre Measurement ID -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Homo SapIA - L'IA au service de l'humain</title>
   <meta name="description" content="Homo SapIA accompagne les entreprises dans leur transformation IA, de la sensibilisation au déploiement. Une approche centrée sur l'humain, responsable et frugale.">
@@ -411,6 +414,23 @@
       opacity: 0.3;
       z-index: 0;
     }
+    .maturite-track.reveal { opacity: 1; transform: none; }
+    .maturite-track::after {
+      content: '';
+      position: absolute;
+      top: 46px;
+      left: 5%;
+      right: 5%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--sapiens), var(--accent));
+      z-index: 0;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+    }
+    .maturite-track.visible::after {
+      transform: scaleX(1);
+    }
     .step-card {
       background: var(--bg-elevated);
       border: 1px solid var(--border);
@@ -419,9 +439,24 @@
       text-align: center;
       position: relative;
       z-index: 1;
-      transition: all 0.3s;
       cursor: default;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 0.3s, box-shadow 0.3s;
     }
+    .step-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .step-card:nth-child(1) { transition-delay: 0s; }
+    .step-card:nth-child(2) { transition-delay: 0.08s; }
+    .step-card:nth-child(3) { transition-delay: 0.16s; }
+    .step-card:nth-child(4) { transition-delay: 0.24s; }
+    .step-card:nth-child(5) { transition-delay: 0.32s; }
+    .step-card:nth-child(6) { transition-delay: 0.40s; }
+    .step-card:nth-child(7) { transition-delay: 0.48s; }
     .step-card:hover {
       border-color: var(--accent);
       transform: translateY(-4px);
@@ -439,6 +474,11 @@
       align-items: center;
       justify-content: center;
       margin: 0 auto 16px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .step-card:hover .step-num {
+      transform: scale(1.12);
+      box-shadow: 0 0 20px rgba(242, 107, 58, 0.35);
     }
     .step-card h3 {
       font-family: var(--serif);
@@ -482,11 +522,31 @@
       display: flex;
       flex-direction: column;
     }
+    .offre-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--sapiens), var(--accent));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 2;
+    }
+    .offre-card:hover::before {
+      transform: scaleX(1);
+    }
     .offre-card:hover {
       border-color: rgba(242, 107, 58, 0.3);
       transform: translateY(-4px);
       box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(242, 107, 58, 0.15);
     }
+    .offre-card.reveal:nth-child(1) { transition-delay: 0s; }
+    .offre-card.reveal:nth-child(2) { transition-delay: 0.07s; }
+    .offre-card.reveal:nth-child(3) { transition-delay: 0.14s; }
+    .offre-card.reveal:nth-child(4) { transition-delay: 0.21s; }
+    .offre-card.reveal:nth-child(5) { transition-delay: 0.28s; }
+    .offre-card.reveal:nth-child(6) { transition-delay: 0.35s; }
     .offre-card-header {
       padding: 28px 28px 20px;
       display: flex;
@@ -503,6 +563,12 @@
       font-size: 1.4rem;
       flex-shrink: 0;
       background: var(--accent-glow);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .offre-card:hover .offre-icon-wrap {
+      transform: scale(1.1);
+      box-shadow: 0 0 24px rgba(242, 107, 58, 0.2);
+      background: rgba(242, 107, 58, 0.15);
     }
     .offre-card-header-text {
       flex: 1;
@@ -518,6 +584,11 @@
       letter-spacing: 0.5px;
       text-transform: uppercase;
       margin-bottom: 6px;
+      transition: all 0.3s;
+    }
+    .offre-card:hover .offre-tag {
+      background: rgba(242, 107, 58, 0.18);
+      transform: translateX(3px);
     }
     .offre-card h3 {
       font-family: var(--serif);
@@ -674,6 +745,27 @@
       line-height: 1.8;
       margin-bottom: 16px;
     }
+    .about-distinctions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+    .distinction-badge {
+      display: inline-block;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text);
+      background: rgba(242, 107, 58, 0.08);
+      border: 1px solid rgba(242, 107, 58, 0.2);
+      border-radius: 100px;
+      padding: 6px 16px;
+      transition: all 0.3s;
+    }
+    .distinction-badge:hover {
+      background: rgba(242, 107, 58, 0.14);
+      border-color: rgba(242, 107, 58, 0.35);
+    }
     .about-links {
       display: flex;
       gap: 16px;
@@ -815,6 +907,78 @@
     .cta-content .section-subtitle {
       margin: 0 auto 44px;
       text-align: center;
+    }
+    .cta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      max-width: 880px;
+      margin: 0 auto;
+      text-align: left;
+    }
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .contact-form input,
+    .contact-form textarea {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 14px 18px;
+      color: #E8E6E1;
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      resize: vertical;
+    }
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder {
+      color: #555;
+    }
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      border-color: rgba(242, 107, 58, 0.4);
+      box-shadow: 0 0 0 3px rgba(242, 107, 58, 0.08);
+    }
+    .contact-form button {
+      align-self: flex-start;
+    }
+    .contact-form .form-status {
+      font-size: 0.85rem;
+      font-family: var(--sans);
+      margin-top: 4px;
+    }
+    .cta-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 24px;
+    }
+    .cta-right p {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      line-height: 1.65;
+      margin: 0;
+    }
+    .cta-info {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .cta-info a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-family: var(--sans);
+      transition: color 0.2s;
+    }
+    .cta-info a:hover { color: var(--accent); }
+    @media (max-width: 768px) {
+      .cta-grid { grid-template-columns: 1fr; gap: 32px; }
     }
 
     /* ───── FOOTER ───── */
@@ -1351,6 +1515,12 @@
           <p data-i18n="about.p1">Expert en excellence opérationnelle et organisation du travail. Entrepreneur social avec une expérience de COO chez La Ruche Qui Dit Oui et DG de MaVoie.org.</p>
           <p data-i18n="about.p2">Plus de 30 clients PME et ETI accompagnés sur la transformation des organisations : people, process, performance et impact. Parcours chez Google (Industry Analyst), Simon-Kucher (Consultant), AramisAuto (BU Manager).</p>
           <p data-i18n="about.p3">Premier pilote national de la semaine de 4 jours en France, en partenariat avec EM Lyon et 4 Day Week Global.</p>
+          <div class="about-distinctions">
+            <span class="distinction-badge" data-i18n="about.d1">🎓 Alumni de l'année ESCP 2022</span>
+            <span class="distinction-badge" data-i18n="about.d2">🏆 Lauréat Prix Envi 2025</span>
+            <span class="distinction-badge" data-i18n="about.d3">🌍 Expert ChangeNOW depuis 2023</span>
+            <span class="distinction-badge" data-i18n="about.d4">🚀 Fondateur MaVoie.org — 4× soutenu par Google.org</span>
+          </div>
           <div class="about-links">
             <a href="https://4jours.work" target="_blank" class="about-link">4jours.work</a>
             <a href="mailto:contact@homosapia.com" class="about-link">Contact</a>
@@ -1398,8 +1568,24 @@
         <p class="section-label" data-i18n="cta.label">Prêt à avancer ?</p>
         <h2 class="section-title" data-i18n="cta.title">Échangeons sur votre projet IA</h2>
         <p class="section-subtitle" data-i18n="cta.subtitle">Un premier appel de 30 minutes pour comprendre vos enjeux et identifier les premières pistes d'action.</p>
-        <div class="hero-actions" style="justify-content: center;">
+      </div>
+      <div class="cta-grid reveal">
+        <!-- Formulaire de contact -->
+        <form id="contactForm" class="contact-form" novalidate>
+          <input type="text" name="name" placeholder="Votre nom" required data-i18n-placeholder="contact.name">
+          <input type="email" name="email" placeholder="Votre email" required data-i18n-placeholder="contact.email">
+          <textarea name="message" placeholder="Votre message" rows="4" required data-i18n-placeholder="contact.message"></textarea>
+          <button type="submit" class="btn-primary" data-i18n="contact.send">Envoyer le message →</button>
+          <p class="form-status" id="contactStatus"></p>
+        </form>
+        <!-- Colonne droite : RDV + infos -->
+        <div class="cta-right">
+          <p data-i18n="contact.prefer">Vous préférez échanger de vive voix ?</p>
           <a href="https://meetings-eu1.hubspot.com/pdu-payrat?uuid=5a24cb40-61aa-41f5-aee3-8cc6a8cae0bf" target="_blank" rel="noopener" class="btn-primary" data-i18n="cta.btn">Prendre rendez-vous →</a>
+          <div class="cta-info">
+            <p><a href="mailto:contact@homosapia.com">contact@homosapia.com</a></p>
+            <p><a href="https://www.linkedin.com/in/philippe-du-payrat/" target="_blank" rel="noopener">LinkedIn</a></p>
+          </div>
         </div>
       </div>
     </div>
@@ -1621,6 +1807,10 @@
         'about.p1': 'Expert in operational excellence and work organization. Social entrepreneur with experience as COO at La Ruche Qui Dit Oui and CEO of MaVoie.org.',
         'about.p2': '30+ SME and mid-cap clients supported on organizational transformation: people, process, performance and impact. Career at Google (Industry Analyst), Simon-Kucher (Consultant), AramisAuto (BU Manager).',
         'about.p3': "Led France's first national 4-day work week pilot, in partnership with EM Lyon and 4 Day Week Global.",
+        'about.d1': '🎓 ESCP Alumni of the Year 2022',
+        'about.d2': '🏆 Envi Award Winner 2025',
+        'about.d3': '🌍 ChangeNOW Expert since 2023',
+        'about.d4': '🚀 Founder MaVoie.org — 4× supported by Google.org',
         'about.communities': 'Communities',
         'about.taif_desc': 'International community of AI practitioners. Acting locally, thinking globally.',
         'about.taif_members': '1,300+ members',
@@ -1630,6 +1820,8 @@
         'about.savoyia_experts': '14 experts',
         'about.savoyia_territory': 'Savoie 73 & 74',
         'about.savoyia_podcast': 'GLOW Podcast',
+        'contact.name': 'Your name', 'contact.email': 'Your email', 'contact.message': 'Your message',
+        'contact.send': 'Send message →', 'contact.prefer': 'Prefer to talk?',
         'cta.label': 'Ready to move forward?', 'cta.title': "Let's discuss your AI project",
         'cta.subtitle': 'A 30-minute introductory call to understand your challenges and identify first action steps.',
         'cta.btn': 'Book a meeting →',
@@ -1703,6 +1895,10 @@
         'about.p1': 'Experto en excelencia operativa y organización del trabajo. Emprendedor social con experiencia como COO en La Ruche Qui Dit Oui y Director General de MaVoie.org.',
         'about.p2': 'Más de 30 clientes PYME y ETI acompañados en transformación organizacional: personas, procesos, rendimiento e impacto. Trayectoria en Google (Industry Analyst), Simon-Kucher (Consultor), AramisAuto (BU Manager).',
         'about.p3': 'Líder del primer piloto nacional de semana de 4 días en Francia, en colaboración con EM Lyon y 4 Day Week Global.',
+        'about.d1': '🎓 Alumni del Año ESCP 2022',
+        'about.d2': '🏆 Ganador Premio Envi 2025',
+        'about.d3': '🌍 Experto ChangeNOW desde 2023',
+        'about.d4': '🚀 Fundador MaVoie.org — 4× apoyado por Google.org',
         'about.communities': 'Comunidades',
         'about.taif_desc': 'Comunidad internacional de profesionales de IA. Actuar localmente, pensar globalmente.',
         'about.taif_members': '1 300+ miembros',
@@ -1712,6 +1908,8 @@
         'about.savoyia_experts': '14 expertos',
         'about.savoyia_territory': 'Saboya 73 y 74',
         'about.savoyia_podcast': 'Podcast GLOW',
+        'contact.name': 'Su nombre', 'contact.email': 'Su email', 'contact.message': 'Su mensaje',
+        'contact.send': 'Enviar mensaje →', 'contact.prefer': '¿Prefiere hablar?',
         'cta.label': '¿Listo para avanzar?', 'cta.title': 'Hablemos de su proyecto IA',
         'cta.subtitle': 'Una llamada introductoria de 30 minutos para entender sus retos e identificar las primeras acciones.',
         'cta.btn': 'Reservar una cita →',
@@ -1753,6 +1951,21 @@
             var isHtml = el.getAttribute('data-i18n-html') === '1';
             if (isHtml) el.innerHTML = dict[key]; else el.textContent = dict[key];
           }
+        });
+      }
+      // Handle placeholder translations
+      var phEls = document.querySelectorAll('[data-i18n-placeholder]');
+      if (!window._i18nPhFrStored) {
+        phEls.forEach(function(el) { el.setAttribute('data-i18n-ph-fr', el.getAttribute('placeholder') || ''); });
+        window._i18nPhFrStored = true;
+      }
+      if (targetLang === 'fr') {
+        phEls.forEach(function(el) { el.setAttribute('placeholder', el.getAttribute('data-i18n-ph-fr') || ''); });
+      } else {
+        var dict2 = i18n[targetLang];
+        if (dict2) phEls.forEach(function(el) {
+          var k = el.getAttribute('data-i18n-placeholder');
+          if (dict2[k]) el.setAttribute('placeholder', dict2[k]);
         });
       }
       currentLang = targetLang;
@@ -1815,7 +2028,52 @@
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold:.1, rootMargin:'0px 0px -50px 0px' });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  document.querySelectorAll('.reveal, .step-card').forEach(el => observer.observe(el));
+
+  // ── CONTACT FORM ──
+  (function(){
+    const form = document.getElementById('contactForm');
+    if (!form) return;
+    const status = document.getElementById('contactStatus');
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = form.querySelector('button[type="submit"]');
+      const origText = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = 'Envoi en cours…';
+      status.textContent = '';
+      status.style.color = '';
+
+      const body = {
+        name: form.name.value.trim(),
+        email: form.email.value.trim(),
+        message: form.message.value.trim()
+      };
+
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          status.textContent = 'Message envoyé ! Je reviens vers vous rapidement.';
+          status.style.color = '#4ade80';
+          form.reset();
+        } else {
+          status.textContent = data.error || 'Une erreur est survenue.';
+          status.style.color = '#f87171';
+        }
+      } catch (err) {
+        status.textContent = 'Erreur réseau. Veuillez réessayer.';
+        status.style.color = '#f87171';
+      }
+
+      btn.disabled = false;
+      btn.textContent = origText;
+    });
+  })();
 
   // ── CHATBOT ENGINE ──
   const HS='https://meetings-eu1.hubspot.com/pdu-payrat?uuid=5a24cb40-61aa-41f5-aee3-8cc6a8cae0bf';
