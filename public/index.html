@@ -447,6 +447,233 @@
       line-height: 1.7;
     }
 
+    /* ───── REASSURANCE (Pourquoi nous) ───── */
+    .reassurance {
+      padding: 120px 0;
+      background: var(--bg-elevated);
+    }
+    .reassurance-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 64px;
+    }
+    .compare-col {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      position: relative;
+      transition: all 0.3s;
+    }
+    .compare-col.compare-highlight {
+      border-color: var(--accent);
+      background: rgba(242, 107, 58, 0.04);
+      box-shadow: 0 0 40px rgba(242, 107, 58, 0.08);
+    }
+    .compare-col.compare-highlight::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--sapiens), var(--accent));
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+    .compare-badge {
+      display: inline-block;
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 16px;
+    }
+    .compare-col:not(.compare-highlight) .compare-badge {
+      background: rgba(255,255,255,0.06);
+      color: var(--text-muted);
+    }
+    .compare-highlight .compare-badge {
+      background: var(--accent-glow);
+      color: var(--accent);
+    }
+    .compare-col h4 {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      margin-bottom: 20px;
+      color: var(--text);
+    }
+    .compare-list {
+      list-style: none;
+    }
+    .compare-list li {
+      font-family: var(--sans);
+      font-size: 0.88rem;
+      line-height: 1.6;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .compare-list li:last-child { border-bottom: none; }
+    .compare-list .check {
+      color: #4ADE80;
+      font-weight: 700;
+      flex-shrink: 0;
+      font-size: 0.95rem;
+    }
+    .compare-list .cross {
+      color: #F87171;
+      font-weight: 700;
+      flex-shrink: 0;
+      font-size: 0.95rem;
+    }
+    .compare-list .partial {
+      color: #FBBF24;
+      font-weight: 700;
+      flex-shrink: 0;
+      font-size: 0.95rem;
+    }
+    .compare-list li span:last-child {
+      color: var(--text-muted);
+    }
+    .compare-highlight .compare-list li span:last-child {
+      color: var(--text);
+    }
+
+    /* ───── PROCESS (Étapes) ───── */
+    .process-section {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .process-title {
+      text-align: center;
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      margin-bottom: 40px;
+      color: var(--text);
+    }
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      position: relative;
+    }
+    .process-steps::before {
+      content: '';
+      position: absolute;
+      top: 28px;
+      left: 12.5%;
+      right: 12.5%;
+      height: 2px;
+      background: var(--border);
+      z-index: 0;
+    }
+    .process-steps::after {
+      content: '';
+      position: absolute;
+      top: 28px;
+      left: 12.5%;
+      right: 12.5%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--sapiens), var(--accent));
+      z-index: 1;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.3s;
+    }
+    .process-steps.visible::after {
+      transform: scaleX(1);
+    }
+    .process-step {
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .process-step.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .process-step:nth-child(1) { transition-delay: 0.1s; }
+    .process-step:nth-child(2) { transition-delay: 0.3s; }
+    .process-step:nth-child(3) { transition-delay: 0.5s; }
+    .process-step:nth-child(4) { transition-delay: 0.7s; }
+    .process-num {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--accent);
+      transition: all 0.4s;
+    }
+    .process-step.visible .process-num {
+      border-color: var(--accent);
+      box-shadow: 0 0 16px rgba(242, 107, 58, 0.2);
+    }
+    .process-step h5 {
+      font-family: var(--sans);
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .process-step p {
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      padding: 0 8px;
+    }
+
+    /* ───── TRUST BADGES (near CTA) ───── */
+    .trust-badges {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+    .trust-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    .trust-badge svg {
+      flex-shrink: 0;
+      color: var(--accent);
+      opacity: 0.7;
+    }
+
+    @media (max-width: 968px) {
+      .compare-grid { grid-template-columns: 1fr; gap: 16px; }
+      .process-steps { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .process-steps::before, .process-steps::after { display: none; }
+    }
+    @media (max-width: 768px) {
+      .process-steps { grid-template-columns: 1fr; gap: 24px; }
+      .trust-badges { gap: 16px; }
+    }
+
     /* ───── NEWSLETTER ───── */
     .newsletter-bar {
       padding: 48px 0;
@@ -2020,6 +2247,87 @@
     </div>
   </section>
 
+  <!-- ═══ RÉASSURANCE ═══ -->
+  <section class="reassurance" id="reassurance">
+    <div class="container">
+      <div class="reassurance-header reveal">
+        <p class="section-label" data-i18n="reassurance.label">Pourquoi nous ?</p>
+        <h2 class="section-title" data-i18n="reassurance.title">L'approche qui fait la différence</h2>
+        <p class="section-subtitle" data-i18n="reassurance.subtitle">Comparez les options et choisissez en connaissance de cause.</p>
+      </div>
+
+      <!-- Comparatif 3 colonnes -->
+      <div class="compare-grid">
+        <div class="compare-col reveal">
+          <span class="compare-badge" data-i18n="compare.col1.badge">Option A</span>
+          <h4 data-i18n="compare.col1.title">Cabinet classique</h4>
+          <ul class="compare-list">
+            <li><span class="check">✓</span> <span data-i18n="compare.col1.li1">Méthodologie structurée</span></li>
+            <li><span class="check">✓</span> <span data-i18n="compare.col1.li2">Ressources multiples</span></li>
+            <li><span class="cross">✗</span> <span data-i18n="compare.col1.li3">Slides théoriques, peu de pratique</span></li>
+            <li><span class="cross">✗</span> <span data-i18n="compare.col1.li4">Junior sur le terrain, senior en vente</span></li>
+            <li><span class="cross">✗</span> <span data-i18n="compare.col1.li5">Tarifs élevés (TJM 2-3k€)</span></li>
+            <li><span class="cross">✗</span> <span data-i18n="compare.col1.li6">Dépendance au cabinet</span></li>
+          </ul>
+        </div>
+
+        <div class="compare-col compare-highlight reveal">
+          <span class="compare-badge" data-i18n="compare.col2.badge">Recommandé</span>
+          <h4 data-i18n="compare.col2.title">Homo SapIA</h4>
+          <ul class="compare-list">
+            <li><span class="check">✓</span> <span data-i18n="compare.col2.li1">Expert senior de bout en bout</span></li>
+            <li><span class="check">✓</span> <span data-i18n="compare.col2.li2">Co-construction avec vos équipes</span></li>
+            <li><span class="check">✓</span> <span data-i18n="compare.col2.li3">Résultats concrets et mesurables</span></li>
+            <li><span class="check">✓</span> <span data-i18n="compare.col2.li4">Transfert de compétences = autonomie</span></li>
+            <li><span class="check">✓</span> <span data-i18n="compare.col2.li5">Tarifs adaptés PME/ETI</span></li>
+            <li><span class="check">✓</span> <span data-i18n="compare.col2.li6">Approche souveraine et RGPD</span></li>
+          </ul>
+        </div>
+
+        <div class="compare-col reveal">
+          <span class="compare-badge" data-i18n="compare.col3.badge">Option B</span>
+          <h4 data-i18n="compare.col3.title">Faire soi-même</h4>
+          <ul class="compare-list">
+            <li><span class="check">✓</span> <span data-i18n="compare.col3.li1">Coût initial nul</span></li>
+            <li><span class="check">✓</span> <span data-i18n="compare.col3.li2">Autonomie totale</span></li>
+            <li><span class="cross">✗</span> <span data-i18n="compare.col3.li3">Courbe d'apprentissage longue</span></li>
+            <li><span class="cross">✗</span> <span data-i18n="compare.col3.li4">Risque de mauvais choix d'outils</span></li>
+            <li><span class="cross">✗</span> <span data-i18n="compare.col3.li5">Pas de benchmark sectoriel</span></li>
+            <li><span class="cross">✗</span> <span data-i18n="compare.col3.li6">Conformité RGPD incertaine</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Processus transparent -->
+      <div class="process-section">
+        <h3 class="process-title reveal" data-i18n="process.title">Ce qui se passe quand vous nous contactez</h3>
+        <div class="process-steps">
+          <div class="process-step">
+            <div class="process-num">01</div>
+            <h5 data-i18n="process.s1.title">Appel découverte</h5>
+            <p data-i18n="process.s1.desc">30 min gratuites pour comprendre vos enjeux et évaluer le fit.</p>
+          </div>
+          <div class="process-step">
+            <div class="process-num">02</div>
+            <h5 data-i18n="process.s2.title">Proposition sur mesure</h5>
+            <p data-i18n="process.s2.desc">Objectifs, livrables, planning et budget clairs sous 5 jours.</p>
+          </div>
+          <div class="process-step">
+            <div class="process-num">03</div>
+            <h5 data-i18n="process.s3.title">Intervention terrain</h5>
+            <p data-i18n="process.s3.desc">Co-construction avec vos équipes. Résultats visibles dès la 1re semaine.</p>
+          </div>
+          <div class="process-step">
+            <div class="process-num">04</div>
+            <h5 data-i18n="process.s4.title">Autonomie & suivi</h5>
+            <p data-i18n="process.s4.desc">Transfert de compétences, documentation et suivi post-mission.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
   <!-- ═══ CTA ═══ -->
   <section class="cta-section" id="contact">
     <div class="container">
@@ -2046,6 +2354,21 @@
             <p><a href="https://www.linkedin.com/in/philippedupayrat-semaine-de-quatre-jours/" target="_blank" rel="noopener">LinkedIn</a></p>
           </div>
         </div>
+      </div>
+      <!-- Trust badges -->
+      <div class="trust-badges reveal">
+        <span class="trust-badge">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span data-i18n="trust.rgpd">Conforme RGPD</span>
+        </span>
+        <span class="trust-badge">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          <span data-i18n="trust.nda">NDA avant chaque mission</span>
+        </span>
+        <span class="trust-badge">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <span data-i18n="trust.call">1er appel gratuit, sans engagement</span>
+        </span>
       </div>
     </div>
   </section>
@@ -2319,6 +2642,25 @@
         'faq.a7_btn': 'Take the diagnostic →',
         'faq.q8': 'Do you work with specific tools?',
         'faq.a8': 'We are tool-agnostic. Depending on your needs: Microsoft Copilot, open source solutions, n8n for automation, vibe-coding tools. We always recommend the best fit for your context.',
+        'reassurance.label': 'Why us?', 'reassurance.title': 'The approach that makes the difference', 'reassurance.subtitle': 'Compare your options and choose with confidence.',
+        'compare.col1.badge': 'Option A', 'compare.col1.title': 'Traditional consulting',
+        'compare.col1.li1': 'Structured methodology', 'compare.col1.li2': 'Multiple resources',
+        'compare.col1.li3': 'Theoretical slides, little hands-on', 'compare.col1.li4': 'Junior on-site, senior in sales',
+        'compare.col1.li5': 'High fees (daily rate €2-3K)', 'compare.col1.li6': 'Dependency on the firm',
+        'compare.col2.badge': 'Recommended', 'compare.col2.title': 'Homo SapIA',
+        'compare.col2.li1': 'Senior expert end to end', 'compare.col2.li2': 'Co-build with your teams',
+        'compare.col2.li3': 'Concrete, measurable results', 'compare.col2.li4': 'Skills transfer = autonomy',
+        'compare.col2.li5': 'SME/mid-cap friendly pricing', 'compare.col2.li6': 'Sovereign and GDPR-first approach',
+        'compare.col3.badge': 'Option B', 'compare.col3.title': 'Do it yourself',
+        'compare.col3.li1': 'Zero initial cost', 'compare.col3.li2': 'Full autonomy',
+        'compare.col3.li3': 'Steep learning curve', 'compare.col3.li4': 'Risk of wrong tool choices',
+        'compare.col3.li5': 'No industry benchmark', 'compare.col3.li6': 'Uncertain GDPR compliance',
+        'process.title': 'What happens when you reach out',
+        'process.s1.title': 'Discovery call', 'process.s1.desc': '30 free minutes to understand your challenges and assess fit.',
+        'process.s2.title': 'Tailored proposal', 'process.s2.desc': 'Clear goals, deliverables, timeline and budget within 5 days.',
+        'process.s3.title': 'On-site delivery', 'process.s3.desc': 'Co-build with your teams. Visible results from week 1.',
+        'process.s4.title': 'Autonomy & follow-up', 'process.s4.desc': 'Skills transfer, documentation and post-mission support.',
+        'trust.rgpd': 'GDPR Compliant', 'trust.nda': 'NDA before every engagement', 'trust.call': 'First call free, no strings attached',
         'newsletter.title': 'Get our AI insights',
         'newsletter.desc': 'Once a month: trends, real use cases and tested tools. No spam, only value.',
         'newsletter.placeholder': 'Your professional email',
@@ -2432,7 +2774,26 @@
         'faq.a7': 'Un cuestionario online de 5 minutos que evalúa su madurez IA en 5 pilares. Recibe su puntuación y una presentación personalizada con recomendaciones.',
         'faq.a7_btn': 'Iniciar el diagnóstico →',
         'faq.q8': '¿Trabajan con herramientas específicas?',
-        'faq.a8': 'Somos agnósticos. Según sus necesidades: Microsoft Copilot, soluciones open source, n8n, herramientas de vibe-coding. Recomendamos lo más adaptado a su contexto.',
+        'faq.a8': 'Somos agn\u00f3sticos. Seg\u00fan sus necesidades: Microsoft Copilot, soluciones open source, n8n, herramientas de vibe-coding. Recomendamos lo m\u00e1s adaptado a su contexto.',
+        'reassurance.label': '\u00bfPor qu\u00e9 nosotros?', 'reassurance.title': 'El enfoque que marca la diferencia', 'reassurance.subtitle': 'Compare sus opciones y elija con conocimiento de causa.',
+        'compare.col1.badge': 'Opci\u00f3n A', 'compare.col1.title': 'Consultor\u00eda cl\u00e1sica',
+        'compare.col1.li1': 'Metodolog\u00eda estructurada', 'compare.col1.li2': 'Recursos m\u00faltiples',
+        'compare.col1.li3': 'Slides te\u00f3ricos, poca pr\u00e1ctica', 'compare.col1.li4': 'Junior en terreno, senior en ventas',
+        'compare.col1.li5': 'Tarifas altas (TJM 2-3k\u20ac)', 'compare.col1.li6': 'Dependencia del despacho',
+        'compare.col2.badge': 'Recomendado', 'compare.col2.title': 'Homo SapIA',
+        'compare.col2.li1': 'Experto senior de principio a fin', 'compare.col2.li2': 'Co-construcci\u00f3n con sus equipos',
+        'compare.col2.li3': 'Resultados concretos y medibles', 'compare.col2.li4': 'Transferencia de competencias = autonom\u00eda',
+        'compare.col2.li5': 'Tarifas adaptadas PYME/ETI', 'compare.col2.li6': 'Enfoque soberano y RGPD',
+        'compare.col3.badge': 'Opci\u00f3n B', 'compare.col3.title': 'Hacerlo usted mismo',
+        'compare.col3.li1': 'Coste inicial nulo', 'compare.col3.li2': 'Autonom\u00eda total',
+        'compare.col3.li3': 'Curva de aprendizaje larga', 'compare.col3.li4': 'Riesgo de malas elecciones de herramientas',
+        'compare.col3.li5': 'Sin benchmark sectorial', 'compare.col3.li6': 'Conformidad RGPD incierta',
+        'process.title': 'Lo que sucede cuando nos contacta',
+        'process.s1.title': 'Llamada descubrimiento', 'process.s1.desc': '30 min gratuitos para entender sus retos y evaluar la compatibilidad.',
+        'process.s2.title': 'Propuesta a medida', 'process.s2.desc': 'Objetivos, entregables, calendario y presupuesto claros en 5 d\u00edas.',
+        'process.s3.title': 'Intervenci\u00f3n en terreno', 'process.s3.desc': 'Co-construcci\u00f3n con sus equipos. Resultados visibles desde la semana 1.',
+        'process.s4.title': 'Autonom\u00eda y seguimiento', 'process.s4.desc': 'Transferencia de competencias, documentaci\u00f3n y seguimiento post-misi\u00f3n.',
+        'trust.rgpd': 'Conforme RGPD', 'trust.nda': 'NDA antes de cada misi\u00f3n', 'trust.call': 'Primera llamada gratuita, sin compromiso',
         'newsletter.title': 'Reciba nuestros insights IA',
         'newsletter.desc': 'Una vez al mes: tendencias, casos de uso y herramientas probadas. Sin spam, solo valor.',
         'newsletter.placeholder': 'Su email profesional',
@@ -2552,7 +2913,7 @@
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold:.1, rootMargin:'0px 0px -50px 0px' });
-  document.querySelectorAll('.reveal, .step-card').forEach(el => observer.observe(el));
+  document.querySelectorAll('.reveal, .step-card, .process-step, .process-steps').forEach(el => observer.observe(el));
 
   // ── ANIMATED COUNTERS ──
   (function(){
