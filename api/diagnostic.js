@@ -31,6 +31,7 @@ export default async function handler(req, res) {
     }
 
     const { contact, company, scores, answers, level, timestamp } = data;
+    const lang = ['en', 'es', 'fr'].includes(data.lang) ? data.lang : 'fr';
 
     // Sanitize all user-provided strings
     contact.firstname = esc(contact.firstname);
@@ -38,6 +39,7 @@ export default async function handler(req, res) {
     contact.phone = esc(contact.phone);
     if (company) {
       company.name = esc(company.name);
+      company.website = esc(company.website);
       company.sector = esc(company.sector);
       company.size = esc(company.size);
       company.role = esc(company.role);
@@ -50,7 +52,66 @@ export default async function handler(req, res) {
       });
     }
     const contactName = `${contact.firstname} ${contact.lastname}`;
-    const dateStr = new Date(timestamp).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Paris' });
+    const dateLocales = { fr: 'fr-FR', en: 'en-US', es: 'es-ES' };
+    const dateStr = new Date(timestamp).toLocaleDateString(dateLocales[lang] || 'fr-FR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Paris' });
+
+    // ================================================================
+    // EMAIL INTERNATIONALIZATION
+    // ================================================================
+    const EMAIL_I18N = {
+      fr: {
+        subject: (name, score) => `${name}, votre diagnostic IA est prêt (${score}/100)`,
+        title: 'Votre diagnostic IA',
+        greeting: (name) => `${name}, voici vos résultats`,
+        scoreLabel: 'Score global',
+        pillarLabel: 'Détail par pilier',
+        strengthLabel: '✦ Votre point fort',
+        recoLabel: 'Ce que nous vous recommandons',
+        stepLabel: 'Étape',
+        ctaTitle: 'Discutons de vos résultats',
+        ctaDesc: "30 minutes pour transformer ce diagnostic en plan d'action concret",
+        ctaBtn: 'Prendre rendez-vous →',
+        gammaLabel: '📊 Votre présentation personnalisée',
+        gammaDesc: 'Un rapport complet en slides avec votre analyse détaillée et nos recommandations.',
+        gammaBtn: 'Voir ma présentation →',
+        gammaNote: 'Disponible sous quelques minutes après réception de cet email'
+      },
+      en: {
+        subject: (name, score) => `${name}, your AI diagnostic is ready (${score}/100)`,
+        title: 'Your AI Diagnostic',
+        greeting: (name) => `${name}, here are your results`,
+        scoreLabel: 'Overall score',
+        pillarLabel: 'Pillar breakdown',
+        strengthLabel: '✦ Your top strength',
+        recoLabel: 'What we recommend',
+        stepLabel: 'Step',
+        ctaTitle: "Let's discuss your results",
+        ctaDesc: '30 minutes to turn this diagnostic into a concrete action plan',
+        ctaBtn: 'Book a call →',
+        gammaLabel: '📊 Your personalized presentation',
+        gammaDesc: 'A complete slide report with your detailed analysis and our recommendations.',
+        gammaBtn: 'View my presentation →',
+        gammaNote: 'Available within a few minutes of receiving this email'
+      },
+      es: {
+        subject: (name, score) => `${name}, su diagnóstico IA está listo (${score}/100)`,
+        title: 'Su diagnóstico IA',
+        greeting: (name) => `${name}, estos son sus resultados`,
+        scoreLabel: 'Puntuación global',
+        pillarLabel: 'Detalle por pilar',
+        strengthLabel: '✦ Su punto fuerte',
+        recoLabel: 'Lo que le recomendamos',
+        stepLabel: 'Etapa',
+        ctaTitle: 'Hablemos de sus resultados',
+        ctaDesc: '30 minutos para transformar este diagnóstico en un plan de acción concreto',
+        ctaBtn: 'Reservar una cita →',
+        gammaLabel: '📊 Su presentación personalizada',
+        gammaDesc: 'Un informe completo en diapositivas con su análisis detallado y nuestras recomendaciones.',
+        gammaBtn: 'Ver mi presentación →',
+        gammaNote: 'Disponible en unos minutos tras recibir este email'
+      }
+    };
+    const t = EMAIL_I18N[lang] || EMAIL_I18N.fr;
 
     // ================================================================
     // OFFER & RECOMMENDATION MAPPING
@@ -222,6 +283,100 @@ export default async function handler(req, res) {
     const lc = levelColors[level] || levelColors['Exploration'];
 
     // ================================================================
+    // GAMMA PRESENTATION — Sector use cases & size context
+    // ================================================================
+    const SECTOR_USE_CASES = {
+      'Services B2B': {
+        title: "L'IA dans les Services B2B",
+        cases: [
+          { name: 'Qualification automatique de leads', impact: '-40% temps commercial', source: 'McKinsey 2024' },
+          { name: 'Rédaction de propositions assistée par IA', impact: '+60% de rapidité', source: 'Accenture' },
+          { name: 'Analyse prédictive du churn client', impact: '+25% rétention', source: 'BCG' },
+          { name: 'Automatisation du reporting client', impact: '-70% temps de consolidation', source: 'Deloitte' }
+        ],
+        benchmark: "Les leaders du B2B investissent 2-4% de leur CA dans l'IA. Les early movers gagnent un avantage compétitif durable."
+      },
+      'Industrie': {
+        title: "L'IA dans l'Industrie",
+        cases: [
+          { name: 'Maintenance prédictive des équipements', impact: '-30% coûts maintenance', source: 'McKinsey 2024' },
+          { name: 'Contrôle qualité par vision IA', impact: '-60% défauts non détectés', source: 'BCG' },
+          { name: 'Optimisation de la chaîne logistique', impact: '-15% coûts logistiques', source: 'Gartner' },
+          { name: 'Planification de production intelligente', impact: '+20% efficacité', source: 'Deloitte' }
+        ],
+        benchmark: "L'industrie 4.0 génère en moyenne 15-20% de gains de productivité pour les entreprises qui intègrent l'IA dans leurs processus."
+      },
+      'Tech/SaaS': {
+        title: "L'IA dans la Tech & le SaaS",
+        cases: [
+          { name: 'Copilot développeur (code assisté par IA)', impact: '+55% productivité dev', source: 'GitHub 2024' },
+          { name: 'Support client augmenté par IA', impact: '-40% tickets L1', source: 'Zendesk' },
+          { name: 'Détection d\'anomalies et monitoring intelligent', impact: '-65% incidents critiques', source: 'Gartner' },
+          { name: 'Personnalisation produit en temps réel', impact: '+30% engagement', source: 'McKinsey' }
+        ],
+        benchmark: "Les éditeurs SaaS leaders intègrent l'IA comme différenciateur produit. 80% des roadmaps tech incluent des fonctionnalités IA d'ici 2026."
+      },
+      'Commerce/Retail': {
+        title: "L'IA dans le Commerce & Retail",
+        cases: [
+          { name: 'Recommandations personnalisées', impact: '+15-35% panier moyen', source: 'McKinsey' },
+          { name: 'Prévision de la demande', impact: '-25% ruptures de stock', source: 'BCG' },
+          { name: 'Pricing dynamique intelligent', impact: '+5-10% marge', source: 'Deloitte' },
+          { name: 'Chatbot commercial et SAV', impact: '-50% temps de réponse', source: 'Gartner' }
+        ],
+        benchmark: "Le retail est le secteur où le ROI de l'IA est le plus rapide : les premiers résultats sont visibles en 3-6 mois."
+      },
+      'Santé': {
+        title: "L'IA dans la Santé",
+        cases: [
+          { name: 'Aide au diagnostic médical', impact: '+20% précision diagnostique', source: 'Nature Medicine' },
+          { name: 'Optimisation des plannings soignants', impact: '-30% heures supplémentaires', source: 'McKinsey Health' },
+          { name: 'Analyse automatisée de comptes-rendus', impact: '-60% temps administratif', source: 'Accenture' },
+          { name: 'Détection précoce de pathologies', impact: '+40% détection précoce', source: 'WHO' }
+        ],
+        benchmark: "La santé est un secteur où l'IA éthique et souveraine est essentielle. La conformité RGPD et AI Act est un prérequis absolu."
+      },
+      'Finance/Assurance': {
+        title: "L'IA dans la Finance & l'Assurance",
+        cases: [
+          { name: 'Détection de fraude en temps réel', impact: '-70% fraudes non détectées', source: 'McKinsey' },
+          { name: 'Scoring crédit augmenté', impact: '+25% précision scoring', source: 'BCG' },
+          { name: 'Automatisation de la conformité (KYC/AML)', impact: '-50% coûts compliance', source: 'Deloitte' },
+          { name: 'Gestion intelligente des sinistres', impact: '-40% temps de traitement', source: 'Accenture' }
+        ],
+        benchmark: "La finance investit massivement dans l'IA avec un ROI moyen de 3-5x. La clé : gouvernance des données et explicabilité des modèles."
+      },
+      'BTP': {
+        title: "L'IA dans le BTP",
+        cases: [
+          { name: 'Estimation automatisée des coûts', impact: '+30% précision devis', source: 'McKinsey' },
+          { name: 'Suivi de chantier par drone + vision IA', impact: '-20% retards', source: 'BCG' },
+          { name: 'Planification prédictive des projets', impact: '-15% dépassements budget', source: 'Deloitte' },
+          { name: 'Gestion documentaire intelligente', impact: '-50% temps recherche docs', source: 'Accenture' }
+        ],
+        benchmark: "Le BTP est un secteur à fort potentiel IA mais faible maturité digitale. Les quick wins se concentrent sur la gestion documentaire et l'estimation."
+      },
+      'Autre': {
+        title: "L'IA pour votre entreprise",
+        cases: [
+          { name: 'Automatisation des processus administratifs', impact: '-40% tâches manuelles', source: 'McKinsey 2024' },
+          { name: 'Assistant IA pour la rédaction et communication', impact: '+50% rapidité rédaction', source: 'Accenture' },
+          { name: 'Analyse de données et reporting intelligent', impact: '-60% temps de reporting', source: 'Deloitte' },
+          { name: 'Formation et montée en compétences par IA', impact: '+35% rétention formation', source: 'BCG' }
+        ],
+        benchmark: "Quel que soit votre secteur, les quick wins IA se concentrent sur l'automatisation des tâches répétitives et l'augmentation de la productivité."
+      }
+    };
+
+    const SIZE_CONTEXT = {
+      '1-20': "Pour une TPE, les quick wins IA se concentrent sur l'automatisation des tâches répétitives (facturation, emails, reporting). Budget recommandé : 500-2 000 €/mois. Objectif : libérer 5-10h/semaine par collaborateur.",
+      '21-50': "Pour une PME de cette taille, l'IA crée un levier d'efficacité massive. Ciblez 2-3 processus clés. Budget recommandé : 2 000-5 000 €/mois. Un référent IA interne est un accélérateur.",
+      '51-200': "À votre taille, une stratégie IA structurée est indispensable. Un CDO ou référent IA dédié est recommandé. Budget : 5 000-15 000 €/mois. L'enjeu : industrialiser les premiers succès.",
+      '201-1000': "Les ETI qui réussissent leur transformation IA combinent un sponsor C-level, une équipe dédiée et un partenaire expert. Budget IA : 0.5-2% du CA. L'enjeu : gouvernance et scalabilité.",
+      '1000+': "Les grandes organisations ont besoin d'un framework IA complet : gouvernance, Centre of Excellence, et programmes de formation massifs. Les leaders investissent 2-5% de leur CA."
+    };
+
+    // ================================================================
     // GAMMA PRESENTATION — Build the prompt for personalized deck
     // ================================================================
     const GAMMA_API_KEY = process.env.GAMMA_API_KEY;
@@ -242,6 +397,7 @@ export default async function handler(req, res) {
 **Diagnostic de maturité IA**
 ${company.name ? `Entreprise : ${company.name}` : `Pour : ${contactName}`}
 ${company.sector ? `Secteur : ${company.sector}` : ''}
+${company.website ? `Site web : ${company.website}` : ''}
 Réalisé le ${dateStr}
 Préparé par Philippe du Payrat · Homo SapIA
 "L'IA au service de l'humain"
@@ -263,7 +419,22 @@ C'est un atout pour accélérer votre transformation IA. Capitalisez sur cette f
 ${weakest2.map((p, i) => `**${i+1}. ${p.name}** (${p.score}/${p.max} — ${p.pct}%)
 ${p.pct <= 33 ? 'Niveau critique.' : 'À renforcer.'} ${(offerMap[p.name] || {}).desc || ''}`).join('\n\n')}
 
-### Slide 6 — Étape recommandée 1 : ${step1.title}
+### Slide 6 — ${(SECTOR_USE_CASES[company.sector] || SECTOR_USE_CASES['Autre']).title}
+En tant qu'acteur ${company.sector ? `du secteur ${company.sector}` : 'de votre secteur'}${company.size ? ` (${company.size} collaborateurs)` : ''}, voici les cas d'usage IA les plus impactants :
+
+${(SECTOR_USE_CASES[company.sector] || SECTOR_USE_CASES['Autre']).cases.map((c, i) => `${i+1}. **${c.name}** — ${c.impact} (${c.source})`).join('\n')}
+
+${(SECTOR_USE_CASES[company.sector] || SECTOR_USE_CASES['Autre']).benchmark}
+
+### Slide 7 — IA adaptée à votre taille d'entreprise
+${SIZE_CONTEXT[company.size] || SIZE_CONTEXT['21-50']}
+
+Ce que font les entreprises comparables à la vôtre :
+- Investir dans 2-3 cas d'usage prioritaires à fort ROI
+- Commencer par les quick wins (résultats en 30 jours)
+- Mesurer systématiquement l'impact avant de passer à l'échelle
+
+### Slide 8 — Étape recommandée 1 : ${step1.title}
 **${step1.subtitle}**
 
 ${step1.desc}
@@ -273,7 +444,7 @@ ${step1.details.map(d => `- ${d}`).join('\n')}
 
 Format : ${step1.format}
 
-### Slide 7 — Étape recommandée 2 : ${step2.title}
+### Slide 9 — Étape recommandée 2 : ${step2.title}
 **${step2.subtitle}**
 
 ${step2.desc}
@@ -283,10 +454,16 @@ ${step2.details.map(d => `- ${d}`).join('\n')}
 
 Format : ${step2.format}
 
-### Slide 8 — Pourquoi Homo SapIA
+### Slide 10 — Pourquoi Homo SapIA
 Une approche unique qui allie expertise IA et vision humaine.
 
 Philippe du Payrat accompagne les dirigeants et leurs équipes dans la transformation IA avec une conviction : la technologie doit servir l'humain, pas l'inverse.
+
+Les études le confirment :
+- 95% des projets GenAI échouent faute d'accompagnement humain (MIT 2025)
+- La clé du succès IA : 70% personnes & processus, 20% tech, 10% algorithmes (BCG)
+- L'IA mal déployée intensifie le travail et crée du burnout (HBR / UC Berkeley 2026)
+→ Notre approche place l'humain au centre : qui initie, comprend, valide et bénéficie.
 
 Nos engagements :
 - Approche éthique et souveraine, pas de "tech-washing"
@@ -295,7 +472,7 @@ Nos engagements :
 - Réseau d'experts complémentaires (data, sécurité, RH, juridique)
 - Formateur certifié : emlyon, Covéa CFE-CGC, PME et ETI
 
-### Slide 9 — Références & confiance
+### Slide 11 — Références & confiance
 Ils font confiance à Homo SapIA :
 - Covéa (CFE-CGC) : conférence IA et accompagnement stratégique
 - emlyon business school : formation IA pour cadres dirigeants
@@ -307,7 +484,7 @@ Certifications et labels :
 - Approche conforme AI Act et RGPD
 - Méthodologie frugale et responsable
 
-### Slide 10 — Prochaines étapes
+### Slide 12 — Prochaines étapes
 ${contact.firstname}, prenons 30 minutes pour :
 1. Approfondir vos résultats et répondre à vos questions
 2. Identifier vos quick wins à lancer dès cette semaine
@@ -331,7 +508,8 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
             inputText: gammaPrompt,
             textMode: 'preserve',
             format: 'presentation',
-            numCards: 10
+            numCards: 12,
+            textOptions: { language: lang === 'es' ? 'es' : lang === 'en' ? 'en' : 'fr' }
           })
         });
         if (gammaRes.ok) {
@@ -356,11 +534,11 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
     // ================================================================
     const prospectEmailHtml = `
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="${lang}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Votre diagnostic IA - Homo SapIA</title>
+  <title>${t.title} - Homo SapIA</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #0A0A0F; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #E8E6E1; -webkit-font-smoothing: antialiased;">
 
@@ -378,8 +556,8 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
 
         <!-- Hero Card -->
         <tr><td style="background: linear-gradient(135deg, #16161F 0%, #12121A 100%); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 40px 32px; text-align: center;">
-          <p style="font-size: 13px; text-transform: uppercase; letter-spacing: 3px; color: #F26B3A; margin: 0 0 16px; font-weight: 600;">Votre diagnostic IA</p>
-          <h1 style="font-size: 36px; font-weight: 300; color: #E8E6E1; margin: 0 0 8px; line-height: 1.2;">${contact.firstname}, voici<br>vos résultats</h1>
+          <p style="font-size: 13px; text-transform: uppercase; letter-spacing: 3px; color: #F26B3A; margin: 0 0 16px; font-weight: 600;">${t.title}</p>
+          <h1 style="font-size: 36px; font-weight: 300; color: #E8E6E1; margin: 0 0 8px; line-height: 1.2;">${t.greeting(contact.firstname)}</h1>
           ${company.name ? `<p style="font-size: 15px; color: #8A8A95; margin: 12px 0 0;">${company.name}${company.sector ? ' · ' + company.sector : ''}${company.size ? ' · ' + company.size + ' collab.' : ''}</p>` : ''}
         </td></tr>
 
@@ -387,7 +565,7 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
 
         <!-- Score Global -->
         <tr><td style="background: #16161F; border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 32px; text-align: center;">
-          <p style="font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: #8A8A95; margin: 0 0 16px; font-weight: 500;">Score global</p>
+          <p style="font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: #8A8A95; margin: 0 0 16px; font-weight: 500;">${t.scoreLabel}</p>
           <p style="font-size: 64px; font-weight: 700; color: ${lc.bg}; margin: 0; line-height: 1;">${scores.total}<span style="font-size: 24px; color: #8A8A95; font-weight: 400;"> / ${scores.maxTotal}</span></p>
           <p style="display: inline-block; margin: 16px 0 0; padding: 8px 20px; border-radius: 100px; font-size: 14px; font-weight: 600; color: ${lc.bg}; background: ${lc.bg}15;">${level}</p>
         </td></tr>
@@ -396,7 +574,7 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
 
         <!-- Pillar Scores -->
         <tr><td style="background: #16161F; border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 32px;">
-          <p style="font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: #8A8A95; margin: 0 0 24px; font-weight: 500; text-align: center;">Détail par pilier</p>
+          <p style="font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: #8A8A95; margin: 0 0 24px; font-weight: 500; text-align: center;">${t.pillarLabel}</p>
           ${scores.pillars.map(p => {
             const color = p.pct <= 33 ? '#E85D3A' : p.pct <= 58 ? '#F2993A' : p.pct <= 83 ? '#3A8FF2' : '#4CAF50';
             return `
@@ -418,7 +596,7 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
 
         <!-- Point fort -->
         <tr><td style="background: rgba(58, 143, 242, 0.08); border: 1px solid rgba(58, 143, 242, 0.15); border-radius: 16px; padding: 28px 32px;">
-          <p style="font-size: 13px; font-weight: 600; color: #3A8FF2; margin: 0 0 8px;">&#10022; Votre point fort</p>
+          <p style="font-size: 13px; font-weight: 600; color: #3A8FF2; margin: 0 0 8px;">${t.strengthLabel}</p>
           <p style="font-size: 16px; color: #E8E6E1; margin: 0; line-height: 1.5;"><strong>${strongest.name}</strong> - ${strongest.score}/${strongest.max} (${strongest.pct}%)</p>
         </td></tr>
 
@@ -426,12 +604,12 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
 
         <!-- Étapes recommandées -->
         <tr><td style="background: #16161F; border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 32px;">
-          <p style="font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: #F26B3A; margin: 0 0 24px; font-weight: 500; text-align: center;">Ce que nous vous recommandons</p>
+          <p style="font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: #F26B3A; margin: 0 0 24px; font-weight: 500; text-align: center;">${t.recoLabel}</p>
           ${recommendedSteps.map((step, i) => `
           <div style="margin-bottom: ${i === 0 ? '24px' : '0'}; padding-bottom: ${i === 0 ? '24px' : '0'}; border-bottom: ${i === 0 ? '1px solid rgba(255,255,255,0.06)' : 'none'};">
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td style="font-size: 15px; font-weight: 600; color: #E8E6E1;">Étape ${step.num} : ${step.title}</td>
+                <td style="font-size: 15px; font-weight: 600; color: #E8E6E1;">${t.stepLabel} ${step.num} : ${step.title}</td>
               </tr>
             </table>
             <p style="font-size: 13px; color: #3A8FF2; margin: 4px 0 8px; font-weight: 500;">${step.subtitle}</p>
@@ -443,12 +621,24 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
 
         <!-- CTA -->
         <tr><td style="text-align: center; padding: 32px; background: linear-gradient(135deg, rgba(242, 107, 58, 0.08) 0%, rgba(58, 143, 242, 0.08) 100%); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px;">
-          <p style="font-size: 22px; font-weight: 300; color: #E8E6E1; margin: 0 0 8px; line-height: 1.3;">Discutons de vos résultats</p>
-          <p style="font-size: 14px; color: #8A8A95; margin: 0 0 24px;">30 minutes pour transformer ce diagnostic en plan d'action concret</p>
-          <a href="https://meetings-eu1.hubspot.com/pdu-payrat?uuid=5a24cb40-61aa-41f5-aee3-8cc6a8cae0bf" style="display: inline-block; background: #F26B3A; color: #ffffff; padding: 14px 36px; border-radius: 100px; text-decoration: none; font-size: 15px; font-weight: 600;">Prendre rendez-vous &rarr;</a>
+          <p style="font-size: 22px; font-weight: 300; color: #E8E6E1; margin: 0 0 8px; line-height: 1.3;">${t.ctaTitle}</p>
+          <p style="font-size: 14px; color: #8A8A95; margin: 0 0 24px;">${t.ctaDesc}</p>
+          <a href="https://meetings-eu1.hubspot.com/pdu-payrat?uuid=5a24cb40-61aa-41f5-aee3-8cc6a8cae0bf" style="display: inline-block; background: #F26B3A; color: #ffffff; padding: 14px 36px; border-radius: 100px; text-decoration: none; font-size: 15px; font-weight: 600;">${t.ctaBtn}</a>
         </td></tr>
 
-        <tr><td style="height: 32px;"></td></tr>
+        <tr><td style="height: 24px;"></td></tr>
+
+        <!-- Gamma Presentation Link -->
+        ${gammaGenerationId ? `
+        <tr><td style="background: #16161F; border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 28px 32px; text-align: center;">
+          <p style="font-size: 13px; font-weight: 600; color: #3A8FF2; margin: 0 0 8px;">${t.gammaLabel}</p>
+          <p style="font-size: 14px; color: #8A8A95; margin: 0 0 20px;">${t.gammaDesc}</p>
+          <a href="https://homosapia.com/api/track?id=${gammaGenerationId}&email=${encodeURIComponent(contact.email)}&name=${encodeURIComponent(contactName)}" style="display: inline-block; background: #3A8FF2; color: #ffffff; padding: 12px 32px; border-radius: 100px; text-decoration: none; font-size: 14px; font-weight: 600;">${t.gammaBtn}</a>
+          <p style="font-size: 11px; color: #555; margin: 12px 0 0;">${t.gammaNote}</p>
+        </td></tr>
+
+        <tr><td style="height: 24px;"></td></tr>
+        ` : ''}
 
         <!-- Footer -->
         <tr><td style="text-align: center; padding: 24px 0; border-top: 1px solid rgba(255,255,255,0.06);">
@@ -490,6 +680,7 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
       <tr><td style="padding: 4px 0; font-weight: 600;">Secteur</td><td>${company.sector || '-'}</td></tr>
       <tr><td style="padding: 4px 0; font-weight: 600;">Taille</td><td>${company.size || '-'}</td></tr>
       <tr><td style="padding: 4px 0; font-weight: 600;">Fonction</td><td>${company.role || '-'}</td></tr>
+      <tr><td style="padding: 4px 0; font-weight: 600;">Site web</td><td>${company.website ? `<a href="${company.website}" target="_blank">${company.website}</a>` : '-'}</td></tr>
     </table>
   </div>
 
@@ -522,6 +713,7 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
     ${linkedinCompany ? `<p style="font-size: 14px; margin: 6px 0;"><a href="${linkedinCompany}">LinkedIn - ${company.name}</a></p>` : ''}
     ${googleCompany ? `<p style="font-size: 14px; margin: 6px 0;"><a href="${googleCompany}">Google - ${company.name}</a></p>` : ''}
     ${googleNews ? `<p style="font-size: 14px; margin: 6px 0;"><a href="${googleNews}">Google News - ${company.name}</a></p>` : ''}
+    ${company.website ? `<p style="font-size: 14px; margin: 6px 0;"><a href="${company.website}">🌐 Site web - ${company.website}</a></p>` : ''}
   </div>
 
   <div style="background: white; border-radius: 12px; padding: 24px; margin-bottom: 16px; border: 1px solid #eee;">
@@ -567,7 +759,7 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
           body: JSON.stringify({
             from: 'Philippe du Payrat <diagnostic@homosapia.com>',
             to: [contact.email],
-            subject: `${contact.firstname}, votre diagnostic IA est prêt (${scores.total}/60)`,
+            subject: t.subject(contact.firstname, scores.total),
             html: prospectEmailHtml
           })
         });
@@ -594,7 +786,7 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
           body: JSON.stringify({
             from: 'Homo SapIA Bot <diagnostic@homosapia.com>',
             to: [NOTIFY_EMAIL],
-            subject: `🎯 LEAD - ${contactName} @ ${company.name || 'N/A'} - ${scores.total}/60 (${level})`,
+            subject: `🎯 LEAD - ${contactName} @ ${company.name || 'N/A'} - ${scores.total}/100 (${level})`,
             html: internalEmailHtml
           })
         });
@@ -613,7 +805,7 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
     } else {
       console.log('=== NEW DIAGNOSTIC (no Resend key) ===');
       console.log(`Contact: ${contactName} <${contact.email}>`);
-      console.log(`Company: ${company.name} | Score: ${scores.total}/60 (${level})`);
+      console.log(`Company: ${company.name} | Score: ${scores.total}/100 (${level})`);
       console.log('Steps:', recommendedSteps.map(s => `${s.num}. ${s.title}`).join(' | '));
       console.log('=======================================');
     }

@@ -1161,6 +1161,7 @@
         'profile.title': 'A few details about your company',
         'profile.subtitle': 'This information helps us personalize your diagnostic',
         'profile.company': 'Company name',
+        'profile.website': 'Website <span style="opacity:0.5;font-weight:400">(optional)</span>',
         'profile.role': 'Your role',
         'profile.sector': 'Industry',
         'profile.size': 'Company size',
@@ -1213,6 +1214,7 @@
         'profile.title': 'Informaci\u00f3n sobre su empresa',
         'profile.subtitle': 'Estos datos nos permiten personalizar su diagn\u00f3stico',
         'profile.company': 'Nombre de la empresa',
+        'profile.website': 'Sitio web <span style="opacity:0.5;font-weight:400">(opcional)</span>',
         'profile.role': 'Su funci\u00f3n',
         'profile.sector': 'Sector de actividad',
         'profile.size': 'Tama\u00f1o de la empresa',
@@ -1304,6 +1306,9 @@
             if (answers[i] !== null) pillarScores[q.pillar] += q.answers[answers[i]].score;
           });
           var totalScore = pillarScores.reduce(function(a, b) { return a + b; }, 0);
+          // Convert to /100 scale (raw: 15 questions × 4 = 60 max)
+          totalScore = Math.round(totalScore * 100 / 60);
+          pillarScores = pillarScores.map(function(s) { return Math.round(s * 20 / 12); });
           if (typeof renderLevel === 'function') renderLevel(totalScore);
           if (typeof renderRadar === 'function') renderRadar(pillarScores);
           if (typeof renderPillarBars === 'function') renderPillarBars(pillarScores);
@@ -1375,6 +1380,10 @@
         <div class="form-group full-width">
           <label for="companyName" data-i18n="profile.company">Nom de l'entreprise</label>
           <input type="text" id="companyName" placeholder="ex: Acme Corp">
+        </div>
+        <div class="form-group full-width">
+          <label for="companyWebsite" data-i18n="profile.website" data-i18n-html="1">Site web <span style="opacity:0.5;font-weight:400">(optionnel)</span></label>
+          <input type="url" id="companyWebsite" placeholder="ex: https://acme.com">
         </div>
         <div class="form-group">
           <label for="role" data-i18n="profile.role">Votre fonction</label>
@@ -1501,7 +1510,7 @@
           </svg>
           <div class="score-circle-text">
             <span class="score-number" id="scoreNumber">0</span>
-            <span class="score-total">/ 60</span>
+            <span class="score-total">/ 100</span>
           </div>
         </div>
         <div class="score-level" id="scoreLevel"></div>
@@ -2016,7 +2025,7 @@ const RECOMMENDATIONS = {
 // ============================================================
 let currentQuestion = 0;
 let answers = new Array(15).fill(null);
-let companyProfile = { name: '', role: '', sector: '', size: '' };
+let companyProfile = { name: '', role: '', sector: '', size: '', website: '' };
 
 function loadState() {
   try {
@@ -2060,6 +2069,7 @@ function showSection(id) {
 function showStep0() {
   showSection('sectionProfile');
   if (companyProfile.name) document.getElementById('companyName').value = companyProfile.name;
+  if (companyProfile.website) document.getElementById('companyWebsite').value = companyProfile.website;
   if (companyProfile.role) document.getElementById('role').value = companyProfile.role;
   if (companyProfile.sector) document.getElementById('sector').value = companyProfile.sector;
   if (companyProfile.size) document.getElementById('size').value = companyProfile.size;
@@ -2067,6 +2077,7 @@ function showStep0() {
 
 function startDiagnostic() {
   companyProfile.name = document.getElementById('companyName').value.trim();
+  companyProfile.website = document.getElementById('companyWebsite').value.trim();
   companyProfile.role = document.getElementById('role').value;
   companyProfile.sector = document.getElementById('sector').value;
   companyProfile.size = document.getElementById('size').value;
@@ -2237,21 +2248,26 @@ function submitGate() {
       pillarScores[q.pillar] += q.answers[answers[i]].score;
     }
   });
-  const totalScore = pillarScores.reduce((a, b) => a + b, 0);
+  const totalScoreRaw = pillarScores.reduce((a, b) => a + b, 0);
+  // Convert to /100 scale (raw: 15 questions × 4 = 60 max → /100 total, /20 per pillar)
+  const totalScore = Math.round(totalScoreRaw * 100 / 60);
+  const pillarScores100 = pillarScores.map(s => Math.round(s * 20 / 12));
 
   // Build full diagnostic payload
+  const currentLang = window.currentDiagLang || localStorage.getItem('homosapia_lang') || 'fr';
   const payload = {
+    lang: currentLang,
     contact: leadContact,
     company: companyProfile,
     scores: {
       total: totalScore,
-      maxTotal: 60,
-      pct: Math.round((totalScore / 60) * 100),
+      maxTotal: 100,
+      pct: totalScore,
       pillars: PILLARS_I18N.fr.map((name, i) => ({
         name,
-        score: pillarScores[i],
-        max: 12,
-        pct: Math.round((pillarScores[i] / 12) * 100)
+        score: pillarScores100[i],
+        max: 20,
+        pct: Math.round((pillarScores100[i] / 20) * 100)
       }))
     },
     answers: QUESTIONS.map((q, i) => ({
@@ -2261,7 +2277,7 @@ function submitGate() {
       answerDetail: answers[i] !== null ? q.answers[answers[i]].desc : null,
       score: answers[i] !== null ? q.answers[answers[i]].score : null
     })),
-    level: totalScore < 25 ? 'Éveil' : totalScore < 37 ? 'Exploration' : totalScore < 49 ? 'Accélération' : 'Excellence',
+    level: totalScore < 42 ? 'Éveil' : totalScore < 62 ? 'Exploration' : totalScore < 82 ? 'Accélération' : 'Excellence',
     timestamp: new Date().toISOString()
   };
 
@@ -2314,29 +2330,32 @@ function showResults() {
     }
   });
 
-  const totalScore = pillarScores.reduce((a, b) => a + b, 0);
+  const totalScoreRaw = pillarScores.reduce((a, b) => a + b, 0);
+  // Convert to /100 scale
+  const totalScore = Math.round(totalScoreRaw * 100 / 60);
+  const pillarScores100 = pillarScores.map(s => Math.round(s * 20 / 12));
 
   const companyEl = document.getElementById('resultsCompany');
   companyEl.textContent = companyProfile.name ? companyProfile.name : '';
 
   renderScoreCircle(totalScore);
   renderLevel(totalScore);
-  renderRadar(pillarScores);
-  renderPillarBars(pillarScores);
-  renderRecommendations(pillarScores);
+  renderRadar(pillarScores100);
+  renderPillarBars(pillarScores100);
+  renderRecommendations(pillarScores100);
 }
 
 function renderScoreCircle(score) {
   const circumference = 2 * Math.PI * 88;
-  const pct = score / 60;
+  const pct = score / 100;
   const offset = circumference * (1 - pct);
 
   const fill = document.getElementById('scoreCircleFill');
 
   let color;
-  if (score < 25) color = '#E85D3A';
-  else if (score < 37) color = '#F2993A';
-  else if (score < 49) color = '#3A8FF2';
+  if (score < 42) color = '#E85D3A';
+  else if (score < 62) color = '#F2993A';
+  else if (score < 82) color = '#3A8FF2';
   else color = '#4CAF50';
 
   fill.setAttribute('stroke', color);
@@ -2390,9 +2409,9 @@ function renderLevel(score) {
   };
 
   let levelIdx, bg, color;
-  if (score < 25) { levelIdx = 0; bg = 'rgba(232, 93, 58, 0.15)'; color = '#E85D3A'; }
-  else if (score < 37) { levelIdx = 1; bg = 'rgba(242, 153, 58, 0.15)'; color = '#F2993A'; }
-  else if (score < 49) { levelIdx = 2; bg = 'rgba(58, 143, 242, 0.15)'; color = '#3A8FF2'; }
+  if (score < 42) { levelIdx = 0; bg = 'rgba(232, 93, 58, 0.15)'; color = '#E85D3A'; }
+  else if (score < 62) { levelIdx = 1; bg = 'rgba(242, 153, 58, 0.15)'; color = '#F2993A'; }
+  else if (score < 82) { levelIdx = 2; bg = 'rgba(58, 143, 242, 0.15)'; color = '#3A8FF2'; }
   else { levelIdx = 3; bg = 'rgba(76, 175, 80, 0.15)'; color = '#4CAF50'; }
 
   const lvl = (levels[lang] || levels.fr)[levelIdx];
@@ -2450,7 +2469,7 @@ function renderRadar(scores) {
   // Data polygon
   const dataPoints = [];
   for (let i = 0; i < n; i++) {
-    const pct = scores[i] / 12;
+    const pct = scores[i] / 20;
     const p = getPoint(i, maxR * pct);
     dataPoints.push(`${p.x},${p.y}`);
   }
@@ -2464,7 +2483,7 @@ function renderRadar(scores) {
 
   // Data dots
   for (let i = 0; i < n; i++) {
-    const pct = scores[i] / 12;
+    const pct = scores[i] / 20;
     const p = getPoint(i, maxR * pct);
     const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     circle.setAttribute('cx', p.x);
@@ -2510,7 +2529,7 @@ function renderRadar(scores) {
   const pillarNames = (PILLARS_I18N[lang] || PILLARS_I18N.fr);
   const labelsEl = document.getElementById('radarLabels');
   labelsEl.innerHTML = pillarNames.map((p, i) =>
-    `<span class="radar-label-item"><span class="radar-label-dot"></span>${p} : ${scores[i]}/12</span>`
+    `<span class="radar-label-item"><span class="radar-label-dot"></span>${p} : ${scores[i]}/20</span>`
   ).join('');
 }
 
@@ -2521,11 +2540,11 @@ function renderPillarBars(scores) {
   container.innerHTML = '';
 
   pillarNames.forEach((name, i) => {
-    const pct = (scores[i] / 12) * 100;
+    const pct = (scores[i] / 20) * 100;
     let color;
-    if (scores[i] <= 4) color = '#E85D3A';
-    else if (scores[i] <= 7) color = '#F2993A';
-    else if (scores[i] <= 10) color = '#3A8FF2';
+    if (scores[i] <= 7) color = '#E85D3A';
+    else if (scores[i] <= 12) color = '#F2993A';
+    else if (scores[i] <= 17) color = '#3A8FF2';
     else color = '#4CAF50';
 
     const item = document.createElement('div');
@@ -2533,7 +2552,7 @@ function renderPillarBars(scores) {
     item.innerHTML = `
       <div class="pillar-bar-header">
         <span class="pillar-bar-name">${name}</span>
-        <span class="pillar-bar-score" style="color:${color}">${scores[i]} / 12</span>
+        <span class="pillar-bar-score" style="color:${color}">${scores[i]} / 20</span>
       </div>
       <div class="pillar-bar-track">
         <div class="pillar-bar-fill" style="background:${color}" data-width="${pct}"></div>
@@ -2567,7 +2586,7 @@ function renderRecommendations(scores) {
     const reco = RECOMMENDATIONS[item.index];
     const recoTrans = RECO_TEXT[lang] ? RECO_TEXT[lang][item.index] : null;
     const pillar = pillarNamesLocal[item.index];
-    const scoreColor = item.score <= 4 ? '#E85D3A' : item.score <= 7 ? '#F2993A' : '#3A8FF2';
+    const scoreColor = item.score <= 7 ? '#E85D3A' : item.score <= 12 ? '#F2993A' : '#3A8FF2';
 
     const card = document.createElement('div');
     card.className = 'reco-card animate-in animate-delay-' + (rank + 1);
@@ -2575,7 +2594,7 @@ function renderRecommendations(scores) {
       <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:${scoreColor};border-radius:4px 0 0 4px;"></div>
       <div class="reco-card-header">
         <span class="reco-card-pillar" style="color:${scoreColor}">${pillar}</span>
-        <span class="reco-card-score" style="background:${scoreColor}20;color:${scoreColor}">${item.score} / 12</span>
+        <span class="reco-card-score" style="background:${scoreColor}20;color:${scoreColor}">${item.score} / 20</span>
       </div>
       <p class="reco-card-insight">${recoTrans ? recoTrans.insight : reco.insight}</p>
       <div class="reco-card-action">
@@ -2623,7 +2642,7 @@ function restartDiagnostic() {
   localStorage.removeItem('homosapia_diag_contact');
   answers = new Array(15).fill(null);
   currentQuestion = 0;
-  companyProfile = { name: '', role: '', sector: '', size: '' };
+  companyProfile = { name: '', role: '', sector: '', size: '', website: '' };
   leadContact = { firstname: '', lastname: '', email: '', phone: '' };
 
   // Reset form fields

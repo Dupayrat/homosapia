@@ -250,6 +250,18 @@
       flex-wrap: wrap;
       animation: fadeInUp 0.8s ease-out 0.3s both;
     }
+    .hero-diag-link {
+      margin-top: 20px;
+      animation: fadeInUp 0.8s ease-out 0.5s both;
+    }
+    .hero-diag-link a {
+      color: var(--accent);
+      font-size: 0.9rem;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: opacity 0.2s;
+    }
+    .hero-diag-link a:hover { opacity: 0.8; }
     .btn-primary {
       background: var(--accent);
       color: #fff;
@@ -545,6 +557,109 @@
     }
     .compare-highlight .compare-list li span:last-child {
       color: var(--text);
+    }
+
+    /* ───── MANIFESTO STATS ───── */
+    .manifesto-stats {
+      display: flex;
+      gap: 32px;
+      margin-top: 28px;
+    }
+    .manifesto-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .manifesto-stat-num {
+      font-family: var(--serif);
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .manifesto-stat-pct {
+      font-family: var(--serif);
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .manifesto-stat-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+    .manifesto-stat-source {
+      font-size: 0.7rem;
+      color: #555;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    /* ───── STUDIES BLOCK ───── */
+    .studies-block {
+      margin-top: 56px;
+      text-align: center;
+    }
+    .studies-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-top: 32px;
+    }
+    .study-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 20px;
+      text-align: center;
+    }
+    .study-num, .study-num-text {
+      font-family: var(--serif);
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .study-pct {
+      font-family: var(--serif);
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .study-text {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+    .study-source {
+      display: block;
+      font-size: 0.7rem;
+      color: #555;
+      margin-top: 10px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .studies-conclusion {
+      margin-top: 28px;
+      font-size: 1rem;
+      color: var(--text-muted);
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+    .studies-conclusion strong {
+      color: var(--text);
+    }
+
+    @media (max-width: 768px) {
+      .manifesto-stats { flex-direction: column; gap: 20px; }
+      .studies-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .studies-grid { grid-template-columns: 1fr; }
     }
 
     /* ───── PROCESS (Étapes) ───── */
@@ -1737,6 +1852,7 @@
         <a href="https://meetings-eu1.hubspot.com/pdu-payrat?uuid=5a24cb40-61aa-41f5-aee3-8cc6a8cae0bf" target="_blank" rel="noopener" class="btn-primary" data-i18n="hero.cta1">Discutons de votre projet →</a>
         <a href="#offres" class="btn-secondary" data-i18n="hero.cta2">Découvrir nos offres</a>
       </div>
+      <p class="hero-diag-link"><a href="/diagnostic.html" data-i18n="hero.cta3">📊 Testez votre maturité IA en 5 minutes →</a></p>
       <div class="hero-photo" aria-hidden="true">
         <img src="/philippe-du-payrat.jpg" alt="" loading="eager" width="320" height="400">
       </div>
@@ -1840,6 +1956,18 @@
           <h2 class="section-title" data-i18n="manifesto.title" data-i18n-html="1">L'IA ne remplace pas l'humain.<br><span>Elle l'augmente.</span></h2>
           <p data-i18n="manifesto.p1">Nous croyons qu'une adoption réussie de l'IA passe par la confiance des équipes, la co-construction sur le terrain, et une démarche progressive où chaque étape crée de la valeur mesurable.</p>
           <p data-i18n="manifesto.p2">Notre mission : vous aider à travailler mieux - pas juste plus vite - en intégrant l'IA de manière éthique, souveraine et frugale.</p>
+          <div class="manifesto-stats">
+            <div class="manifesto-stat">
+              <span class="manifesto-stat-num" data-count="95">0</span><span class="manifesto-stat-pct">%</span>
+              <span class="manifesto-stat-label" data-i18n="manifesto.stat1">des projets GenAI sans impact mesurable</span>
+              <span class="manifesto-stat-source">MIT 2025</span>
+            </div>
+            <div class="manifesto-stat">
+              <span class="manifesto-stat-num" data-count="70">0</span><span class="manifesto-stat-pct">%</span>
+              <span class="manifesto-stat-label" data-i18n="manifesto.stat2">du succès IA vient des personnes et processus</span>
+              <span class="manifesto-stat-source">BCG</span>
+            </div>
+          </div>
         </div>
         <div class="manifesto-values reveal">
           <div class="value-card">
@@ -1918,6 +2046,10 @@
           <p data-i18n="steps.7.desc">Maintenir, améliorer, pérenniser</p>
           <div class="step-price" data-i18n="steps.7.price">Sur étude</div>
         </div>
+      </div>
+      <div class="reveal" style="text-align:center; margin-top:48px;">
+        <p style="color:var(--text-muted); font-size:1rem; margin-bottom:16px;" data-i18n="maturity.cta_text">Où en êtes-vous dans ce parcours ? Découvrez-le en 5 minutes.</p>
+        <a href="/diagnostic.html" class="btn-primary" data-i18n="maturity.cta_btn">Lancer le diagnostic IA gratuit →</a>
       </div>
     </div>
   </section>
@@ -2318,6 +2450,34 @@
         </div>
       </div>
 
+      <!-- Ce que disent les études -->
+      <div class="studies-block reveal">
+        <h3 class="process-title" data-i18n="studies.title">Ce que disent les études</h3>
+        <div class="studies-grid">
+          <div class="study-card">
+            <span class="study-num" data-count="95">0</span><span class="study-pct">%</span>
+            <p class="study-text" data-i18n="studies.mit">des projets GenAI n'ont aucun impact sur le P&L</p>
+            <span class="study-source">MIT — State of AI 2025</span>
+          </div>
+          <div class="study-card">
+            <span class="study-num" data-count="83">0</span><span class="study-pct">%</span>
+            <p class="study-text" data-i18n="studies.hbr">des employés disent que l'IA a augmenté leur charge de travail</p>
+            <span class="study-source">HBR / UC Berkeley 2026</span>
+          </div>
+          <div class="study-card">
+            <span class="study-num-text">10-20-70</span>
+            <p class="study-text" data-i18n="studies.bcg">La formule du succès : 10% algo, 20% tech, 70% humain</p>
+            <span class="study-source">BCG</span>
+          </div>
+          <div class="study-card">
+            <span class="study-num" data-count="60">0</span><span class="study-pct">%</span>
+            <p class="study-text" data-i18n="studies.gartner">des projets IA seront abandonnés d'ici fin 2026</p>
+            <span class="study-source">Gartner</span>
+          </div>
+        </div>
+        <p class="studies-conclusion" data-i18n="studies.conclusion" data-i18n-html="1">L'IA ne rate pas au labo. Elle rate en entreprise — quand elle se heurte à des objectifs flous et une inertie organisationnelle. <strong>C'est exactement là qu'on intervient.</strong></p>
+      </div>
+
       <!-- Processus transparent -->
       <div class="process-section">
         <h3 class="process-title reveal" data-i18n="process.title">Ce qui se passe quand vous nous contactez</h3>
@@ -2358,6 +2518,7 @@
       </div>
       <div class="cta-actions reveal">
         <a href="https://meetings-eu1.hubspot.com/pdu-payrat?uuid=5a24cb40-61aa-41f5-aee3-8cc6a8cae0bf" target="_blank" rel="noopener" class="btn-primary btn-large" data-i18n="cta.btn">Prendre rendez-vous →</a>
+        <p style="margin-top:20px; font-size:0.9rem; color:var(--text-muted);" data-i18n="cta.alt" data-i18n-html="1">Pas encore prêt ? <a href="/diagnostic.html" style="color:var(--accent);">Faites d'abord votre diagnostic IA gratuit</a></p>
         <div class="cta-info">
           <a href="mailto:contact@homosapia.com">contact@homosapia.com</a>
           <span class="cta-sep">·</span>
@@ -2579,17 +2740,22 @@
         'hero.title': '<em>Artificial intelligence</em> at the service of people',
         'hero.desc': 'Homo SapIA supports businesses at every stage of their AI transformation, from awareness to deployment, with a responsible, frugal, and human-centered approach.',
         'hero.cta1': "Let's discuss your project →", 'hero.cta2': 'Discover our services',
+        'hero.cta3': '📊 Test your AI maturity in 5 minutes →',
         'trust.label': 'They trust us',
         'manifesto.label': 'Our DNA',
         'manifesto.title': "AI doesn't replace humans.<br><span>It augments them.</span>",
         'manifesto.p1': 'We believe successful AI adoption requires team trust, hands-on co-creation, and a progressive approach where every step creates measurable value.',
         'manifesto.p2': 'Our mission: help you work better - not just faster - by integrating AI ethically, sovereignly, and frugally.',
+        'manifesto.stat1': 'of GenAI projects with no measurable impact',
+        'manifesto.stat2': 'of AI success comes from people and processes',
         'values.human.title': 'Human at the center', 'values.human.desc': 'Humans remain at the center of decisions. Every critical automation requires human validation.',
         'values.frugal.title': 'Frugality', 'values.frugal.desc': 'Lightweight models, minimal energy consumption, optimized costs. Less is more.',
         'values.sovereign.title': 'European sovereignty', 'values.sovereign.desc': 'European hosting, EU tools as priority, native GDPR compliance.',
         'values.ethics.title': 'Ethics & transparency', 'values.ethics.desc': 'Bias prevention, open-source priority, visible and auditable processes.',
         'maturity.label': 'Maturity path', 'maturity.title': '7 levels of intervention based on your maturity',
         'maturity.subtitle': 'From first awareness to full-scale deployment, we step in where you are.',
+        'maturity.cta_text': 'Where are you on this journey? Find out in 5 minutes.',
+        'maturity.cta_btn': 'Take the free AI diagnostic →',
         'steps.1.title': 'Keynote', 'steps.1.desc': 'Raise awareness and inspire your teams', 'steps.1.price': 'From €1,800',
         'steps.2.title': 'Workshop', 'steps.2.desc': 'Build AI culture with hands-on practice (1-2 days)', 'steps.2.price': 'From €2,500',
         'steps.3.title': 'Audit', 'steps.3.desc': 'Diagnose AI blockers and potential', 'steps.3.price': 'From €8,000',
@@ -2657,6 +2823,7 @@
         'cta.label': 'Ready to move forward?', 'cta.title': "Let's discuss your AI project",
         'cta.subtitle': 'A 30-minute introductory call to understand your challenges and identify first action steps.',
         'cta.btn': 'Book a meeting →',
+        'cta.alt': 'Not ready yet? <a href="/diagnostic.html" style="color:var(--accent);">Take our free AI diagnostic first</a>',
         'impact.clients': 'clients supported',
         'impact.talks': 'talks & workshops',
         'impact.sectors': 'industries',
@@ -2697,6 +2864,12 @@
         'process.s2.title': 'Tailored proposal', 'process.s2.desc': 'Clear goals, deliverables, timeline and budget within 5 days.',
         'process.s3.title': 'On-site delivery', 'process.s3.desc': 'Co-build with your teams. Visible results from week 1.',
         'process.s4.title': 'Autonomy & follow-up', 'process.s4.desc': 'Skills transfer, documentation and post-mission support.',
+        'studies.title': 'What the research says',
+        'studies.mit': 'of GenAI projects have no P&L impact',
+        'studies.hbr': 'of employees say AI increased their workload',
+        'studies.bcg': 'The success formula: 10% algorithms, 20% tech, 70% people',
+        'studies.gartner': 'of AI projects will be abandoned by end of 2026',
+        'studies.conclusion': "AI doesn't fail in the lab. It fails in the enterprise — when it hits unclear goals and organizational inertia. <strong>That's exactly where we step in.</strong>",
         'trust.rgpd': 'GDPR Compliant', 'trust.nda': 'NDA before every engagement', 'trust.call': 'First call free, no strings attached',
         'newsletter.title': 'Get our AI insights',
         'newsletter.desc': 'Once a month: trends, real use cases and tested tools. No spam, only value.',
@@ -2719,17 +2892,22 @@
         'hero.title': 'La <em>inteligencia artificial</em> al servicio del ser humano',
         'hero.desc': 'Homo SapIA acompaña a las empresas en cada etapa de su transformación IA, desde la sensibilización hasta el despliegue, con un enfoque responsable, frugal y centrado en las personas.',
         'hero.cta1': 'Hablemos de su proyecto →', 'hero.cta2': 'Descubrir nuestros servicios',
+        'hero.cta3': '📊 Evalúe su madurez IA en 5 minutos →',
         'trust.label': 'Confían en nosotros',
         'manifesto.label': 'Nuestro ADN',
         'manifesto.title': 'La IA no reemplaza al ser humano.<br><span>Lo potencia.</span>',
         'manifesto.p1': 'Creemos que una adopción exitosa de la IA requiere confianza del equipo, co-creación en el terreno y un enfoque progresivo donde cada etapa genera valor medible.',
         'manifesto.p2': 'Nuestra misión: ayudarle a trabajar mejor - no solo más rápido - integrando la IA de forma ética, soberana y frugal.',
+        'manifesto.stat1': 'de proyectos GenAI sin impacto medible',
+        'manifesto.stat2': 'del éxito IA proviene de personas y procesos',
         'values.human.title': 'El humano en el centro', 'values.human.desc': 'El ser humano permanece en el centro de las decisiones. Toda automatización crítica pasa por una validación humana.',
         'values.frugal.title': 'Frugalidad', 'values.frugal.desc': 'Modelos ligeros, consumo energético mínimo, costes optimizados. Menos es más.',
         'values.sovereign.title': 'Soberanía europea', 'values.sovereign.desc': 'Alojamiento europeo, herramientas europeas prioritarias, cumplimiento nativo del RGPD.',
         'values.ethics.title': 'Ética y transparencia', 'values.ethics.desc': 'Prevención de sesgos, código abierto prioritario, procesos visibles y auditables.',
         'maturity.label': 'Recorrido de madurez', 'maturity.title': '7 niveles de intervención según su madurez',
         'maturity.subtitle': 'Desde la primera toma de conciencia hasta el despliegue a escala, intervenimos donde usted se encuentra.',
+        'maturity.cta_text': '¿Dónde se encuentra en este recorrido? Descúbralo en 5 minutos.',
+        'maturity.cta_btn': 'Iniciar el diagnóstico IA gratuito →',
         'steps.1.title': 'Conferencia', 'steps.1.desc': 'Sensibilizar e inspirar a sus equipos', 'steps.1.price': 'Desde 1.800 €',
         'steps.2.title': 'Taller', 'steps.2.desc': 'Construir cultura IA con práctica (1-2 días)', 'steps.2.price': 'Desde 2.500 €',
         'steps.3.title': 'Auditoría', 'steps.3.desc': 'Diagnosticar frenos y potenciales IA', 'steps.3.price': 'Desde 8.000 €',
@@ -2797,6 +2975,7 @@
         'cta.label': '¿Listo para avanzar?', 'cta.title': 'Hablemos de su proyecto IA',
         'cta.subtitle': 'Una llamada introductoria de 30 minutos para entender sus retos e identificar las primeras acciones.',
         'cta.btn': 'Reservar una cita →',
+        'cta.alt': '¿Aún no está listo? <a href="/diagnostic.html" style="color:var(--accent);">Haga primero su diagnóstico IA gratuito</a>',
         'impact.clients': 'clientes acompañados',
         'impact.talks': 'conferencias y talleres',
         'impact.sectors': 'sectores de actividad',
@@ -2837,6 +3016,12 @@
         'process.s2.title': 'Propuesta a medida', 'process.s2.desc': 'Objetivos, entregables, calendario y presupuesto claros en 5 d\u00edas.',
         'process.s3.title': 'Intervenci\u00f3n en terreno', 'process.s3.desc': 'Co-construcci\u00f3n con sus equipos. Resultados visibles desde la semana 1.',
         'process.s4.title': 'Autonom\u00eda y seguimiento', 'process.s4.desc': 'Transferencia de competencias, documentaci\u00f3n y seguimiento post-misi\u00f3n.',
+        'studies.title': 'Lo que dicen los estudios',
+        'studies.mit': 'de proyectos GenAI sin impacto en el P&L',
+        'studies.hbr': 'de empleados dicen que la IA aument\u00f3 su carga de trabajo',
+        'studies.bcg': 'La f\u00f3rmula del \u00e9xito: 10% algoritmos, 20% tech, 70% personas',
+        'studies.gartner': 'de proyectos IA ser\u00e1n abandonados antes de fin de 2026',
+        'studies.conclusion': 'La IA no falla en el laboratorio. Falla en la empresa — cuando choca con objetivos difusos e inercia organizacional. <strong>Es exactamente ah\u00ed donde intervenimos.</strong>',
         'trust.rgpd': 'Conforme RGPD', 'trust.nda': 'NDA antes de cada misi\u00f3n', 'trust.call': 'Primera llamada gratuita, sin compromiso',
         'newsletter.title': 'Reciba nuestros insights IA',
         'newsletter.desc': 'Una vez al mes: tendencias, casos de uso y herramientas probadas. Sin spam, solo valor.',
@@ -2989,6 +3174,32 @@
     }, { threshold: 0.3 });
     var countersSection = document.querySelector('.impact-counters');
     if (countersSection) counterObserver.observe(countersSection);
+
+    // Animate data-count elements (studies + manifesto stats)
+    function animateCount(el) {
+      var target = parseInt(el.getAttribute('data-count'));
+      var duration = 1500;
+      var steps = 40;
+      var stepTime = duration / steps;
+      var current = 0;
+      var increment = target / steps;
+      var timer = setInterval(function() {
+        current += increment;
+        if (current >= target) { clearInterval(timer); el.textContent = target; }
+        else { el.textContent = Math.floor(current); }
+      }, stepTime);
+    }
+    var studyObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          e.target.querySelectorAll('[data-count]').forEach(animateCount);
+          studyObserver.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    document.querySelectorAll('.studies-block, .manifesto-stats').forEach(function(el) {
+      studyObserver.observe(el);
+    });
   })();
 
   // ── NEWSLETTER FORM ──
