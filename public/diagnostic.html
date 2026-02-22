@@ -967,6 +967,80 @@
       color: var(--accent);
     }
 
+    /* ---- RESUME MODAL ---- */
+    .resume-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 10, 15, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .resume-modal {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 40px;
+      max-width: 440px;
+      width: 100%;
+      text-align: center;
+      animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    .resume-modal h3 {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      margin-bottom: 8px;
+    }
+    .resume-modal p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    .resume-progress-info {
+      display: inline-block;
+      background: rgba(242, 107, 58, 0.1);
+      border: 1px solid rgba(242, 107, 58, 0.2);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+    .resume-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .resume-actions .btn-primary {
+      width: 100%;
+      justify-content: center;
+    }
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 14px 28px;
+      border-radius: var(--radius);
+      font-family: var(--sans);
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .btn-ghost:hover {
+      border-color: rgba(255,255,255,0.15);
+      color: var(--text);
+    }
+
     /* ---- RESPONSIVE ---- */
     @media (max-width: 640px) {
       .value-cards {
@@ -1027,6 +1101,30 @@
     .animate-delay-3 { animation-delay: 0.3s; opacity: 0; }
     .animate-delay-4 { animation-delay: 0.4s; opacity: 0; }
   </style>
+
+  <!-- ═══ SCHEMA.ORG ═══ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Diagnostic IA - Homo SapIA",
+    "url": "https://homosapia.com/diagnostic.html",
+    "description": "Évaluez la maturité IA de votre entreprise en 5 minutes. Diagnostic gratuit avec résultats immédiats et plan d'action personnalisé.",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "EUR",
+      "description": "Diagnostic IA gratuit"
+    },
+    "provider": {
+      "@type": "Organization",
+      "name": "Homo SapIA",
+      "url": "https://homosapia.com"
+    }
+  }
+  </script>
 </head>
 <body>
 
@@ -1091,7 +1189,11 @@
         'results.cta.title': 'Let\'s discuss your results',
         'results.cta.desc': 'A 30-minute exchange to turn this diagnostic into a concrete action plan',
         'results.cta.btn': 'Book a meeting ',
-        'results.restart': 'Retake the diagnostic'
+        'results.restart': 'Retake the diagnostic',
+        'resume.title': 'Diagnostic in progress',
+        'resume.desc': 'You have a diagnostic in progress. Would you like to resume or start over?',
+        'resume.continue': 'Resume →',
+        'resume.restart': 'Start from scratch'
       },
       es: {
         'nav.back': '\u2190 Volver al sitio',
@@ -1139,7 +1241,11 @@
         'results.cta.title': 'Hablemos de sus resultados',
         'results.cta.desc': 'Un intercambio de 30 minutos para transformar este diagn\u00f3stico en un plan de acci\u00f3n concreto',
         'results.cta.btn': 'Reservar una cita ',
-        'results.restart': 'Rehacer el diagn\u00f3stico'
+        'results.restart': 'Rehacer el diagn\u00f3stico',
+        'resume.title': 'Diagn\u00f3stico en curso',
+        'resume.desc': 'Tiene un diagn\u00f3stico en curso. \u00bfDesea retomarlo o empezar de nuevo?',
+        'resume.continue': 'Retomar \u2192',
+        'resume.restart': 'Empezar de cero'
       }
     };
 
@@ -1445,6 +1551,23 @@
             <path d="M2 8a6 6 0 0 1 10.3-4.2L11 5h4V1l-1.6 1.6A7.97 7.97 0 0 0 0 8h2zm12 0a6 6 0 0 1-10.3 4.2L5 11H1v4l1.6-1.6A7.97 7.97 0 0 0 16 8h-2z" fill="currentColor"/>
           </svg>
           <span data-i18n="results.restart">Refaire le diagnostic</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== RESUME MODAL ==================== -->
+  <div class="resume-overlay" id="resumeModal" style="display:none;">
+    <div class="resume-modal">
+      <h3 data-i18n="resume.title">Diagnostic en cours</h3>
+      <p data-i18n="resume.desc">Vous avez un diagnostic en cours. Souhaitez-vous le reprendre ou recommencer ?</p>
+      <div class="resume-progress-info" id="resumeProgress"></div>
+      <div class="resume-actions">
+        <button class="btn-primary" onclick="resumeDiagnostic()">
+          <span data-i18n="resume.continue">Reprendre →</span>
+        </button>
+        <button class="btn-ghost" onclick="restartFromModal()">
+          <span data-i18n="resume.restart">Recommencer à zéro</span>
         </button>
       </div>
     </div>
@@ -2501,27 +2624,70 @@ function restartDiagnostic() {
   answers = new Array(15).fill(null);
   currentQuestion = 0;
   companyProfile = { name: '', role: '', sector: '', size: '' };
+  leadContact = { firstname: '', lastname: '', email: '', phone: '' };
 
   // Reset form fields
-  const profileForm = document.getElementById('profileForm');
+  var profileForm = document.getElementById('profileForm');
   if (profileForm) profileForm.reset();
 
   // Reset gate form
-  const gateForm = document.getElementById('gateForm');
+  var gateForm = document.getElementById('gateForm');
   if (gateForm) gateForm.reset();
 
   // Reset results display
-  document.getElementById('reportSent').style.display = 'none';
+  var rs = document.getElementById('reportSent');
+  if (rs) rs.style.display = 'none';
+
+  // Clear rendered results (score circle, radar, bars, recommendations)
+  var sc = document.getElementById('scoreCircle');
+  if (sc) sc.innerHTML = '';
+  var rc = document.getElementById('radarChart');
+  if (rc) rc.innerHTML = '';
+  var pb2 = document.getElementById('pillarBars');
+  if (pb2) pb2.innerHTML = '';
+  var reco = document.getElementById('recommendations');
+  if (reco) reco.innerHTML = '';
 
   // Reset progress bar
-  const pb = document.getElementById('progressBar');
+  var pb = document.getElementById('progressBar');
   if (pb) pb.classList.remove('visible');
 
   // Navigate to landing
   showSection('sectionLanding');
-  setTimeout(() => {
+  setTimeout(function() {
     document.getElementById('sectionLanding').classList.add('visible');
   }, 50);
+}
+
+// ============================================================
+// RESUME / RESTART FROM MODAL
+// ============================================================
+function resumeDiagnostic() {
+  document.getElementById('resumeModal').style.display = 'none';
+  const answered = answers.filter(a => a !== null).length;
+  if (answered >= 15) {
+    // All answered — go to gate or results
+    document.getElementById('progressBar').classList.remove('visible');
+    showSection('sectionResults');
+    setTimeout(() => {
+      const ps = [0,0,0,0,0];
+      QUESTIONS.forEach((q,i) => { if(answers[i]!==null) ps[q.pillar]+=q.answers[answers[i]].score; });
+      const t = ps.reduce((a,b)=>a+b,0);
+      renderScoreCircle(t); renderLevel(t); renderRadar(ps); renderPillarBars(ps); renderRecommendations(ps);
+      if(companyProfile.name) document.getElementById('resultsCompany').textContent = companyProfile.name;
+    }, 100);
+  } else {
+    // Partial — resume at current question
+    currentQuestion = answered;
+    document.getElementById('progressBar').classList.add('visible');
+    showSection('sectionQuestions');
+    renderQuestion();
+  }
+}
+
+function restartFromModal() {
+  document.getElementById('resumeModal').style.display = 'none';
+  restartDiagnostic();
 }
 
 // ============================================================
@@ -2531,26 +2697,22 @@ loadState();
 
 if (answers.some(a => a !== null)) {
   if (answers.every(a => a !== null)) {
-    // All answered - show results directly
+    // All answered — show results directly
     document.getElementById('progressBar').classList.remove('visible');
     showSection('sectionResults');
     setTimeout(() => {
-      const pillarScores = [0, 0, 0, 0, 0];
-      QUESTIONS.forEach((q, i) => {
-        if (answers[i] !== null) {
-          pillarScores[q.pillar] += q.answers[answers[i]].score;
-        }
-      });
-      const totalScore = pillarScores.reduce((a, b) => a + b, 0);
-      renderScoreCircle(totalScore);
-      renderLevel(totalScore);
-      renderRadar(pillarScores);
-      renderPillarBars(pillarScores);
-      renderRecommendations(pillarScores);
-      if (companyProfile.name) {
-        document.getElementById('resultsCompany').textContent = companyProfile.name;
-      }
+      const ps = [0,0,0,0,0];
+      QUESTIONS.forEach((q,i) => { if(answers[i]!==null) ps[q.pillar]+=q.answers[answers[i]].score; });
+      const t = ps.reduce((a,b)=>a+b,0);
+      renderScoreCircle(t); renderLevel(t); renderRadar(ps); renderPillarBars(ps); renderRecommendations(ps);
+      if(companyProfile.name) document.getElementById('resultsCompany').textContent = companyProfile.name;
     }, 100);
+  } else {
+    // Partial progress — show resume modal
+    const answered = answers.filter(a => a !== null).length;
+    const modal = document.getElementById('resumeModal');
+    document.getElementById('resumeProgress').textContent = answered + ' / 15 questions complétées';
+    modal.style.display = 'flex';
   }
 }
 
