@@ -1339,28 +1339,69 @@
       margin: 0 auto 44px;
       text-align: center;
     }
-    .cta-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px;
-      max-width: 880px;
-      margin: 0 auto;
-      text-align: left;
+    .cta-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
     }
+    .btn-large {
+      font-size: 1.05rem;
+      padding: 18px 40px;
+    }
+    .cta-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .cta-info a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-family: var(--sans);
+      transition: color 0.2s;
+    }
+    .cta-info a:hover { color: var(--accent); }
+    .cta-sep { color: var(--text-muted); font-size: 0.8rem; }
+
+    /* ───── FOOTER ───── */
+    footer {
+      padding: 64px 0 48px;
+      border-top: 1px solid var(--border);
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr 1fr;
+      gap: 48px;
+      margin-bottom: 40px;
+    }
+    .footer-col h4 {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+    .footer-col p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+    .footer-col .logo { font-size: 1.2rem; margin-bottom: 12px; display: inline-block; }
     .contact-form {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 12px;
     }
     .contact-form input,
     .contact-form textarea {
       background: rgba(255,255,255,0.05);
       border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 12px;
-      padding: 14px 18px;
+      border-radius: 10px;
+      padding: 12px 16px;
       color: #E8E6E1;
       font-family: var(--sans);
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       outline: none;
       transition: border-color 0.2s, box-shadow 0.2s;
       resize: vertical;
@@ -1376,75 +1417,54 @@
     }
     .contact-form button {
       align-self: flex-start;
+      font-size: 0.85rem;
+      padding: 10px 22px;
     }
     .contact-form .form-status {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-family: var(--sans);
-      margin-top: 4px;
+      margin-top: 2px;
     }
-    .cta-right {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 24px;
-    }
-    .cta-right p {
-      color: var(--text-muted);
-      font-size: 0.92rem;
-      line-height: 1.65;
-      margin: 0;
-    }
-    .cta-info {
+    .footer-links-col {
       display: flex;
       flex-direction: column;
       gap: 10px;
-      margin-top: 8px;
     }
-    .cta-info a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.88rem;
-      font-family: var(--sans);
-      transition: color 0.2s;
-    }
-    .cta-info a:hover { color: var(--accent); }
-    @media (max-width: 768px) {
-      .cta-grid { grid-template-columns: 1fr; gap: 32px; }
-    }
-
-    /* ───── FOOTER ───── */
-    footer {
-      padding: 48px 0;
-      border-top: 1px solid var(--border);
-    }
-    .footer-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 24px;
-    }
-    .footer-left {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-    }
-    .footer-left .logo { font-size: 1.2rem; }
-    .footer-copy {
-      color: var(--text-muted);
-      font-size: 0.82rem;
-    }
-    .footer-links {
-      display: flex;
-      gap: 24px;
-    }
-    .footer-links a {
+    .footer-links-col a {
       color: var(--text-muted);
       text-decoration: none;
       font-size: 0.85rem;
+      font-family: var(--sans);
       transition: color 0.2s;
     }
-    .footer-links a:hover { color: var(--text); }
+    .footer-links-col a:hover { color: var(--text); }
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-copy {
+      color: var(--text-muted);
+      font-size: 0.78rem;
+    }
+    .footer-bottom-links {
+      display: flex;
+      gap: 20px;
+    }
+    .footer-bottom-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.78rem;
+      transition: color 0.2s;
+    }
+    .footer-bottom-links a:hover { color: var(--text); }
+    @media (max-width: 768px) {
+      .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+    }
 
     /* ───── ANIMATIONS ───── */
     @keyframes fadeInUp {
@@ -2336,23 +2356,12 @@
         <h2 class="section-title" data-i18n="cta.title">Échangeons sur votre projet IA</h2>
         <p class="section-subtitle" data-i18n="cta.subtitle">Un premier appel de 30 minutes pour comprendre vos enjeux et identifier les premières pistes d'action.</p>
       </div>
-      <div class="cta-grid reveal">
-        <!-- Formulaire de contact -->
-        <form id="contactForm" class="contact-form" novalidate>
-          <input type="text" name="name" placeholder="Votre nom" required data-i18n-placeholder="contact.name">
-          <input type="email" name="email" placeholder="Votre email" required data-i18n-placeholder="contact.email">
-          <textarea name="message" placeholder="Votre message" rows="4" required data-i18n-placeholder="contact.message"></textarea>
-          <button type="submit" class="btn-primary" data-i18n="contact.send">Envoyer le message →</button>
-          <p class="form-status" id="contactStatus"></p>
-        </form>
-        <!-- Colonne droite : RDV + infos -->
-        <div class="cta-right">
-          <p data-i18n="contact.prefer">Vous préférez échanger de vive voix ?</p>
-          <a href="https://meetings-eu1.hubspot.com/pdu-payrat?uuid=5a24cb40-61aa-41f5-aee3-8cc6a8cae0bf" target="_blank" rel="noopener" class="btn-primary" data-i18n="cta.btn">Prendre rendez-vous →</a>
-          <div class="cta-info">
-            <p><a href="mailto:contact@homosapia.com">contact@homosapia.com</a></p>
-            <p><a href="https://www.linkedin.com/in/philippedupayrat-semaine-de-quatre-jours/" target="_blank" rel="noopener">LinkedIn</a></p>
-          </div>
+      <div class="cta-actions reveal">
+        <a href="https://meetings-eu1.hubspot.com/pdu-payrat?uuid=5a24cb40-61aa-41f5-aee3-8cc6a8cae0bf" target="_blank" rel="noopener" class="btn-primary btn-large" data-i18n="cta.btn">Prendre rendez-vous →</a>
+        <div class="cta-info">
+          <a href="mailto:contact@homosapia.com">contact@homosapia.com</a>
+          <span class="cta-sep">·</span>
+          <a href="https://www.linkedin.com/in/philippedupayrat-semaine-de-quatre-jours/" target="_blank" rel="noopener">LinkedIn</a>
         </div>
       </div>
       <!-- Trust badges -->
@@ -2390,17 +2399,45 @@
 
   <!-- ═══ FOOTER ═══ -->
   <footer>
-    <div class="container footer-inner">
-      <div class="footer-left">
-        <a href="#" class="logo">Homo Sap<span class="logo-ia">IA</span></a>
-        <span class="footer-copy" data-i18n="footer.copy">© 2026 Homo SapIA · Tempo Libre · Tous droits réservés</span>
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Col 1 : Logo + description -->
+        <div class="footer-col">
+          <a href="#" class="logo">Homo Sap<span class="logo-ia">IA</span></a>
+          <p data-i18n="footer.desc">Conseil en IA pour entreprises. Approche humaine, souveraine et frugale.</p>
+          <p style="margin-top:12px;">
+            <a href="mailto:contact@homosapia.com" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;">contact@homosapia.com</a>
+          </p>
+        </div>
+        <!-- Col 2 : Formulaire contact -->
+        <div class="footer-col">
+          <h4 data-i18n="footer.contact_title">Nous écrire</h4>
+          <form id="contactForm" class="contact-form" novalidate>
+            <input type="text" name="name" placeholder="Votre nom" required data-i18n-placeholder="contact.name">
+            <input type="email" name="email" placeholder="Votre email" required data-i18n-placeholder="contact.email">
+            <textarea name="message" placeholder="Votre message" rows="3" required data-i18n-placeholder="contact.message"></textarea>
+            <button type="submit" class="btn-primary" data-i18n="contact.send">Envoyer →</button>
+            <p class="form-status" id="contactStatus"></p>
+          </form>
+        </div>
+        <!-- Col 3 : Liens -->
+        <div class="footer-col">
+          <h4 data-i18n="footer.links_title">Liens</h4>
+          <div class="footer-links-col">
+            <a href="#offres" data-i18n="footer.link_services">Nos services</a>
+            <a href="/diagnostic.html" data-i18n="footer.link_diag">Diagnostic IA gratuit</a>
+            <a href="https://www.linkedin.com/in/philippedupayrat-semaine-de-quatre-jours/" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="https://4jours.work" target="_blank">4jours.work</a>
+            <a href="https://4jours.work" target="_blank">Tempo Libre</a>
+          </div>
+        </div>
       </div>
-      <div class="footer-links">
-        <a href="https://4jours.work" target="_blank">Tempo Libre</a>
-        <a href="https://4jours.work" target="_blank">4jours.work</a>
-        <a href="mailto:contact@homosapia.com">Contact</a>
-        <a href="/mentions-legales.html">Mentions légales</a>
-        <a href="/cgv.html">CGV</a>
+      <div class="footer-bottom">
+        <span class="footer-copy" data-i18n="footer.copy">© 2026 Homo SapIA · Tempo Libre · Tous droits réservés</span>
+        <div class="footer-bottom-links">
+          <a href="/mentions-legales.html" data-i18n="footer.legal">Mentions légales</a>
+          <a href="/cgv.html" data-i18n="footer.cgv">CGV</a>
+        </div>
       </div>
     </div>
   </footer>
@@ -2665,6 +2702,13 @@
         'newsletter.desc': 'Once a month: trends, real use cases and tested tools. No spam, only value.',
         'newsletter.placeholder': 'Your professional email',
         'newsletter.btn': 'Subscribe',
+        'footer.desc': 'AI consulting for businesses. Human-centered, sovereign and frugal approach.',
+        'footer.contact_title': 'Write to us',
+        'footer.links_title': 'Links',
+        'footer.link_services': 'Our services',
+        'footer.link_diag': 'Free AI Diagnostic',
+        'footer.legal': 'Legal notice',
+        'footer.cgv': 'Terms',
         'footer.copy': '© 2026 Homo SapIA · Tempo Libre · All rights reserved'
       },
       es: {
@@ -2798,7 +2842,14 @@
         'newsletter.desc': 'Una vez al mes: tendencias, casos de uso y herramientas probadas. Sin spam, solo valor.',
         'newsletter.placeholder': 'Su email profesional',
         'newsletter.btn': 'Suscribirse',
-        'footer.copy': '© 2026 Homo SapIA · Tempo Libre · Todos los derechos reservados'
+        'footer.desc': 'Consultor\u00eda IA para empresas. Enfoque humano, soberano y frugal.',
+        'footer.contact_title': 'Escr\u00edbanos',
+        'footer.links_title': 'Enlaces',
+        'footer.link_services': 'Nuestros servicios',
+        'footer.link_diag': 'Diagn\u00f3stico IA gratuito',
+        'footer.legal': 'Aviso legal',
+        'footer.cgv': 'Condiciones',
+        'footer.copy': '\u00a9 2026 Homo SapIA \u00b7 Tempo Libre \u00b7 Todos los derechos reservados'
       }
     };
 
