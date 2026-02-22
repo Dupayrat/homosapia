@@ -110,18 +110,30 @@
       position: fixed;
       top: 65px; left: 0; right: 0;
       z-index: 999;
-      height: 3px;
+      height: 6px;
       background: var(--bg-elevated);
       display: none;
     }
-    .progress-bar-wrap.visible { display: block; }
+    .progress-bar-wrap.visible { display: flex; align-items: center; }
     .progress-bar-fill {
       height: 100%;
       background: linear-gradient(90deg, var(--accent), var(--sapiens));
       transition: width 0.4s ease;
       width: 0%;
-      border-radius: 0 2px 2px 0;
+      border-radius: 0 3px 3px 0;
     }
+    .progress-bar-text {
+      position: fixed;
+      top: 75px; right: 20px;
+      z-index: 1000;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .progress-bar-text.visible { opacity: 1; }
 
     /* ---- CONTAINER ---- */
     .container {
@@ -627,7 +639,8 @@
       text-align: center;
     }
     .radar-svg {
-      width: 320px; height: 320px;
+      width: 100%; max-width: 400px; height: auto;
+      overflow: visible;
     }
     .radar-labels {
       display: flex;
@@ -1170,7 +1183,7 @@
         'q.next': 'Next',
         'gate.label': 'Final step',
         'gate.title': 'Your results are <span class="highlight">ready</span>',
-        'gate.subtitle': 'Enter your details to access your full diagnostic and receive your personalized report by email.',
+        'gate.subtitle': 'Enter your details to access your full diagnostic and receive your personalized diagnostic by email.',
         'gate.firstname': 'First name',
         'gate.lastname': 'Last name',
         'gate.email': 'Professional email',
@@ -1179,14 +1192,14 @@
         'gate.trust1': 'Confidential data',
         'gate.trust2': 'No spam',
         'gate.trust3': 'Instant results',
-        'gate.loading': 'Generating your personalized report...',
+        'gate.loading': 'Generating your personalized diagnostic...',
         'results.label': 'Your results',
         'results.title': 'Your AI Diagnostic',
         'results.radar': 'Overview by pillar',
         'results.detail': 'Detail by pillar',
         'results.reco': 'Top 3 recommendations',
-        'results.sent': '&#9989; Report sent!',
-        'results.sentDesc': 'You will receive a personalized analysis with a detailed action plan within a few minutes at <strong id="sentToEmail"></strong>',
+        'results.sent': '&#9989; Diagnostic sent!',
+        'results.sentDesc': 'You will receive your personalized diagnostic with a detailed action plan within a few minutes at <strong id="sentToEmail"></strong>',
         'results.cta.title': 'Let\'s discuss your results',
         'results.cta.desc': 'A 30-minute exchange to turn this diagnostic into a concrete action plan',
         'results.cta.btn': 'Book a meeting ',
@@ -1223,7 +1236,7 @@
         'q.next': 'Siguiente',
         'gate.label': '\u00daltimo paso',
         'gate.title': 'Sus resultados est\u00e1n <span class="highlight">listos</span>',
-        'gate.subtitle': 'Ingrese sus datos para acceder a su diagn\u00f3stico completo y recibir su informe personalizado por email.',
+        'gate.subtitle': 'Ingrese sus datos para acceder a su diagn\u00f3stico completo y recibir su diagn\u00f3stico personalizado por email.',
         'gate.firstname': 'Nombre',
         'gate.lastname': 'Apellido',
         'gate.email': 'Email profesional',
@@ -1232,14 +1245,14 @@
         'gate.trust1': 'Datos confidenciales',
         'gate.trust2': 'Sin spam',
         'gate.trust3': 'Resultados inmediatos',
-        'gate.loading': 'Generando su informe personalizado...',
+        'gate.loading': 'Generando su diagn\u00f3stico personalizado...',
         'results.label': 'Sus resultados',
         'results.title': 'Su diagn\u00f3stico IA',
         'results.radar': 'Visi\u00f3n general por pilar',
         'results.detail': 'Detalle por pilar',
         'results.reco': 'Top 3 recomendaciones',
-        'results.sent': '&#9989; \u00a1Informe enviado!',
-        'results.sentDesc': 'Recibir\u00e1 un an\u00e1lisis personalizado con un plan de acci\u00f3n detallado en unos minutos en <strong id="sentToEmail"></strong>',
+        'results.sent': '&#9989; \u00a1Diagn\u00f3stico enviado!',
+        'results.sentDesc': 'Recibir\u00e1 su diagn\u00f3stico personalizado con un plan de acci\u00f3n detallado en unos minutos en <strong id="sentToEmail"></strong>',
         'results.cta.title': 'Hablemos de sus resultados',
         'results.cta.desc': 'Un intercambio de 30 minutos para transformar este diagn\u00f3stico en un plan de acci\u00f3n concreto',
         'results.cta.btn': 'Reservar una cita ',
@@ -1334,6 +1347,7 @@
   <div class="progress-bar-wrap" id="progressBar">
     <div class="progress-bar-fill" id="progressFill"></div>
   </div>
+  <div class="progress-bar-text" id="progressText"></div>
 
   <!-- ==================== LANDING ==================== -->
   <div class="section active" id="sectionLanding">
@@ -1455,7 +1469,7 @@
     <div class="container form-section gate-section">
       <div class="landing-label" data-i18n="gate.label">Dernière étape</div>
       <h2 data-i18n="gate.title" data-i18n-html="1">Vos résultats sont <span class="highlight">prêts</span></h2>
-      <p class="gate-subtitle" data-i18n="gate.subtitle">Renseignez vos coordonnées pour accéder à votre diagnostic complet et recevoir votre rapport personnalisé par email.</p>
+      <p class="gate-subtitle" data-i18n="gate.subtitle">Renseignez vos coordonnées pour accéder à votre diagnostic complet et recevoir votre diagnostic personnalisé par email.</p>
       <div class="gate-form" id="gateForm">
         <div>
           <label for="gateFirstname" data-i18n="gate.firstname">Prénom</label>
@@ -1485,7 +1499,7 @@
         </div>
         <div class="gate-loading" id="gateLoading">
           <div class="gate-spinner"></div>
-          <p data-i18n="gate.loading">Génération de votre rapport personnalisé...</p>
+          <p data-i18n="gate.loading">Génération de votre diagnostic personnalisé...</p>
         </div>
       </div>
     </div>
@@ -1520,7 +1534,7 @@
       <!-- Radar chart -->
       <div class="radar-wrap">
         <h3 class="radar-title" data-i18n="results.radar">Vue d'ensemble par pilier</h3>
-        <svg class="radar-svg" id="radarChart" viewBox="0 0 320 320"></svg>
+        <svg class="radar-svg" id="radarChart" viewBox="-40 -40 400 400"></svg>
         <div class="radar-labels" id="radarLabels"></div>
       </div>
 
@@ -1538,8 +1552,8 @@
 
       <!-- Rapport envoyé confirmation -->
       <div class="lead-capture" id="reportSent" style="display:none;">
-        <h3 data-i18n="results.sent" data-i18n-html="1">&#9989; Rapport envoyé !</h3>
-        <p class="lead-desc" data-i18n="results.sentDesc" data-i18n-html="1">Vous recevrez sous quelques minutes une analyse personnalisée avec un plan d'action détaillé à <strong id="sentToEmail"></strong></p>
+        <h3 data-i18n="results.sent" data-i18n-html="1">&#9989; Diagnostic envoyé !</h3>
+        <p class="lead-desc" data-i18n="results.sentDesc" data-i18n-html="1">Vous recevrez sous quelques minutes votre diagnostic personnalisé avec un plan d'action détaillé à <strong id="sentToEmail"></strong></p>
       </div>
 
       <!-- CTA final -->
@@ -2118,6 +2132,11 @@ function renderQuestion() {
   // Progress bar
   const pct = ((currentQuestion + 1) / 15) * 100;
   document.getElementById('progressFill').style.width = pct + '%';
+  const pctText = document.getElementById('progressText');
+  if (pctText) {
+    pctText.textContent = `${currentQuestion + 1}/15 — ${Math.round(pct)}%`;
+    pctText.classList.add('visible');
+  }
 
   // Answer cards
   const container = document.getElementById('answerCards');
@@ -2198,6 +2217,7 @@ let leadContact = { firstname: '', lastname: '', email: '', phone: '' };
 
 function showGate() {
   document.getElementById('progressBar').classList.remove('visible');
+  var pt = document.getElementById('progressText'); if (pt) pt.classList.remove('visible');
   showSection('sectionGate');
   // Restore saved contact info
   try {
@@ -2312,6 +2332,7 @@ function prevQuestion() {
     renderQuestion();
   } else {
     document.getElementById('progressBar').classList.remove('visible');
+  var pt = document.getElementById('progressText'); if (pt) pt.classList.remove('visible');
     showSection('sectionProfile');
   }
 }
@@ -2321,6 +2342,7 @@ function prevQuestion() {
 // ============================================================
 function showResults() {
   document.getElementById('progressBar').classList.remove('visible');
+  var pt = document.getElementById('progressText'); if (pt) pt.classList.remove('visible');
   showSection('sectionResults');
 
   const pillarScores = [0, 0, 0, 0, 0];
@@ -2513,7 +2535,7 @@ function renderRadar(scores) {
   const shortLabels = shortLabelsI18N[lang] || shortLabelsI18N.fr;
 
   for (let i = 0; i < n; i++) {
-    const p = getPoint(i, maxR + 18);
+    const p = getPoint(i, maxR + 28);
     const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     text.setAttribute('x', p.x + labelOffsets[i].dx);
     text.setAttribute('y', p.y + labelOffsets[i].dy);
@@ -2645,13 +2667,18 @@ function restartDiagnostic() {
   companyProfile = { name: '', role: '', sector: '', size: '', website: '' };
   leadContact = { firstname: '', lastname: '', email: '', phone: '' };
 
-  // Reset form fields
-  var profileForm = document.getElementById('profileForm');
-  if (profileForm) profileForm.reset();
+  // Reset profile form fields
+  var cn = document.getElementById('companyName'); if (cn) cn.value = '';
+  var cw = document.getElementById('companyWebsite'); if (cw) cw.value = '';
+  var rl = document.getElementById('role'); if (rl) rl.selectedIndex = 0;
+  var sc2 = document.getElementById('sector'); if (sc2) sc2.selectedIndex = 0;
+  var sz = document.getElementById('size'); if (sz) sz.selectedIndex = 0;
 
-  // Reset gate form
-  var gateForm = document.getElementById('gateForm');
-  if (gateForm) gateForm.reset();
+  // Reset gate form fields
+  var gf = document.getElementById('gateFirstname'); if (gf) gf.value = '';
+  var gl = document.getElementById('gateLastname'); if (gl) gl.value = '';
+  var ge = document.getElementById('gateEmail'); if (ge) ge.value = '';
+  var gp = document.getElementById('gatePhone'); if (gp) gp.value = '';
 
   // Reset results display
   var rs = document.getElementById('reportSent');
@@ -2687,6 +2714,7 @@ function resumeDiagnostic() {
   if (answered >= 15) {
     // All answered — go to gate or results
     document.getElementById('progressBar').classList.remove('visible');
+  var pt = document.getElementById('progressText'); if (pt) pt.classList.remove('visible');
     showSection('sectionResults');
     setTimeout(() => {
       const ps = [0,0,0,0,0];
@@ -2718,6 +2746,7 @@ if (answers.some(a => a !== null)) {
   if (answers.every(a => a !== null)) {
     // All answered — show results directly
     document.getElementById('progressBar').classList.remove('visible');
+  var pt = document.getElementById('progressText'); if (pt) pt.classList.remove('visible');
     showSection('sectionResults');
     setTimeout(() => {
       const ps = [0,0,0,0,0];
