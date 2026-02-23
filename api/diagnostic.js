@@ -381,6 +381,7 @@ export default async function handler(req, res) {
     // ================================================================
     const GAMMA_API_KEY = process.env.GAMMA_API_KEY;
     let gammaUrl = null;
+    console.log('GAMMA_API_KEY defined:', !!GAMMA_API_KEY);
 
     // Build a rich text prompt for Gamma
     const pillarSummary = scores.pillars.map(p => {
@@ -494,39 +495,47 @@ Philippe du Payrat
 philippe@homosapia.com · homosapia.com
 Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
 
-    // Call Gamma API to generate personalized presentation (fire-and-forget)
+    // Call Gamma API to generate personalized presentation
     let gammaGenerationId = null;
+    console.log('Gamma prompt length:', gammaPrompt.length, 'chars');
     if (GAMMA_API_KEY) {
       try {
+        console.log('Calling Gamma API...');
+        const gammaBody = {
+          inputText: gammaPrompt,
+          textMode: 'preserve',
+          format: 'presentation',
+          numCards: 12,
+          textOptions: { language: lang === 'es' ? 'es' : lang === 'en' ? 'en' : 'fr' }
+        };
         const gammaRes = await fetch('https://public-api.gamma.app/v1.0/generations', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'X-API-KEY': GAMMA_API_KEY
           },
-          body: JSON.stringify({
-            inputText: gammaPrompt,
-            textMode: 'preserve',
-            format: 'presentation',
-            numCards: 12,
-            textOptions: { language: lang === 'es' ? 'es' : lang === 'en' ? 'en' : 'fr' }
-          })
+          body: JSON.stringify(gammaBody)
         });
+        console.log('Gamma API response status:', gammaRes.status);
         if (gammaRes.ok) {
           const gammaData = await gammaRes.json();
+          console.log('Gamma API response keys:', Object.keys(gammaData).join(', '));
           gammaGenerationId = gammaData.generationId || gammaData.id || null;
           if (gammaGenerationId) {
             gammaUrl = `https://gamma.app/generations/${gammaGenerationId}`;
             console.log('Gamma generation started:', gammaGenerationId);
+          } else {
+            console.error('Gamma API returned OK but no generationId/id. Full response:', JSON.stringify(gammaData).substring(0, 500));
           }
         } else {
-          console.error('Gamma API error:', gammaRes.status, await gammaRes.text());
+          const errorBody = await gammaRes.text();
+          console.error('Gamma API error:', gammaRes.status, errorBody.substring(0, 500));
         }
       } catch (gammaErr) {
-        console.error('Gamma API call failed:', gammaErr.message);
+        console.error('Gamma API call failed:', gammaErr.message, gammaErr.stack?.substring(0, 300));
       }
     } else {
-      console.log('Gamma presentation prompt generated (no API key):', contactName);
+      console.log('Gamma: NO API KEY — skipping generation for', contactName);
     }
 
     // ================================================================
