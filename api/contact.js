@@ -19,16 +19,24 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
-    const { name, email, message } = req.body;
+    // Support both old format (name) and new format (firstname + lastname)
+    const { firstname, lastname, name, email, message } = req.body;
+    const resolvedFirstname = (firstname || '').trim();
+    const resolvedLastname = (lastname || name || '').trim();
+    const displayName = resolvedFirstname
+      ? `${resolvedFirstname} ${resolvedLastname}`.trim()
+      : resolvedLastname || 'Inconnu';
 
-    if (!name || !email || !message) {
+    if (!displayName || displayName === 'Inconnu' || !email || !message) {
       return res.status(400).json({ error: 'Tous les champs sont requis' });
     }
     if (!isValidEmail(email)) {
       return res.status(400).json({ error: 'Adresse email invalide' });
     }
 
-    const safeName = esc(name);
+    const safeFirstname = esc(resolvedFirstname);
+    const safeLastname = esc(resolvedLastname);
+    const safeName = esc(displayName);
     const safeEmail = esc(email);
     const safeMessage = esc(message);
 
@@ -56,8 +64,15 @@ export default async function handler(req, res) {
       <p style="margin: 8px 0 0; color: #8A8A95; font-size: 14px;">Via le formulaire de contact homosapia.com</p>
     </div>
     <div style="padding: 28px 32px;">
+      ${safeFirstname ? `
+      <p style="margin: 0 0 8px; font-size: 14px; color: #8A8A95;">Prénom</p>
+      <p style="margin: 0 0 20px; font-size: 16px;">${safeFirstname}</p>
+      <p style="margin: 0 0 8px; font-size: 14px; color: #8A8A95;">Nom</p>
+      <p style="margin: 0 0 20px; font-size: 16px;">${safeLastname}</p>
+      ` : `
       <p style="margin: 0 0 8px; font-size: 14px; color: #8A8A95;">Nom</p>
       <p style="margin: 0 0 20px; font-size: 16px;">${safeName}</p>
+      `}
       <p style="margin: 0 0 8px; font-size: 14px; color: #8A8A95;">Email</p>
       <p style="margin: 0 0 20px; font-size: 16px;"><a href="mailto:${safeEmail}" style="color: #F26B3A;">${safeEmail}</a></p>
       <p style="margin: 0 0 8px; font-size: 14px; color: #8A8A95;">Message</p>
