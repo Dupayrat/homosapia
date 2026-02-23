@@ -566,6 +566,7 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
           textMode: 'preserve',
           format: 'presentation',
           numCards: 12,
+          exportAs: 'pdf',
           textOptions: { language: lang === 'es' ? 'es' : lang === 'en' ? 'en' : 'fr' },
           sharingOptions: { externalAccess: 'view' }
         };
@@ -703,7 +704,7 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
         <tr><td style="background: #16161F; border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 28px 32px; text-align: center;">
           <p style="font-size: 13px; font-weight: 600; color: #3A8FF2; margin: 0 0 8px;">${t.gammaLabel}</p>
           <p style="font-size: 14px; color: #8A8A95; margin: 0 0 20px;">${t.gammaDesc}</p>
-          <a href="https://homosapia.com/api/track?id=${gammaGenerationId}&email=${encodeURIComponent(contact.email)}&name=${encodeURIComponent(contactName)}" style="display: inline-block; background: #3A8FF2; color: #ffffff; padding: 12px 32px; border-radius: 100px; text-decoration: none; font-size: 14px; font-weight: 600;">${t.gammaBtn}</a>
+          <a href="https://homosapia.com/api/track?id=${gammaGenerationId}&email=${encodeURIComponent(contact.email)}&name=${encodeURIComponent(contactName)}&company=${encodeURIComponent(company.name || contactName)}" style="display: inline-block; background: #3A8FF2; color: #ffffff; padding: 12px 32px; border-radius: 100px; text-decoration: none; font-size: 14px; font-weight: 600;">${t.gammaBtn}</a>
           <p style="font-size: 11px; color: #555; margin: 12px 0 0;">${t.gammaNote}</p>
         </td></tr>
 
