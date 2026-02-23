@@ -831,7 +831,8 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
             from: 'Philippe du Payrat <diagnostic@homosapia.com>',
             to: [contact.email],
             subject: t.subject(contact.firstname, scores.total),
-            html: prospectEmailHtml
+            html: prospectEmailHtml,
+            scheduled_at: new Date(Date.now() + 5 * 60 * 1000).toISOString()
           })
         });
 
@@ -879,6 +880,14 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
       console.log(`Company: ${company.name} | Score: ${scores.total}/100 (${level})`);
       console.log('Steps:', recommendedSteps.map(s => `${s.num}. ${s.title}`).join(' | '));
       console.log('=======================================');
+    }
+
+    // Pre-warm Drive cache: trigger PDF processing in the background
+    // By the time the prospect receives the email (5 min), PDF should be on Drive
+    if (gammaGenerationId) {
+      const warmupUrl = `https://homosapia.com/api/track?id=${encodeURIComponent(gammaGenerationId)}&warmup=true`;
+      console.log(`🔥 Launching Drive warmup for ${gammaGenerationId}`);
+      fetch(warmupUrl).catch(() => {});
     }
 
     return res.status(200).json({

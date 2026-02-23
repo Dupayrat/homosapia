@@ -1,7 +1,7 @@
 {
   "outputDirectory": "public",
   "functions": {
-    "api/track.js": { "maxDuration": 30 }
+    "api/track.js": { "maxDuration": 60 }
   },
   "headers": [
     {

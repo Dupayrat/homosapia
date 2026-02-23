@@ -2,8 +2,11 @@
 // GET /api/track?id=GENERATION_ID&email=EMAIL&name=NAME&company=COMPANY
 // On first click: fetches PDF from Gamma, uploads to Google Drive, redirects to Drive
 // On subsequent clicks: redirects to cached Drive PDF instantly
+// With warmup=true: polls Gamma in background, caches PDF on Drive (no redirect)
 
-const DRIVE_FOLDER_ID = '1yV4p4_4SSXk856r9-Z2-BBai95kwF5YD';
+const DRIVE_FOLDER_ID = '1yHMdCdpoa8sLKK4tLUw29IPUgsQYxEXo';
+
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 // ─── Google OAuth2: get access token from refresh token ───
 async function getAccessToken() {
@@ -39,6 +42,25 @@ async function searchDriveFile(token, generationId) {
   }
   const data = await res.json();
   return data.files && data.files.length > 0 ? data.files[0] : null;
+}
+
+// ─── Check Gamma generation status ───
+async function checkGammaStatus(generationId) {
+  const res = await fetch(`https://public-api.gamma.app/v1.0/generations/${generationId}`, {
+    headers: { 'X-API-KEY': process.env.GAMMA_API_KEY }
+  });
+  if (!res.ok) {
+    console.error(`Gamma API error: ${res.status}`);
+    return null;
+  }
+  return await res.json();
+}
+
+// ─── Download PDF from Gamma exportUrl ───
+async function downloadPdf(exportUrl) {
+  const res = await fetch(exportUrl);
+  if (!res.ok) throw new Error(`PDF download failed: ${res.status}`);
+  return await res.arrayBuffer();
 }
 
 // ─── Upload PDF to Google Drive (multipart/related) ───
@@ -91,6 +113,33 @@ async function makeFilePublic(token, fileId) {
   }
 }
 
+// ─── Build filename for the PDF ───
+function buildFileName(company, name) {
+  const dateStr = new Date().toLocaleDateString('fr-FR', {
+    timeZone: 'Europe/Paris',
+    day: '2-digit', month: '2-digit', year: 'numeric'
+  }).replace(/\//g, '-');
+  const companyName = company || name || 'Prospect';
+  return `HomoSapIA - Diagnostic IA - ${companyName} - ${dateStr}.pdf`;
+}
+
+// ─── Process PDF: download from Gamma, upload to Drive, make public ───
+async function processPdfToDrive(token, gammaData, generationId, company, name) {
+  console.log(`⬇️ Downloading PDF from Gamma exportUrl...`);
+  const pdfBuffer = await downloadPdf(gammaData.exportUrl);
+  console.log(`✅ PDF downloaded: ${(pdfBuffer.byteLength / 1024).toFixed(1)} KB`);
+
+  const fileName = buildFileName(company, name);
+  console.log(`⬆️ Uploading to Drive: ${fileName}`);
+  const driveFile = await uploadToDrive(token, pdfBuffer, fileName, generationId);
+  console.log(`✅ Uploaded to Drive: ${driveFile.id}`);
+
+  await makeFilePublic(token, driveFile.id);
+  console.log(`🔓 File made public`);
+
+  return driveFile;
+}
+
 // ─── Send notification email to Philippe ───
 function notifyPhilippe({ name, email, company, driveUrl, timestamp }) {
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
@@ -118,13 +167,55 @@ function notifyPhilippe({ name, email, company, driveUrl, timestamp }) {
   }).catch(() => {}); // fire-and-forget
 }
 
-// ─── Main handler ───
-export default async function handler(req, res) {
-  if (req.method !== 'GET') return res.status(405).end();
+// ─── WARMUP MODE: poll Gamma and cache PDF on Drive ───
+async function handleWarmup(req, res, id) {
+  console.log(`🔥 WARMUP mode for generation ${id}`);
 
-  const { id, email, name, company } = req.query;
-  if (!id) return res.redirect(302, 'https://homosapia.com');
+  // Check if Google Drive credentials are configured
+  if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_REFRESH_TOKEN) {
+    console.log('⚠️ Google Drive not configured — warmup skipped');
+    return res.status(200).json({ cached: false, reason: 'no_drive_config' });
+  }
 
+  try {
+    const token = await getAccessToken();
+
+    // Already cached?
+    const existingFile = await searchDriveFile(token, id);
+    if (existingFile) {
+      console.log(`📁 Warmup: already cached on Drive (${existingFile.id})`);
+      return res.status(200).json({ cached: true, driveId: existingFile.id });
+    }
+
+    // Poll Gamma every 10s, max 5 attempts (50s total — fits in 60s timeout)
+    for (let attempt = 1; attempt <= 5; attempt++) {
+      console.log(`🔄 Warmup poll ${attempt}/5 for ${id}...`);
+      const gammaData = await checkGammaStatus(id);
+
+      if (gammaData?.status === 'completed' && gammaData?.exportUrl) {
+        console.log(`✅ Warmup: Gamma ready on attempt ${attempt} — processing PDF`);
+        const { company, name } = req.query;
+        const driveFile = await processPdfToDrive(token, gammaData, id, company, name);
+        console.log(`🎯 Warmup: PDF cached on Drive (${driveFile.id})`);
+        return res.status(200).json({ cached: true, driveId: driveFile.id });
+      }
+
+      console.log(`⏳ Gamma status: ${gammaData?.status || 'unknown'} — waiting 10s...`);
+      if (attempt < 5) await sleep(10000);
+    }
+
+    console.log(`⏰ Warmup timeout: Gamma not ready after 50s — PDF will be processed on first click`);
+    return res.status(200).json({ cached: false, reason: 'gamma_not_ready' });
+
+  } catch (err) {
+    console.error('❌ Warmup error:', err.message);
+    return res.status(200).json({ cached: false, reason: 'error', error: err.message });
+  }
+}
+
+// ─── NORMAL MODE: redirect to Drive PDF or Gamma fallback ───
+async function handleClick(req, res, id) {
+  const { email, name, company } = req.query;
   const gammaUrl = `https://gamma.app/generations/${id}`;
   const timestamp = new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' });
 
@@ -153,17 +244,13 @@ export default async function handler(req, res) {
 
     // Step 3: Fetch Gamma generation status
     console.log(`🔍 Checking Gamma generation status for ${id}...`);
-    const gammaRes = await fetch(`https://public-api.gamma.app/v1.0/generations/${id}`, {
-      headers: { 'X-API-KEY': process.env.GAMMA_API_KEY }
-    });
+    const gammaData = await checkGammaStatus(id);
 
-    if (!gammaRes.ok) {
-      console.error(`Gamma API error: ${gammaRes.status}`);
+    if (!gammaData) {
       notifyPhilippe({ name, email, company, driveUrl: gammaUrl, timestamp });
       return res.redirect(302, gammaUrl);
     }
 
-    const gammaData = await gammaRes.json();
     console.log(`Gamma status: ${gammaData.status}, hasExportUrl: ${!!gammaData.exportUrl}`);
 
     // Step 4: If not completed or no exportUrl, fallback to Gamma
@@ -173,33 +260,8 @@ export default async function handler(req, res) {
       return res.redirect(302, gammaUrl);
     }
 
-    // Step 5: Download PDF from Gamma
-    console.log(`⬇️ Downloading PDF from Gamma exportUrl...`);
-    const pdfRes = await fetch(gammaData.exportUrl);
-    if (!pdfRes.ok) {
-      console.error(`PDF download failed: ${pdfRes.status}`);
-      notifyPhilippe({ name, email, company, driveUrl: gammaUrl, timestamp });
-      return res.redirect(302, gammaUrl);
-    }
-    const pdfBuffer = await pdfRes.arrayBuffer();
-    console.log(`✅ PDF downloaded: ${(pdfBuffer.byteLength / 1024).toFixed(1)} KB`);
-
-    // Step 6: Upload to Google Drive
-    const dateStr = new Date().toLocaleDateString('fr-FR', {
-      timeZone: 'Europe/Paris',
-      day: '2-digit', month: '2-digit', year: 'numeric'
-    }).replace(/\//g, '-');
-    const companyName = company || name || 'Prospect';
-    const fileName = `HomoSapIA - Diagnostic IA - ${companyName} - ${dateStr}.pdf`;
-
-    console.log(`⬆️ Uploading to Drive: ${fileName}`);
-    const driveFile = await uploadToDrive(token, pdfBuffer, fileName, id);
-    console.log(`✅ Uploaded to Drive: ${driveFile.id}`);
-
-    // Step 7: Make file publicly readable
-    await makeFilePublic(token, driveFile.id);
-    console.log(`🔓 File made public`);
-
+    // Step 5-7: Download PDF, upload to Drive, make public
+    const driveFile = await processPdfToDrive(token, gammaData, id, company, name);
     const driveUrl = `https://drive.google.com/file/d/${driveFile.id}/view?usp=sharing`;
     console.log(`🎯 Redirecting to Drive PDF: ${driveUrl}`);
 
@@ -213,5 +275,25 @@ export default async function handler(req, res) {
     // Fallback: redirect to Gamma on any error
     notifyPhilippe({ name, email, company, driveUrl: gammaUrl, timestamp });
     return res.redirect(302, gammaUrl);
+  }
+}
+
+// ─── Main handler ───
+export default async function handler(req, res) {
+  if (req.method !== 'GET') return res.status(405).end();
+
+  const { id, warmup } = req.query;
+  const isWarmup = warmup === 'true';
+
+  if (!id) {
+    return isWarmup
+      ? res.status(200).json({ cached: false, reason: 'no_id' })
+      : res.redirect(302, 'https://homosapia.com');
+  }
+
+  if (isWarmup) {
+    return handleWarmup(req, res, id);
+  } else {
+    return handleClick(req, res, id);
   }
 }
