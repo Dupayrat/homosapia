@@ -356,6 +356,66 @@ export default async function handler(req, res) {
         ],
         benchmark: "Le BTP est un secteur à fort potentiel IA mais faible maturité digitale. Les quick wins se concentrent sur la gestion documentaire et l'estimation."
       },
+      'Conseil/ESN': {
+        title: "L'IA dans le Conseil et les ESN",
+        cases: [
+          { name: 'Rédaction de propositions commerciales assistée', impact: '+60% rapidité proposals', source: 'Accenture' },
+          { name: 'Analyse documentaire et veille sectorielle automatisée', impact: '-50% temps de recherche', source: 'McKinsey 2024' },
+          { name: 'Automatisation du staffing et matching consultant-mission', impact: '+30% taux de staffing', source: 'BCG' },
+          { name: 'Génération de livrables et reporting client', impact: '-40% temps de production', source: 'Deloitte' }
+        ],
+        benchmark: "Les cabinets leaders intègrent l'IA dans leur delivery et leur méthodologie. Le ROI se mesure en heures vendues libérées et en qualité de livrables."
+      },
+      'Éducation/Formation': {
+        title: "L'IA dans l'Éducation et la Formation",
+        cases: [
+          { name: 'Personnalisation des parcours apprenants', impact: '+40% taux de complétion', source: 'UNESCO 2024' },
+          { name: 'Création de contenus pédagogiques assistée', impact: '-60% temps de conception', source: 'McKinsey' },
+          { name: 'Évaluation et feedback automatisés', impact: '+25% qualité feedback', source: 'BCG Education' },
+          { name: 'Détection précoce du décrochage', impact: '+35% rétention apprenants', source: 'Deloitte' }
+        ],
+        benchmark: "L'éducation est à un tournant : l'IA peut démocratiser l'accès à un enseignement de qualité, à condition de maintenir l'humain au cœur de la pédagogie."
+      },
+      'Transport/Logistique': {
+        title: "L'IA dans le Transport et la Logistique",
+        cases: [
+          { name: 'Optimisation des tournées et itinéraires', impact: '-15% coûts transport', source: 'McKinsey 2024' },
+          { name: 'Prévision de la demande et gestion des stocks', impact: '-25% ruptures de stock', source: 'Gartner' },
+          { name: 'Maintenance prédictive de la flotte', impact: '-30% pannes imprévues', source: 'BCG' },
+          { name: 'Automatisation de la documentation douanière', impact: '-50% temps administratif', source: 'Deloitte' }
+        ],
+        benchmark: "La logistique est un des secteurs où le ROI de l'IA est le plus mesurable : chaque % d'optimisation se traduit directement en marge."
+      },
+      'Énergie/Environnement': {
+        title: "L'IA dans l'Énergie et l'Environnement",
+        cases: [
+          { name: 'Prévision de la production EnR (solaire, éolien)', impact: '+20% précision prévisions', source: 'IEA 2024' },
+          { name: 'Optimisation de la consommation énergétique', impact: '-15% consommation', source: 'McKinsey' },
+          { name: 'Maintenance prédictive des installations', impact: '-30% coûts maintenance', source: 'BCG' },
+          { name: 'Reporting ESG et bilan carbone automatisé', impact: '-60% temps de reporting', source: 'Deloitte' }
+        ],
+        benchmark: "L'énergie combine enjeux de performance et de sobriété. L'IA frugale y est un impératif, pas un luxe."
+      },
+      'Média/Communication': {
+        title: "L'IA dans les Médias et la Communication",
+        cases: [
+          { name: 'Génération de contenu assistée (articles, posts, vidéos)', impact: '+300% volume de contenu', source: 'Reuters 2024' },
+          { name: 'Personnalisation de l\'audience et ciblage', impact: '+25% engagement', source: 'McKinsey' },
+          { name: 'Veille et monitoring média automatisés', impact: '-70% temps de veille', source: 'Gartner' },
+          { name: 'Traduction et localisation automatique', impact: '-80% coûts de traduction', source: 'Accenture' }
+        ],
+        benchmark: "Les médias sont le secteur le plus directement impacté par la GenAI. La clé : augmenter les créatifs, pas les remplacer."
+      },
+      'Secteur public': {
+        title: "L'IA dans le Secteur Public",
+        cases: [
+          { name: 'Simplification des démarches administratives', impact: '-40% temps de traitement', source: 'OCDE 2024' },
+          { name: 'Analyse prédictive des besoins citoyens', impact: '+30% satisfaction usagers', source: 'McKinsey Govt' },
+          { name: 'Automatisation du traitement des courriers et demandes', impact: '-60% délais de réponse', source: 'Deloitte' },
+          { name: 'Aide à la décision et analyse de données territoriales', impact: '+25% efficacité budgétaire', source: 'BCG' }
+        ],
+        benchmark: "Le secteur public a des contraintes spécifiques : souveraineté des données, AI Act, transparence algorithmique. L'accompagnement est indispensable."
+      },
       'Autre': {
         title: "L'IA pour votre entreprise",
         cases: [

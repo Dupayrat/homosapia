@@ -105,41 +105,68 @@
     }
     .nav-back:hover { color: var(--text); }
 
-    /* ---- PROGRESS BAR ---- */
-    .progress-bar-wrap {
-      position: fixed;
-      top: 56px; left: 0; right: 0;
-      z-index: 999;
-      height: 4px;
-      background: rgba(255,255,255,0.08);
+    /* ---- PROGRESS BAR (inline, under question header) ---- */
+    .progress-inline {
+      max-width: 420px;
+      margin: 0 auto 28px;
       display: none;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
     }
-    .progress-bar-wrap.visible { display: block; }
-    .progress-bar-fill {
+    .progress-inline.visible { display: block; }
+    .progress-inline-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .progress-inline-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      letter-spacing: 0.3px;
+    }
+    .progress-inline-pct {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--accent);
+      font-variant-numeric: tabular-nums;
+    }
+    .progress-inline-track {
+      height: 8px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 100px;
+      overflow: hidden;
+      position: relative;
+    }
+    .progress-inline-fill {
       height: 100%;
       background: linear-gradient(90deg, var(--accent), var(--sapiens));
-      transition: width 0.4s ease;
-      width: 0%;
-      border-radius: 0 2px 2px 0;
-      box-shadow: 0 0 8px rgba(242, 107, 58, 0.4);
-    }
-    .progress-bar-text {
-      position: fixed;
-      top: 64px; right: 20px;
-      z-index: 1000;
-      font-size: 0.8rem;
-      color: var(--text);
-      font-weight: 600;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      pointer-events: none;
-      background: var(--bg-elevated);
-      padding: 4px 12px;
       border-radius: 100px;
-      border: 1px solid var(--border);
+      transition: width 0.5s cubic-bezier(.22,1,.36,1);
+      width: 0%;
+      position: relative;
     }
-    .progress-bar-text.visible { opacity: 1; }
+    .progress-inline-fill::after {
+      content: '';
+      position: absolute;
+      right: 0; top: 0; bottom: 0;
+      width: 24px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3));
+      border-radius: 0 100px 100px 0;
+    }
+    .progress-inline-dots {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 6px;
+      padding: 0 1px;
+    }
+    .progress-inline-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      transition: background 0.3s, transform 0.3s;
+    }
+    .progress-inline-dot.done { background: var(--accent); transform: scale(1.1); }
+    .progress-inline-dot.active { background: var(--sapiens); transform: scale(1.3); box-shadow: 0 0 8px rgba(58,143,242,0.5); }
 
     /* ---- CONTAINER ---- */
     .container {
@@ -1349,11 +1376,7 @@
   })();
   </script>
 
-  <!-- PROGRESS BAR -->
-  <div class="progress-bar-wrap" id="progressBar">
-    <div class="progress-bar-fill" id="progressFill"></div>
-  </div>
-  <div class="progress-bar-text" id="progressText"></div>
+  <!-- PROGRESS BAR (old fixed — removed, now inline in question section) -->
 
   <!-- ==================== LANDING ==================== -->
   <div class="section active" id="sectionLanding">
@@ -1410,9 +1433,14 @@
           <select id="role">
             <option value="" disabled selected>Sélectionnez</option>
             <option value="Dirigeant/CEO">Dirigeant / CEO</option>
+            <option value="COO/Directeur Opérations">COO / Directeur des Opérations</option>
+            <option value="DAF/Directeur Financier">DAF / Directeur Financier</option>
             <option value="DRH/RH">DRH / RH</option>
             <option value="DSI/CTO">DSI / CTO</option>
+            <option value="Directeur Commercial/Marketing">Directeur Commercial / Marketing</option>
+            <option value="Responsable Innovation/Digital">Responsable Innovation / Digital</option>
             <option value="Manager">Manager</option>
+            <option value="Chef de projet/PMO">Chef de projet / PMO</option>
             <option value="Autre">Autre</option>
           </select>
         </div>
@@ -1421,11 +1449,17 @@
           <select id="sector">
             <option value="" disabled selected>Sélectionnez</option>
             <option value="Services B2B">Services B2B</option>
-            <option value="Industrie">Industrie</option>
+            <option value="Conseil/ESN">Conseil / ESN</option>
             <option value="Tech/SaaS">Tech / SaaS</option>
+            <option value="Industrie">Industrie</option>
             <option value="Commerce/Retail">Commerce / Retail</option>
-            <option value="Santé">Santé</option>
             <option value="Finance/Assurance">Finance / Assurance</option>
+            <option value="Santé">Santé</option>
+            <option value="Éducation/Formation">Éducation / Formation</option>
+            <option value="Transport/Logistique">Transport / Logistique</option>
+            <option value="Énergie/Environnement">Énergie / Environnement</option>
+            <option value="Média/Communication">Média / Communication</option>
+            <option value="Secteur public">Secteur public / Collectivités</option>
             <option value="BTP">BTP</option>
             <option value="Autre">Autre</option>
           </select>
@@ -1456,6 +1490,16 @@
       <div class="question-header">
         <div class="question-step" id="qStep"></div>
         <div class="question-pillar" id="qPillar"></div>
+      </div>
+      <div class="progress-inline" id="progressInline">
+        <div class="progress-inline-top">
+          <span class="progress-inline-label" id="progressLabel"></span>
+          <span class="progress-inline-pct" id="progressPct"></span>
+        </div>
+        <div class="progress-inline-track">
+          <div class="progress-inline-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-inline-dots" id="progressDots"></div>
       </div>
       <div class="question-text" id="qText"></div>
       <div class="answer-cards" id="answerCards"></div>
@@ -2114,7 +2158,7 @@ function startDiagnostic() {
   }
 
   saveState();
-  document.getElementById('progressBar').classList.add('visible');
+  document.getElementById('progressInline').classList.add('visible');
   showSection('sectionQuestions');
   renderQuestion();
 }
@@ -2135,13 +2179,22 @@ function renderQuestion() {
   const qTrans = (Q_TEXT[lang] && Q_TEXT[lang][currentQuestion]) ? Q_TEXT[lang][currentQuestion] : null;
   document.getElementById('qText').textContent = qTrans ? qTrans.text : q.text;
 
-  // Progress bar
+  // Progress bar (inline)
   const pct = ((currentQuestion + 1) / 15) * 100;
   document.getElementById('progressFill').style.width = pct + '%';
-  const pctText = document.getElementById('progressText');
-  if (pctText) {
-    pctText.textContent = `${currentQuestion + 1}/15 — ${Math.round(pct)}%`;
-    pctText.classList.add('visible');
+  var pLabel = document.getElementById('progressLabel');
+  if (pLabel) pLabel.textContent = `${currentQuestion + 1} sur 15`;
+  var pPct = document.getElementById('progressPct');
+  if (pPct) pPct.textContent = Math.round(pct) + '%';
+  // Dots: 15 dots, one per question
+  var dotsEl = document.getElementById('progressDots');
+  if (dotsEl) {
+    dotsEl.innerHTML = '';
+    for (var d = 0; d < 15; d++) {
+      var dot = document.createElement('span');
+      dot.className = 'progress-inline-dot' + (d < currentQuestion ? ' done' : d === currentQuestion ? ' active' : '');
+      dotsEl.appendChild(dot);
+    }
   }
 
   // Answer cards
@@ -2222,8 +2275,8 @@ function nextQuestion() {
 let leadContact = { firstname: '', lastname: '', email: '', phone: '' };
 
 function showGate() {
-  document.getElementById('progressBar').classList.remove('visible');
-  var pt = document.getElementById('progressText'); if (pt) pt.classList.remove('visible');
+  document.getElementById('progressInline').classList.remove('visible');
+
   showSection('sectionGate');
   // Restore saved contact info
   try {
@@ -2337,8 +2390,8 @@ function prevQuestion() {
     saveState();
     renderQuestion();
   } else {
-    document.getElementById('progressBar').classList.remove('visible');
-  var pt = document.getElementById('progressText'); if (pt) pt.classList.remove('visible');
+    document.getElementById('progressInline').classList.remove('visible');
+
     showSection('sectionProfile');
   }
 }
@@ -2347,8 +2400,8 @@ function prevQuestion() {
 // RESULTS
 // ============================================================
 function showResults() {
-  document.getElementById('progressBar').classList.remove('visible');
-  var pt = document.getElementById('progressText'); if (pt) pt.classList.remove('visible');
+  document.getElementById('progressInline').classList.remove('visible');
+
   showSection('sectionResults');
 
   const pillarScores = [0, 0, 0, 0, 0];
@@ -2701,7 +2754,7 @@ function restartDiagnostic() {
   if (reco) reco.innerHTML = '';
 
   // Reset progress bar
-  var pb = document.getElementById('progressBar');
+  var pb = document.getElementById('progressInline');
   if (pb) pb.classList.remove('visible');
 
   // Navigate to landing
@@ -2719,8 +2772,8 @@ function resumeDiagnostic() {
   const answered = answers.filter(a => a !== null).length;
   if (answered >= 15) {
     // All answered — go to gate or results
-    document.getElementById('progressBar').classList.remove('visible');
-  var pt = document.getElementById('progressText'); if (pt) pt.classList.remove('visible');
+    document.getElementById('progressInline').classList.remove('visible');
+
     showSection('sectionResults');
     setTimeout(() => {
       const ps = [0,0,0,0,0];
@@ -2732,7 +2785,7 @@ function resumeDiagnostic() {
   } else {
     // Partial — resume at current question
     currentQuestion = answered;
-    document.getElementById('progressBar').classList.add('visible');
+    document.getElementById('progressInline').classList.add('visible');
     showSection('sectionQuestions');
     renderQuestion();
   }
@@ -2751,8 +2804,8 @@ loadState();
 if (answers.some(a => a !== null)) {
   if (answers.every(a => a !== null)) {
     // All answered — show results directly
-    document.getElementById('progressBar').classList.remove('visible');
-  var pt = document.getElementById('progressText'); if (pt) pt.classList.remove('visible');
+    document.getElementById('progressInline').classList.remove('visible');
+
     showSection('sectionResults');
     setTimeout(() => {
       const ps = [0,0,0,0,0];
