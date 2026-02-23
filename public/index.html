@@ -1478,6 +1478,13 @@
         align-items: flex-start;
         gap: 4px;
       }
+
+      /* Hide LinkedIn / 4jours / Contact links on mobile — redundant */
+      .about-links { display: none; }
+
+      /* Chat: smaller FAB, smaller window */
+      #cb-fab { width:52px; height:52px; bottom:16px; right:16px; }
+      #cb-win { bottom:76px; }
     }
 
     @media (max-width: 480px) {
@@ -3119,8 +3126,8 @@
     fab.style.display='flex';
     // Nudge after 4s
     setTimeout(()=>{ fab.classList.add('nudge'); setTimeout(()=>fab.classList.remove('nudge'),700); },4000);
-    // Auto-open after 8s
-    setTimeout(()=>{ if(!cbIsOpen) cbToggle(); },8000);
+    // Auto-open after 8s (desktop only — too invasive on mobile)
+    if(window.innerWidth > 768) setTimeout(()=>{ if(!cbIsOpen) cbToggle(); },8000);
   }, 15000);
   </script>
 
