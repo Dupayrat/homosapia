@@ -375,33 +375,6 @@
       letter-spacing: 0.5px;
     }
 
-    /* ───── PRESS / VU DANS ───── */
-    .press-bar {
-      padding: 48px 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .press-logos {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 48px;
-      flex-wrap: wrap;
-    }
-    .press-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      opacity: 0.55;
-      transition: opacity 0.3s;
-      text-decoration: none;
-      color: var(--text-muted);
-      font-family: var(--sans);
-      font-size: 0.82rem;
-      font-weight: 500;
-      letter-spacing: 0.3px;
-    }
-    .press-item:hover { opacity: 1; }
-    .press-item svg { flex-shrink: 0; }
 
     /* ───── FAQ ───── */
     .faq { padding: 100px 0; }
@@ -559,45 +532,82 @@
       color: var(--text);
     }
 
-    /* ───── MANIFESTO STATS ───── */
+    /* ───── MANIFESTO STORY CARDS ───── */
     .manifesto-stats {
       display: flex;
-      gap: 32px;
-      margin-top: 28px;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 32px;
     }
     .manifesto-stat {
       display: flex;
-      flex-direction: column;
-      gap: 2px;
+      align-items: center;
+      gap: 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .manifesto-stat::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+    }
+    .manifesto-stat.stat-danger::before { background: #EF4444; }
+    .manifesto-stat.stat-warning::before { background: #F59E0B; }
+    .manifesto-stat.stat-success::before { background: #22C55E; }
+    .manifesto-stat-num-wrap {
+      display: flex;
+      align-items: baseline;
+      flex-shrink: 0;
+      min-width: 80px;
     }
     .manifesto-stat-num {
       font-family: var(--serif);
-      font-size: 2.5rem;
+      font-size: 2.6rem;
       font-weight: 700;
-      color: var(--accent);
       line-height: 1;
     }
     .manifesto-stat-pct {
       font-family: var(--serif);
-      font-size: 2.5rem;
+      font-size: 1.6rem;
       font-weight: 700;
-      color: var(--accent);
       line-height: 1;
     }
+    .stat-danger .manifesto-stat-num,
+    .stat-danger .manifesto-stat-pct { color: #EF4444; }
+    .stat-warning .manifesto-stat-num,
+    .stat-warning .manifesto-stat-pct { color: #F59E0B; }
+    .stat-success .manifesto-stat-num,
+    .stat-success .manifesto-stat-pct { color: #22C55E; }
+    .manifesto-stat-content {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .manifesto-stat-punch {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.3;
+    }
     .manifesto-stat-label {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: var(--text-muted);
       line-height: 1.4;
     }
     .manifesto-stat-source {
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       color: #555;
       letter-spacing: 0.5px;
       text-transform: uppercase;
-    }
-
-    @media (max-width: 768px) {
-      .manifesto-stats { flex-direction: column; gap: 20px; }
+      margin-top: 2px;
     }
 
     /* ───── PROCESS (Étapes) ───── */
@@ -695,27 +705,6 @@
       padding: 0 8px;
     }
 
-    /* ───── TRUST BADGES (near CTA) ───── */
-    .trust-badges {
-      display: flex;
-      justify-content: center;
-      gap: 32px;
-      margin-top: 24px;
-      flex-wrap: wrap;
-    }
-    .trust-badge {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-family: var(--sans);
-      font-size: 0.78rem;
-      color: var(--text-muted);
-    }
-    .trust-badge svg {
-      flex-shrink: 0;
-      color: var(--accent);
-      opacity: 0.7;
-    }
 
     @media (max-width: 968px) {
       .compare-grid { grid-template-columns: 1fr; gap: 16px; }
@@ -724,8 +713,7 @@
     }
     @media (max-width: 768px) {
       .process-steps { grid-template-columns: 1fr; gap: 24px; }
-      .trust-badges { gap: 16px; }
-    }
+}
 
     /* ───── HERO IMAGE ───── */
     .hero-content {
@@ -758,7 +746,6 @@
     @media (max-width: 768px) {
       .impact-counters { gap: 32px; }
       .impact-number { font-size: 2rem; }
-      .press-logos { gap: 32px; }
     }
 
     /* ───── MANIFESTO ───── */
@@ -1343,21 +1330,6 @@
       font-size: 1.05rem;
       padding: 18px 40px;
     }
-    .cta-info {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .cta-info a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.88rem;
-      font-family: var(--sans);
-      transition: color 0.2s;
-    }
-    .cta-info a:hover { color: var(--accent); }
-    .cta-sep { color: var(--text-muted); font-size: 0.8rem; }
-
     /* ───── FOOTER ───── */
     footer {
       padding: 64px 0 48px;
@@ -1757,37 +1729,6 @@
     </div>
   </section>
 
-  <!-- ═══ VU DANS ═══ -->
-  <section class="press-bar">
-    <div class="container">
-      <div class="press-logos">
-        <a href="https://www.capital.fr/votre-carriere/lia-va-faire-gagner-du-temps-aux-salaries-et-ce-temps-peut-leur-etre-rendu-1523366" target="_blank" rel="noopener" class="press-item">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 22h16a2 2 0 002-2V4a2 2 0 00-2-2H8a2 2 0 00-2 2v16a2 2 0 01-2 2zm0 0a2 2 0 01-2-2v-9c0-1.1.9-2 2-2h2M10 6h8M10 10h8M10 14h4"/></svg>
-          Tribune Capital
-        </a>
-        <span class="press-item">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 14l9-5-9-5-9 5 9 5z"/><path d="M12 14l6.16-3.422A12 12 0 0121 17.5c0 1.38-4.03 2.5-9 2.5S3 18.88 3 17.5a12 12 0 012.84-6.922L12 14z"/></svg>
-          Worktech Paris 2025
-        </span>
-        <span class="press-item">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-          AACC
-        </span>
-        <span class="press-item">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-          CFE-CGC Covéa
-        </span>
-        <span class="press-item">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
-          BayWa r.e.
-        </span>
-        <span class="press-item">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
-          ChangeNOW
-        </span>
-      </div>
-    </div>
-  </section>
 
   <!-- ═══ MANIFESTO ═══ -->
   <section class="manifesto" id="approche">
@@ -1799,20 +1740,35 @@
           <p data-i18n="manifesto.p1">Nous croyons qu'une adoption réussie de l'IA passe par la confiance des équipes, la co-construction sur le terrain, et une démarche progressive où chaque étape crée de la valeur mesurable.</p>
           <p data-i18n="manifesto.p2">Notre mission : vous aider à travailler mieux - pas juste plus vite - en intégrant l'IA de manière éthique, souveraine et frugale.</p>
           <div class="manifesto-stats">
-            <div class="manifesto-stat">
-              <span class="manifesto-stat-num" data-count="95">0</span><span class="manifesto-stat-pct">%</span>
-              <span class="manifesto-stat-label" data-i18n="manifesto.stat1">des projets GenAI sans impact mesurable</span>
-              <span class="manifesto-stat-source">MIT 2025</span>
+            <div class="manifesto-stat stat-danger">
+              <div class="manifesto-stat-num-wrap">
+                <span class="manifesto-stat-num" data-count="95">0</span><span class="manifesto-stat-pct">%</span>
+              </div>
+              <div class="manifesto-stat-content">
+                <span class="manifesto-stat-punch" data-i18n="manifesto.punch1">L'IA echoue.</span>
+                <span class="manifesto-stat-label" data-i18n="manifesto.stat1">des projets GenAI sans impact mesurable</span>
+                <span class="manifesto-stat-source">MIT 2025</span>
+              </div>
             </div>
-            <div class="manifesto-stat">
-              <span class="manifesto-stat-num" data-count="83">0</span><span class="manifesto-stat-pct">%</span>
-              <span class="manifesto-stat-label" data-i18n="manifesto.stat3">des employés disent que l'IA a augmenté leur charge</span>
-              <span class="manifesto-stat-source">HBR 2026</span>
+            <div class="manifesto-stat stat-warning">
+              <div class="manifesto-stat-num-wrap">
+                <span class="manifesto-stat-num" data-count="83">0</span><span class="manifesto-stat-pct">%</span>
+              </div>
+              <div class="manifesto-stat-content">
+                <span class="manifesto-stat-punch" data-i18n="manifesto.punch2">Mal deployee, elle nuit.</span>
+                <span class="manifesto-stat-label" data-i18n="manifesto.stat3">des employes disent que l'IA a augmente leur charge</span>
+                <span class="manifesto-stat-source">HBR 2026</span>
+              </div>
             </div>
-            <div class="manifesto-stat">
-              <span class="manifesto-stat-num" data-count="70">0</span><span class="manifesto-stat-pct">%</span>
-              <span class="manifesto-stat-label" data-i18n="manifesto.stat2">du succès IA vient des personnes et processus</span>
-              <span class="manifesto-stat-source">BCG</span>
+            <div class="manifesto-stat stat-success">
+              <div class="manifesto-stat-num-wrap">
+                <span class="manifesto-stat-num" data-count="70">0</span><span class="manifesto-stat-pct">%</span>
+              </div>
+              <div class="manifesto-stat-content">
+                <span class="manifesto-stat-punch" data-i18n="manifesto.punch3">La solution : l'humain.</span>
+                <span class="manifesto-stat-label" data-i18n="manifesto.stat2">du succes IA vient des personnes et processus</span>
+                <span class="manifesto-stat-source">BCG</span>
+              </div>
             </div>
           </div>
         </div>
@@ -2338,26 +2294,6 @@
       <div class="cta-actions reveal">
         <a href="https://meetings-eu1.hubspot.com/pdu-payrat?uuid=5a24cb40-61aa-41f5-aee3-8cc6a8cae0bf" target="_blank" rel="noopener" class="btn-primary btn-large" data-i18n="cta.btn">Prendre rendez-vous →</a>
         <p style="margin-top:20px; font-size:0.9rem; color:var(--text-muted);" data-i18n="cta.alt" data-i18n-html="1">Pas encore prêt ? <a href="/diagnostic.html" style="color:var(--accent);">Faites d'abord votre diagnostic IA gratuit</a></p>
-        <div class="cta-info">
-          <a href="mailto:contact@homosapia.com">contact@homosapia.com</a>
-          <span class="cta-sep">·</span>
-          <a href="https://www.linkedin.com/in/philippedupayrat-semaine-de-quatre-jours/" target="_blank" rel="noopener">LinkedIn</a>
-        </div>
-      </div>
-      <!-- Trust badges -->
-      <div class="trust-badges reveal">
-        <span class="trust-badge">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          <span data-i18n="trust.rgpd">Conforme RGPD</span>
-        </span>
-        <span class="trust-badge">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-          <span data-i18n="trust.nda">NDA avant chaque mission</span>
-        </span>
-        <span class="trust-badge">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          <span data-i18n="trust.call">1er appel gratuit, sans engagement</span>
-        </span>
       </div>
     </div>
   </section>
@@ -2663,7 +2599,7 @@
         'process.s2.title': 'Tailored proposal', 'process.s2.desc': 'Clear goals, deliverables, timeline and budget within 5 days.',
         'process.s3.title': 'On-site delivery', 'process.s3.desc': 'Co-build with your teams. Visible results from week 1.',
         'process.s4.title': 'Autonomy & follow-up', 'process.s4.desc': 'Skills transfer, documentation and post-mission support.',
-        'trust.rgpd': 'GDPR Compliant', 'trust.nda': 'NDA before every engagement', 'trust.call': 'First call free, no strings attached',
+        'manifesto.punch1': 'AI fails.', 'manifesto.punch2': 'Poorly deployed, it hurts.', 'manifesto.punch3': 'The solution: people.',
         'footer.desc': 'AI consulting for businesses. Human-centered, sovereign and frugal approach.',
         'footer.contact_title': 'Write to us',
         'footer.links_title': 'Links',
@@ -2805,7 +2741,7 @@
         'process.s2.title': 'Propuesta a medida', 'process.s2.desc': 'Objetivos, entregables, calendario y presupuesto claros en 5 d\u00edas.',
         'process.s3.title': 'Intervenci\u00f3n en terreno', 'process.s3.desc': 'Co-construcci\u00f3n con sus equipos. Resultados visibles desde la semana 1.',
         'process.s4.title': 'Autonom\u00eda y seguimiento', 'process.s4.desc': 'Transferencia de competencias, documentaci\u00f3n y seguimiento post-misi\u00f3n.',
-        'trust.rgpd': 'Conforme RGPD', 'trust.nda': 'NDA antes de cada misi\u00f3n', 'trust.call': 'Primera llamada gratuita, sin compromiso',
+        'manifesto.punch1': 'La IA fracasa.', 'manifesto.punch2': 'Mal desplegada, perjudica.', 'manifesto.punch3': 'La soluci\u00f3n: las personas.',
         'footer.desc': 'Consultor\u00eda IA para empresas. Enfoque humano, soberano y frugal.',
         'footer.contact_title': 'Escr\u00edbanos',
         'footer.links_title': 'Enlaces',
