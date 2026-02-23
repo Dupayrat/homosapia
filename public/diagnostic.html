@@ -108,30 +108,36 @@
     /* ---- PROGRESS BAR ---- */
     .progress-bar-wrap {
       position: fixed;
-      top: 65px; left: 0; right: 0;
+      top: 56px; left: 0; right: 0;
       z-index: 999;
-      height: 6px;
-      background: var(--bg-elevated);
+      height: 4px;
+      background: rgba(255,255,255,0.08);
       display: none;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
     }
-    .progress-bar-wrap.visible { display: flex; align-items: center; }
+    .progress-bar-wrap.visible { display: block; }
     .progress-bar-fill {
       height: 100%;
       background: linear-gradient(90deg, var(--accent), var(--sapiens));
       transition: width 0.4s ease;
       width: 0%;
-      border-radius: 0 3px 3px 0;
+      border-radius: 0 2px 2px 0;
+      box-shadow: 0 0 8px rgba(242, 107, 58, 0.4);
     }
     .progress-bar-text {
       position: fixed;
-      top: 75px; right: 20px;
+      top: 64px; right: 20px;
       z-index: 1000;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      font-weight: 500;
+      font-size: 0.8rem;
+      color: var(--text);
+      font-weight: 600;
       opacity: 0;
       transition: opacity 0.3s ease;
       pointer-events: none;
+      background: var(--bg-elevated);
+      padding: 4px 12px;
+      border-radius: 100px;
+      border: 1px solid var(--border);
     }
     .progress-bar-text.visible { opacity: 1; }
 

@@ -506,7 +506,8 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
           textMode: 'preserve',
           format: 'presentation',
           numCards: 12,
-          textOptions: { language: lang === 'es' ? 'es' : lang === 'en' ? 'en' : 'fr' }
+          textOptions: { language: lang === 'es' ? 'es' : lang === 'en' ? 'en' : 'fr' },
+          sharingOptions: { externalAccess: 'view' }
         };
         const gammaRes = await fetch('https://public-api.gamma.app/v1.0/generations', {
           method: 'POST',
