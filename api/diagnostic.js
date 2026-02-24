@@ -935,7 +935,8 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
           return `${icon} ${p.name}: ${p.score}/${p.max} (${p.pct}%)`;
         }).join('\n');
 
-        const dealDescription = `Score: ${scores.total}/${scores.maxTotal} — Niveau: ${level}\n\n${pillarDesc}\n\nDiagnostic réalisé le ${dateStr}${gammaUrl ? `\nGamma: ${gammaUrl}` : ''}`;
+        const recoDesc = recommendedSteps.map((s, i) => `${i + 1}. ${s.title} — ${s.subtitle}`).join('\n');
+        const dealDescription = `📊 DIAGNOSTIC IA HOMOSAPIA\n\nScore: ${scores.total}/${scores.maxTotal} — Niveau: ${level}\nSecteur: ${company.sector || 'N/A'} | Taille: ${company.size || 'N/A'} | Rôle: ${company.role || 'N/A'}\n\n--- Détail par pilier ---\n${pillarDesc}\n\n--- Recommandations ---\n${recoDesc}\n\nDiagnostic réalisé le ${dateStr} via homosapia.com/diagnostic${gammaUrl ? `\nPrésentation: ${gammaUrl}` : ''}`;
 
         // --- 1. Create or update Contact ---
         console.log('🟡 HubSpot: creating contact...');
@@ -1014,7 +1015,7 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
         console.log('🟡 HubSpot: creating deal...');
         let dealId = null;
         const dealProps = {
-          dealname: `${contact.firstname} ${contact.lastname} @ ${company.name || 'N/A'}`,
+          dealname: `[Diag IA ${scores.total}/100] ${contact.firstname} ${contact.lastname} @ ${company.name || 'N/A'}`,
           pipeline: 'default',
           dealstage: '850840044',  // [Lead Marketing]
           hubspot_owner_id: '1869781215',  // Philippe du Payrat
