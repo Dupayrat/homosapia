@@ -890,10 +890,179 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
       fetch(warmupUrl).catch(() => {});
     }
 
+    // ================================================================
+    // HUBSPOT CRM: Create Contact + Company + Deal + Associations
+    // ================================================================
+    let hubspotStatus = 'skipped';
+    const HUBSPOT_TOKEN = process.env.HUBSPOT_ACCESS_TOKEN;
+
+    if (HUBSPOT_TOKEN) {
+      try {
+        const hsHeaders = { 'Authorization': `Bearer ${HUBSPOT_TOKEN}`, 'Content-Type': 'application/json' };
+        const hsApi = (path, body) => fetch(`https://api.hubapi.com${path}`, { method: 'POST', headers: hsHeaders, body: JSON.stringify(body) });
+
+        // --- Mapping helpers ---
+        const SECTOR_TO_INDUSTRY = {
+          'Services B2B': 'BUSINESS_SERVICES',
+          'Conseil/ESN': 'MANAGEMENT_CONSULTING',
+          'Tech/SaaS': 'COMPUTER_SOFTWARE',
+          'Industrie': 'INDUSTRIAL_AUTOMATION',
+          'Commerce/Retail': 'RETAIL',
+          'Finance/Assurance': 'FINANCIAL_SERVICES',
+          'Santé': 'HOSPITAL_HEALTH_CARE',
+          'Éducation/Formation': 'EDUCATION_MANAGEMENT',
+          'Transport/Logistique': 'LOGISTICS_AND_SUPPLY_CHAIN',
+          'Énergie/Environnement': 'RENEWABLES_ENVIRONMENT',
+          'Média/Communication': 'MEDIA_PRODUCTION',
+          'Secteur public': 'GOVERNMENT_ADMINISTRATION',
+          'BTP': 'CONSTRUCTION',
+          'Autre': 'NOT_APPLICABLE'
+        };
+
+        const SIZE_TO_EMPLOYEES = {
+          '1-20': '15', '21-50': '35', '51-200': '125',
+          '201-1000': '500', '1000+': '1500'
+        };
+
+        const extractDomain = (url) => {
+          try { return new URL(url.startsWith('http') ? url : `https://${url}`).hostname.replace('www.', ''); }
+          catch { return ''; }
+        };
+
+        // --- Pillar breakdown for deal description ---
+        const pillarDesc = scores.pillars.map(p => {
+          const icon = p.pct <= 33 ? '🔴' : p.pct <= 58 ? '🟠' : p.pct <= 83 ? '🔵' : '🟢';
+          return `${icon} ${p.name}: ${p.score}/${p.max} (${p.pct}%)`;
+        }).join('\n');
+
+        const dealDescription = `Score: ${scores.total}/${scores.maxTotal} — Niveau: ${level}\n\n${pillarDesc}\n\nDiagnostic réalisé le ${dateStr}${gammaUrl ? `\nGamma: ${gammaUrl}` : ''}`;
+
+        // --- 1. Create or update Contact ---
+        console.log('🟡 HubSpot: creating contact...');
+        let contactId = null;
+        const contactProps = {
+          firstname: contact.firstname,
+          lastname: contact.lastname,
+          email: contact.email,
+          jobtitle: company.role || ''
+        };
+        if (contact.phone) contactProps.phone = contact.phone;
+
+        let contactRes = await hsApi('/crm/v3/objects/contacts', { properties: contactProps });
+        if (contactRes.status === 409) {
+          // Contact already exists — search by email to get ID
+          console.log('🟡 HubSpot: contact exists, searching by email...');
+          const searchRes = await fetch('https://api.hubapi.com/crm/v3/objects/contacts/search', {
+            method: 'POST', headers: hsHeaders,
+            body: JSON.stringify({ filterGroups: [{ filters: [{ propertyName: 'email', operator: 'EQ', value: contact.email }] }], limit: 1 })
+          });
+          if (searchRes.ok) {
+            const searchData = await searchRes.json();
+            contactId = searchData.results?.[0]?.id || null;
+            if (contactId) {
+              // Update existing contact with latest info
+              await fetch(`https://api.hubapi.com/crm/v3/objects/contacts/${contactId}`, {
+                method: 'PATCH', headers: hsHeaders,
+                body: JSON.stringify({ properties: contactProps })
+              });
+              console.log(`✅ HubSpot: contact updated (${contactId})`);
+            }
+          }
+        } else if (contactRes.ok) {
+          const contactData = await contactRes.json();
+          contactId = contactData.id;
+          console.log(`✅ HubSpot: contact created (${contactId})`);
+        } else {
+          console.error('❌ HubSpot contact error:', contactRes.status, await contactRes.text());
+        }
+
+        // --- 2. Create or find Company ---
+        console.log('🟡 HubSpot: creating company...');
+        let companyId = null;
+        const domain = extractDomain(company.website || '');
+        const companyProps = { name: company.name || contactName };
+        if (domain) companyProps.domain = domain;
+        if (company.website) companyProps.website = company.website;
+        if (company.sector && SECTOR_TO_INDUSTRY[company.sector]) companyProps.industry = SECTOR_TO_INDUSTRY[company.sector];
+        if (company.size && SIZE_TO_EMPLOYEES[company.size]) companyProps.numberofemployees = SIZE_TO_EMPLOYEES[company.size];
+
+        let companyRes = await hsApi('/crm/v3/objects/companies', { properties: companyProps });
+        if (companyRes.status === 409) {
+          // Company already exists — search by domain
+          console.log('🟡 HubSpot: company exists, searching by domain...');
+          const filter = domain
+            ? { propertyName: 'domain', operator: 'EQ', value: domain }
+            : { propertyName: 'name', operator: 'EQ', value: company.name || contactName };
+          const searchRes = await fetch('https://api.hubapi.com/crm/v3/objects/companies/search', {
+            method: 'POST', headers: hsHeaders,
+            body: JSON.stringify({ filterGroups: [{ filters: [filter] }], limit: 1 })
+          });
+          if (searchRes.ok) {
+            const searchData = await searchRes.json();
+            companyId = searchData.results?.[0]?.id || null;
+            console.log(`✅ HubSpot: company found (${companyId})`);
+          }
+        } else if (companyRes.ok) {
+          const companyData = await companyRes.json();
+          companyId = companyData.id;
+          console.log(`✅ HubSpot: company created (${companyId})`);
+        } else {
+          console.error('❌ HubSpot company error:', companyRes.status, await companyRes.text());
+        }
+
+        // --- 3. Create Deal ---
+        console.log('🟡 HubSpot: creating deal...');
+        let dealId = null;
+        const dealProps = {
+          dealname: `${contact.firstname} ${contact.lastname} @ ${company.name || 'N/A'}`,
+          pipeline: 'default',
+          dealstage: '850840044',  // [Lead Marketing]
+          hubspot_owner_id: '1869781215',  // Philippe du Payrat
+          description: dealDescription
+        };
+
+        const dealRes = await hsApi('/crm/v3/objects/deals', { properties: dealProps });
+        if (dealRes.ok) {
+          const dealData = await dealRes.json();
+          dealId = dealData.id;
+          console.log(`✅ HubSpot: deal created (${dealId})`);
+        } else {
+          console.error('❌ HubSpot deal error:', dealRes.status, await dealRes.text());
+        }
+
+        // --- 4. Create Associations ---
+        const associate = (fromType, fromId, toType, toId) =>
+          fetch(`https://api.hubapi.com/crm/v3/objects/${fromType}/${fromId}/associations/${toType}/${toId}/default`, {
+            method: 'PUT', headers: hsHeaders
+          });
+
+        if (contactId && companyId) {
+          await associate('contacts', contactId, 'companies', companyId);
+          console.log('🔗 HubSpot: Contact ↔ Company associated');
+        }
+        if (contactId && dealId) {
+          await associate('deals', dealId, 'contacts', contactId);
+          console.log('🔗 HubSpot: Deal ↔ Contact associated');
+        }
+        if (companyId && dealId) {
+          await associate('deals', dealId, 'companies', companyId);
+          console.log('🔗 HubSpot: Deal ↔ Company associated');
+        }
+
+        hubspotStatus = 'created';
+        console.log(`🎉 HubSpot: CRM pipeline complete — Contact:${contactId} Company:${companyId} Deal:${dealId}`);
+
+      } catch (hsErr) {
+        hubspotStatus = 'error';
+        console.error('❌ HubSpot integration error:', hsErr.message);
+      }
+    }
+
     return res.status(200).json({
       success: true,
       level,
       emailStatus,
+      hubspotStatus,
       steps: recommendedSteps.map(s => ({ num: s.num, title: s.title, subtitle: s.subtitle })),
       gammaPrompt: gammaPrompt.substring(0, 500) + '...',
       gammaUrl: gammaUrl || null,
