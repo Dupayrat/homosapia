@@ -1032,10 +1032,13 @@ Réservez votre créneau : meetings.hubspot.com/pdu-payrat`;
         }
 
         // --- 4. Create Associations ---
-        const associate = (fromType, fromId, toType, toId) =>
-          fetch(`https://api.hubapi.com/crm/v3/objects/${fromType}/${fromId}/associations/${toType}/${toId}/default`, {
+        const associate = async (fromType, fromId, toType, toId) => {
+          const r = await fetch(`https://api.hubapi.com/crm/v4/objects/${fromType}/${fromId}/associations/default/${toType}/${toId}`, {
             method: 'PUT', headers: hsHeaders
           });
+          if (!r.ok) console.error(`❌ HubSpot association ${fromType}→${toType}:`, r.status, await r.text());
+          return r;
+        };
 
         if (contactId && companyId) {
           await associate('contacts', contactId, 'companies', companyId);
